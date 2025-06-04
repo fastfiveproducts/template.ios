@@ -13,12 +13,12 @@
 import Foundation
 
 enum Loadable<Value> {
+    case none
     case loading
     case error(Error)
     case loaded(Value)
-    case none
     
-    // ths computed property enables access to the Value associated value
+    // this computed property enables access to the Value associated value
     var value: Value? {
         get {
             if case let .loaded(value) = self {
@@ -32,12 +32,31 @@ enum Loadable<Value> {
         }
     }
     
+    // state helpers
+    var isNone: Bool {
+        if case .none = self { return true }
+        return false
+    }
+    
+    var isLoading: Bool {
+        if case .loading = self { return true }
+        return false
+    }
+
+    var isError: Bool {
+        if case .error = self { return true }
+        return false
+    }
+    
+    var isLoaded: Bool {
+        if case .loaded = self { return true }
+        return false
+    }
+    
 }
 
-// add an empty case that will automatically match when empty
+// another helper for counting values
 extension Loadable where Value: RangeReplaceableCollection {
-    static var empty: Loadable<Value> { .loaded(Value()) }
-    
     var count: Int {
         if case let .loaded(value) = self {
             return value.count

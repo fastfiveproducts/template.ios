@@ -1,5 +1,5 @@
 //
-//  FirestoreDatabase.swift
+//  FirestoreConnector.swift
 //
 //  Template by Pete Maiser, January 2025 through May 2025
 //      made availble here:
@@ -16,7 +16,7 @@
 import Foundation
 import FirebaseFirestore
 
-struct FirestoreDatabase {
+struct FirestoreConnector: DebugPrintable {
 
     func fetchAnnouncements() async throws -> [Announcement] {
         let today = Date()
@@ -28,15 +28,23 @@ struct FirestoreDatabase {
           .whereField("displayEndDate", isGreaterThanOrEqualTo: Timestamp(date: startOfDay))
 
         let snapshot = try await query.getDocuments()
-        let data = snapshot.documents.compactMap { document in
-            try? document.data(as: Announcement.self)
+        debugprint("Fetched \(snapshot.documents.count) raw docs from the announcements_v01 collection")
+
+        let data = snapshot.documents.compactMap { document -> Announcement? in
+            do {
+                let decoded = try document.data(as: Announcement.self)
+                return decoded
+            } catch {
+                debugprint("WARNING Failed to decode a raw doc from the announcements_v01 collection. Exceution will continue with reduced functionality.")
+                return nil
+            }
         }
         return data
     }
 
 }
 
-// Extend Firebase DocumentReference to wrap it with async/await functionality
+// Extend Firebase Firestore DocumentReference to wrap it with async/await functionality
 private extension DocumentReference {
     func setData<T: Encodable>(from value: T) async throws {
         return try await withCheckedThrowingContinuation { continuation in

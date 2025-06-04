@@ -35,12 +35,11 @@ func deviceLog(_ message: StaticString, category: String = "General", error: Err
     
     let bundleIdentifier: String = Bundle.main.bundleIdentifier ?? "unknownBundleId"
     let log = OSLog(subsystem: bundleIdentifier, category: category)
-    let failsafeMessage: StaticString = "unknown log message"
     
     if let error = error {
-        os_log(.error, log: log, "%{public}@ %@", message as? CVarArg ?? failsafeMessage, error.localizedDescription)
+        os_log(.error, log: log, "%{public}@ %@", message as? CVarArg ?? "unknown log message", error.localizedDescription)
     } else {
-        os_log(.error, log: log, "%{public}@", message as? CVarArg ?? failsafeMessage)
+        os_log(.error, log: log, "%{public}@", message as? CVarArg ?? "unknown log message")
     }
     
 }

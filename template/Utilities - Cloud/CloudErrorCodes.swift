@@ -18,6 +18,7 @@ import Foundation
 enum AccountCreationError: Error, LocalizedError {
     case invalidInput
     case userProfileInputsNotFound
+    case userIdNotFound
     case userCreationIncomplete(Error)
     case userProfileCreationIncomplete(Error)
     
@@ -27,6 +28,8 @@ enum AccountCreationError: Error, LocalizedError {
                 return NSLocalizedString("Missing Data, please check all fields and try again", comment: "User Input Error")
             case .userProfileInputsNotFound:
                 return NSLocalizedString("Could not complete user create process, please go to sign in page and try again", comment: "Unexpected Internal Error")
+            case .userIdNotFound:
+                return NSLocalizedString("Could not complete user create process, please go to sign in page and try again", comment: "Unexpected Cloud Services Error")
             case let .userCreationIncomplete(error):
                 return NSLocalizedString("Error in user creation, please try again.  Error: \(error)", comment: "Cloud Services Communications Error")
             case let .userProfileCreationIncomplete(error):
@@ -36,15 +39,21 @@ enum AccountCreationError: Error, LocalizedError {
 }
 
 enum SignInError: Error, LocalizedError {
-//    case emailLinkInvalid
+    case emailLinkInvalid
     case signInInputsNotFound
+    case userNotFound
+    case userIdNotFound
     
     var errorDescription: String? {
         switch self {
-//            case .emailLinkInvalid:
-//                return NSLocalizedString("Invalid link recieved from cloud in user create process, please try again", comment: "Cloud Services Communications Error")
+            case .emailLinkInvalid:
+                return NSLocalizedString("Invalid link recieved from cloud in user create process, please try again", comment: "Cloud Services Communications Error")
+            case .userNotFound:
+                return NSLocalizedString("Could not complete sign in as user does not exist", comment: "User does not exist")
             case .signInInputsNotFound:
                 return NSLocalizedString("Could not complete sign in, please go to sign in page and try again", comment: "Unexpected Internal Error")
+            case .userIdNotFound:
+                return NSLocalizedString("Completed sign in but User Id not found, some features may not work correctly", comment: "Unexpected Cloud Services Error")
         }
     }
 }

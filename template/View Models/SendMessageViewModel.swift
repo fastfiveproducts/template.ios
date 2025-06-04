@@ -18,16 +18,19 @@ class SendMessageViewModel<T: Message>: SignInOutObserver {
     @Published var captureCandidate: MessageCandidate
     
     // Submit Prep
-    typealias Translate = (MessageCandidate) throws -> T
-    private let translate: Translate
+//    typealias Translate = (MessageCandidate) throws -> T
+//    private let translate: Translate
     
     // Submit Action
-    typealias Action = (T) async throws -> Void
+    typealias Action = (MessageCandidate) async throws -> Void
     private let action: Action
         
-    init(captureCandidate: MessageCandidate, translate: @escaping Translate, action: @escaping Action) {
+    init(captureCandidate: MessageCandidate,
+//         translate: @escaping Translate,
+         action: @escaping Action)
+    {
         self.captureCandidate = captureCandidate
-        self.translate = translate
+//        self.translate = translate
         self.action = action
     }
     
@@ -40,8 +43,9 @@ class SendMessageViewModel<T: Message>: SignInOutObserver {
     private func handleSubmit() async {
         isWorking = true
         do {
-            let sendCandidate = try translate(captureCandidate)
-            try await action(sendCandidate)
+//            let sendCandidate = try translate(captureCandidate)
+//            try await action(sendCandidate)
+            try await action(captureCandidate)
         } catch {
             debugprint("Cloud Error creating \(T.typeDescription): \(error)")
             self.error = error

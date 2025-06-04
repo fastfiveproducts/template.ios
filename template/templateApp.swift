@@ -1,9 +1,17 @@
 //
 //  templateApp.swift
-//  template
 //
-//  Created by Pete Maiser on 5/27/25.
+//  Template by Pete Maiser, July 2024 through May 2025
+//      made availble here:
+//      https://github.com/fastfiveproducts/template.ios
+//      provided via, and used per, terms of the MIT License
 //
+//  This particular implementation is for:
+//      APP_NAME
+//      DATE
+//      YOUR_NAME
+//
+
 
 import SwiftUI
 import Firebase
@@ -15,14 +23,31 @@ struct templateApp: App {
         
     var body: some Scene {
         WindowGroup {
-            HomeView(viewModel: HomeViewModel(currentUser: CurrentUserService.shared), currentUser: CurrentUserService.shared)
+            HomeView(
+                viewModel: HomeViewModel(currentUserService: CurrentUserService.shared),
+                currentUserService: CurrentUserService.shared,      // will setup its own listener upon initialziation
+                announcementStore: AnnouncementStore.shared,        // call fetch below as fire-and-forget
+                publicCommentStore: PublicCommentStore.shared,      // call fetch below as fire-and-forget
+                privateMessageStore: PrivateMessageStore.shared     // will observer user sign-in and fetch at that point
+            )
+                .task {AnnouncementStore.shared.fetch()}
+                .task {PublicCommentStore.shared.fetch()}
         }
     }
 }
 
 class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        FirebaseApp.configure()
+        
+        #if DEBUG
+        let providerFactory = AppCheckDebugProviderFactory()
+        AppCheck.setAppCheckProviderFactory(providerFactory)
+        #endif
+        
+        FirebaseConfiguration.shared.setLoggerLevel(.error)         // Trying:  to reduce log 'spam'
+        FirebaseApp.configure()                                     // Needed:  configure Firebase
+        FirebaseConfiguration.shared.setLoggerLevel(.error)         // Trying:  to reduce log 'spam'
+        
         return true
     }
 }

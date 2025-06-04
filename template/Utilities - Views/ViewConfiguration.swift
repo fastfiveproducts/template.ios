@@ -18,7 +18,6 @@ import SwiftUI
 // The "ViewConfiguration" struct contains smallish settings, config, and ref data
 // specific to SwiftUI and this application that are generally hard-coded
 // here or inferred quickly upon app startup
-
 struct ViewConfiguration {
     
     static let dynamicSizeMax = DynamicTypeSize.xxxLarge

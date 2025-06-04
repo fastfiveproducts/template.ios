@@ -16,24 +16,43 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject var viewModel: HomeViewModel
-    @StateObject var currentUser: CurrentUser
+    @ObservedObject var viewModel: HomeViewModel
+    @ObservedObject var currentUserService: CurrentUserService
+    @ObservedObject var announcementStore: AnnouncementStore
+    @ObservedObject var publicCommentStore: PublicCommentStore
+    @ObservedObject var privateMessageStore: PrivateMessageStore
     
     var body: some View {
         NavigationStack {
             Form {
-                Section(header: Text("Welcome")) {
-                    SimpleListView(store: AnnouncementStore.shared)
-                }
-                                                            
+                StoreListSectionView(store: announcementStore)
+                
                 Section(header: Text("Home")) {
-                    VStack {
-                        Image(systemName: "globe")
-                            .imageScale(.large)
-                            .foregroundStyle(.tint)
-                        Text("Hello, world!")
+                    HStack {
+                        Spacer()
+                        VStack {
+                            Image(systemName: "globe")
+                                .imageScale(.large)
+                                .foregroundStyle(.tint)
+                            Text("Hello, world!")
+                        }
+                        Spacer()
                     }
                 }
+                
+                Section(header: Text("Test Talk")) {
+                    if currentUserService.isSignedIn {
+                        NavigationLink(
+                            "Write Comment",
+                            destination: PublicCommentBoard(
+                                store: publicCommentStore,
+                                currentUserId: currentUserService.userAccount.userKey.uid,
+                                sendViewModel: viewModel.makePublishCommentViewModel())
+                        )
+                    }
+                    MessageListView(store: publicCommentStore, messagePerspective: .comment)
+                }
+                
             }
             .padding()
             .toolbar {
@@ -41,39 +60,62 @@ struct HomeView: View {
                     Text("Template")
                         .font(.title)
                 }
+                
+                if currentUserService.isSignedIn {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        NavigationLink(
+                            destination: PrivateMessageBoard(
+                                store: privateMessageStore,
+                                currentUserId: currentUserService.userAccount.userKey.uid,
+                                sendViewModel: viewModel.makeSendMessageViewModel()
+                            ),
+                            label: {
+                                Label("Messages", systemImage: "envelope")
+                            }
+                        )
+                        .buttonStyle(BorderlessButtonStyle())
+                    }
+                }
                                 
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: UserProfileView(viewModel: UserProfileViewModel()), label: {
-                        currentUser.isSignedIn ? Image(systemName: "person.fill"):Image(systemName: "person")
-                    })
+                    NavigationLink(
+                        destination: UserAccountView(
+                            viewModel: UserAccountViewModel(),
+                            currentUserService: currentUserService
+                        ),
+                        label: {
+                            currentUserService.isSignedIn ? Image(systemName: "person.fill"):Image(systemName: "person")
+                        }
+                    )
                     .buttonStyle(BorderlessButtonStyle())
                 }
             }
-            .onAppear() {
-                // note this is called every time the view appears on the screen
-                viewModel.fetchAnnouncements()
-            }
-            .onChange(of: currentUser.isSignedIn) {
-                if currentUser.isSignedIn {
-                    // ...do stuff
-                }
-            }
+            .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
+            .environment(\.font, Font.body)
         } // NavigationStack
-        .alert("Error", error: $currentUser.authError)
-        .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
-        .environment(\.font, Font.body)
-        .environmentObject(viewModel)
-        .environmentObject(currentUser)
     }
 }
 
 
 #if DEBUG
-#Preview ("test data") {
-    HomeView(viewModel: HomeViewModelTestData.shared, currentUser: CurrentUserTestData.sharedSignedIn)
+#Preview ("test-data signed-in") {
+    let currentUserService = CurrentUserTestService.sharedSignedIn
+    HomeView(
+        viewModel: HomeViewModel(currentUserService: currentUserService),
+        currentUserService: currentUserService,
+        announcementStore: AnnouncementStore.testLoaded(),
+        publicCommentStore: PublicCommentStore.testLoaded(),
+        privateMessageStore: PrivateMessageStore.testLoaded()
+    )
 }
-
-#Preview ("live data") {
-    HomeView(viewModel: HomeViewModel(currentUser: CurrentUser.shared), currentUser: CurrentUser.shared)
+#Preview ("test-data signed-out") {
+    let currentUserService = CurrentUserTestService.sharedSignedOut
+    HomeView(
+        viewModel: HomeViewModel(currentUserService: currentUserService),
+        currentUserService: currentUserService,
+        announcementStore: AnnouncementStore.testLoaded(),
+        publicCommentStore: PublicCommentStore.testLoaded(),
+        privateMessageStore: PrivateMessageStore.testLoaded()
+    )
 }
 #endif

@@ -14,9 +14,12 @@ import Foundation
 import UIKit
 
 func deviceIdentifierstamp() -> String {
-    return UIDevice.current.identifierForVendor?.uuidString ?? "device stamp failed"
     
-    // TODO: if this function is used, the Privacy Statement must tell users we record an identifier from their device
+    // DEPENDENCY: if this function is used, the Privacy Statement must tell users we record an identifier from their device
+
+    print("deviceIdentifierstamp() function called.  If this function is used, the Privacy Statement must tell users we record an identifier from their device.")
+    
+    return UIDevice.current.identifierForVendor?.uuidString ?? "device stamp failed"
 }
 
 func deviceTimestamp() -> String {

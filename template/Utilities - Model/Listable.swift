@@ -13,8 +13,15 @@
 import Foundation
 
 protocol Listable: Identifiable, Equatable, Codable, DebugPrintable {
-    static var typeDescription: String { get }
     var objectDescription: String { get }
+    static var testObject: Self { get }
+    static var testObjects: [Self] { get }
+    static var usePlaceholder: Bool { get }
+    static var placeholder: Self { get }
+}
+
+extension Listable {
+    static var typeDescription: String { String(describing: Self.self) }
 }
 
 extension Listable {
@@ -25,11 +32,4 @@ extension Listable {
         let string = date != nil ? dateFormatter.string(from: date!) : "unknown date"
         return string
     }
-}
-
-@MainActor
-class ListableStore<T: Listable>: ObservableObject, DebugPrintable {
-        
-    // primary data available from the store
-    @Published var list: Loadable<[T]> = .empty
 }

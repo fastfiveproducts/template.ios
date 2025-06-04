@@ -18,187 +18,62 @@ import Foundation
 class HomeViewModel: SignInOutObserver {
     
     // ***** Setup *****
-    var currentUser: CurrentUserService
+    var currentUserService: CurrentUserService
     
-    init(currentUser: CurrentUserService) {
-        self.currentUser = currentUser
+    init(currentUserService: CurrentUserService) {
+        self.currentUserService = currentUserService
         super.init()
     }
-    
-    /*
-    convenience init(currentUser: CurrentUser) {
-        self.init(
-            currentUser: currentUser,
-            INSERT OTHERS AS NEEDED...
-        )
-    }
-    */
-       
-
-    // ***** Announcements *****
-    let announcementStore: AnnouncementStore = AnnouncementStore.shared
-    
-    func fetchAnnouncements() {
-        // we will just get annoucements one time, for now
-        if announcementStore.list == .empty {
-            Task {
-                try await announcementStore.fetchAnnouncements()
-            }
-        } else if case .error(_) = announcementStore.list {
-            // perhaps the error was corrected
-            Task {
-                try await announcementStore.fetchAnnouncements()
-            }
-        }
-    }
-       
+            
     
     // ***** ViewModel Factories *****
     
-    func makePublishPublicCommentViewModel() -> SendMessageViewModel<PublicComment> {
+    func makePublishCommentViewModel() -> SendMessageViewModel<PublicComment> {
         return SendMessageViewModel(
             captureCandidate: MessageCandidate(
-                from: currentUser.userKey,
-                to: User.blankUser.userKey,
+                from: currentUserService.userKey,
+                to: UserAccount.blankUser.userKey,
                 title: "",
-                content: "",
-                typeDescription: PublicComment.typeDescription),
-            translate: { [weak self] candidate in
-                return PublicComment(
-                    from: candidate.from,
-                    to: candidate.to,
-                    title: candidate.title,
-                    content: candidate.content)
-            },
-            action: { [weak self] message in
-                let commentId = try await MessageService().createPublicComment(message)
+                content: ""),
+//            translate: { [weak self] candidate in
+//                return candidate
+//            },
+            action: { [weak self] message in        // <--- TODO ? Why is this a weak self?
+                let commentId = try await MessagesConnector().createPublicComment(message)  // <--- TODO have a way to just print a message when in Previews
                 let sentMessage = PublicComment(
-                    tournamentId: message.tournamentId,
                     id: commentId,
+                    timestamp: Date(),
                     from: message.from,
                     to: message.to,
                     title: message.title,
                     content: message.content
                 )
-                var sentMessages = [sentMessage]
-                if case let .loaded(pastMessages) = self?.commentBoard.list {
-                    sentMessages += pastMessages
-                }
-                self?.commentBoard.list = .loaded(sentMessages)
+                print(sentMessage)     // <-- TODO need to add the sent message to the Message Store (or force a refresh)
             }
         )
     }
 
-    func makeSendPrivateMessageViewModel() -> SendMessageViewModel<PrivateMessage> {
+    func makeSendMessageViewModel() -> SendMessageViewModel<PrivateMessage> {
         return SendMessageViewModel(
             captureCandidate: MessageCandidate(
-                from: currentUser.userKey,
-                to: currentUser.userKey,        // TODO: we are just sending it to ourselves for now
+                from: currentUserService.userKey,
+                to: currentUserService.userKey,        // <--- TODO we are just sending it to ourselves for now
                 title: "",
-                content: "",
-                typeDescription: PrivateMessage.typeDescription),
-            translate: { candidate in
-                return PrivateMessage(
-                    status: .sent,              // TODO: this needs to be more sophisticated
-                    from: candidate.from,
-                    to: candidate.to,
-                    title: candidate.title,
-                    content: candidate.content)
-            },
-            action: { [weak self] message in
-                let messageId = try await MessageService().createPrivateMessage(message)
+                content: ""),
+            //            translate: { [weak self] candidate in
+            //                return candidate
+            //            },
+            action: { [weak self] message in    // <--- TODO ? Why is this a weak self?
+                let messageId = try await MessagesConnector().createPrivateMessage(message) // <--- TODO have a way to just print a message when in Previews
                 let sentMessage = PrivateMessage(
                     id: messageId,
-                    status: .sent,
+                    timestamp: Date(),
                     from: message.from,
                     to: message.to,
                     title: message.title,
                     content: message.content)
-                var sentMessages = [sentMessage]
-                if case let .loaded(pastMessages) = self?.currentUser.messagesToUser {
-                    sentMessages += pastMessages
-                }
-                self?.currentUser.messagesToUser = .loaded(sentMessages)
-            }
-        )
-    }
-    
-    
-    // ***** User-Session Cleanup *****
-    override func postSignOutCleanup() {
-        super.postSignOutCleanup()
-    }
-    
-}
-
-#if DEBUG
-class HomeViewModelPreview: HomeViewModel {
-    static let shared = HomeViewModel(currentUser: CurrentUserService.shared)
-}
-
-class HomeViewModelTestData: HomeViewModel {
-    static let shared = HomeViewModelTestData()
-    
-    init() {
-        super.init(
-            currentUser: CurrentUserTestData.sharedSignedIn,
-        )
-        debugprint ("init called; isPreviewTestData: \(isPreviewTestData)")
-    }
-    
-    override func makePublishPublicCommentViewModel() -> SendMessageViewModel<PublicComment> {
-        return SendMessageViewModel(
-            captureCandidate: MessageCandidate(
-                from: PublicComment.testComment.from,
-                to: User.blankUser.userKey,
-                title: "",
-                content: "",
-                typeDescription: PublicComment.typeDescription),
-            translate: { candidate in
-                return PublicComment(
-                    from: candidate.from,
-                    to: candidate.to,
-                    title: candidate.title,
-                    content: candidate.content)
-            },
-            action: { [weak self] message in
-                self?.debugprint("Fake send to Cloud: \(message)")
-                // TODO: make the below a function so it is not copied from above to here?
-                var sentMessages = [message]
-                if case let .loaded(pastMessages) = self?.commentBoard.list {
-                    sentMessages += pastMessages
-                }
-                self?.commentBoard.list = .loaded(sentMessages)
-            }
-        )
-    }
-
-    override func makeSendPrivateMessageViewModel() -> SendMessageViewModel<PrivateMessage> {
-        return SendMessageViewModel(
-            captureCandidate: MessageCandidate(
-                from: PrivateMessage.testMessage.from,
-                to: PrivateMessage.testMessage.to,
-                title: "title",
-                content: "message content...",
-                typeDescription: PrivateMessage.typeDescription),
-            translate: { candidate in
-                return PrivateMessage(
-                    from: candidate.from,
-                    to: candidate.to,
-                    title: candidate.title,
-                    content: candidate.content)
-            },
-            action: { [weak self] message in
-                self?.debugprint("Fake send of Private Message to Cloud: \(message)")
-                // T make the below a function so it is not copied-changed from above to here?
-                let sentMessage = PrivateMessage(id: UUID(), status: .sent, from: message.from, to: message.to, title: message.title, content: message.content)
-                var sentMessages = [sentMessage]
-                if case let .loaded(pastMessages) = self?.currentUser.messagesToUser {
-                    sentMessages += pastMessages
-                }
-                self?.currentUser.messagesToUser = .loaded(sentMessages)
+                print(sentMessage)     // <-- TODO need to add the sent message to the Message Store (or force a refresh)
             }
         )
     }
 }
-#endif
