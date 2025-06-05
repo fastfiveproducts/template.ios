@@ -35,8 +35,8 @@ struct UserAccountView: View {
         }
         .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
         .environment(\.font, Font.body)
-        .alert("Error", error: $viewModel.error)                // TODO not sure if I need both of these
-        .alert("Error", error: $currentUserService.error)   // TODO not sure if I need both of these
+        .alert("Error", error: $viewModel.error)                // TODO: not sure if I need both of these
+        .alert("Error", error: $currentUserService.error)       // TODO: not sure if I need both of these
     
         Text(viewModel.statusText)
     }

@@ -1,5 +1,5 @@
 //
-//  MessagesConnector.swift
+//  PostsConnector.swift
 //
 //  Created by Pete Maiser, January 2025 through May 2025
 //      made availble here:
@@ -18,7 +18,7 @@ import DefaultConnector
 fileprivate let defaultFetchLimit: Int = 100
 
 // Services:
-struct MessagesConnector {
+struct PostsConnector {
     
     func fetchPublicComments(limit:Int? = defaultFetchLimit) async throws -> [PublicComment] {
         var comments: [PublicComment] = []
@@ -44,11 +44,11 @@ struct MessagesConnector {
         return messages
     }
     
-    func fetchPublicCommentReferences(for commentId:UUID, limit:Int? = defaultFetchLimit) async throws -> [MessageReference] {
-        var references: [MessageReference] = []
+    func fetchPublicCommentReferences(for commentId:UUID, limit:Int? = defaultFetchLimit) async throws -> [PostReference] {
+        var references: [PostReference] = []
         let queryRef = DataConnect.defaultConnector.getPublicCommentReferencesQuery.ref(commentId: commentId, limit: limit!)
         let operationResult = try await queryRef.execute()
-        references = try operationResult.data.publicCommentReferences.compactMap { firebaseReference -> MessageReference? in
+        references = try operationResult.data.publicCommentReferences.compactMap { firebaseReference -> PostReference? in
             let reference = try makeMessageReferenceStruct(from: firebaseReference)
             guard reference.isValid else { throw FetchDataError.invalidCloudData }
             return reference
@@ -56,11 +56,11 @@ struct MessagesConnector {
         return references
     }
         
-    func fetchMyPrivateMessageReferences(limit:Int? = defaultFetchLimit) async throws -> [MessageReference] {
-        var references: [MessageReference] = []
+    func fetchMyPrivateMessageReferences(limit:Int? = defaultFetchLimit) async throws -> [PostReference] {
+        var references: [PostReference] = []
         let queryRef = DataConnect.defaultConnector.getMyPrivateMessageReferencesQuery.ref(limit: limit!)
         let operationResult = try await queryRef.execute()
-        references = try operationResult.data.privateMessageReferences.compactMap { firebaseReference -> MessageReference? in
+        references = try operationResult.data.privateMessageReferences.compactMap { firebaseReference -> PostReference? in
             let reference = try makeMessageReferenceStruct(from: firebaseReference)
             guard reference.isValid else { throw FetchDataError.invalidCloudData }
             return reference
@@ -68,11 +68,11 @@ struct MessagesConnector {
         return references
     }
 
-    func fetchPrivateMessageReferences(for messageId:UUID, limit:Int? = defaultFetchLimit) async throws -> [MessageReference] {
-        var references: [MessageReference] = []
+    func fetchPrivateMessageReferences(for messageId:UUID, limit:Int? = defaultFetchLimit) async throws -> [PostReference] {
+        var references: [PostReference] = []
         let queryRef = DataConnect.defaultConnector.getPrivateMessageReferencesQuery.ref(messageId: messageId, limit: limit!)
         let operationResult = try await queryRef.execute()
-        references = try operationResult.data.privateMessageReferences.compactMap { firebaseReference -> MessageReference? in
+        references = try operationResult.data.privateMessageReferences.compactMap { firebaseReference -> PostReference? in
             let reference = try makeMessageReferenceStruct(from: firebaseReference)
             guard reference.isValid else { throw FetchDataError.invalidCloudData }
             return reference
@@ -80,7 +80,7 @@ struct MessagesConnector {
         return references
     }
     
-    func createPublicComment(_ comment: MessageCandidate) async throws -> UUID {
+    func createPublicComment(_ comment: PostCandidate) async throws -> UUID {
         guard comment.isValid else { throw UpsertDataError.invalidFunctionInput }
         let operationResult = try await DataConnect.defaultConnector.createPublicCommentMutation.execute(
             toUserId: comment.to.uid,
@@ -98,7 +98,7 @@ struct MessagesConnector {
         return commentId
     }
     
-    func createPrivateMessage(_ message: MessageCandidate) async throws -> UUID {
+    func createPrivateMessage(_ message: PostCandidate) async throws -> UUID {
         guard message.isValid else { throw UpsertDataError.invalidFunctionInput }
         let operationResult = try await DataConnect.defaultConnector.createPrivateMessageMutation.execute(
             toUserId: message.to.uid,
@@ -141,12 +141,12 @@ struct MessagesConnector {
 }
 
 // helpers to make local structs:
-private extension MessagesConnector {
+private extension PostsConnector {
            
     func makePublicCommentStruct(
         from firebaseMessage: ListPublicCommentsQuery.Data.PublicComment
     ) throws -> PublicComment {
-        let toUserKey: UserKey = UserKey.blankUser  // TODO fix bug in client-server template:  no way to refer to linked 'to' user
+        let toUserKey: UserKey = UserKey.blankUser  // TODO: fix bug in client-server template:  no way to refer to linked 'to' user
         return PublicComment(
             id: firebaseMessage.id,
             timestamp: firebaseMessage.createTimestamp.dateValue(),
@@ -162,7 +162,7 @@ private extension MessagesConnector {
     func makePrivateMessageStruct(
         from firebaseMessage: GetMyPrivateMessagesQuery.Data.PrivateMessage
     ) throws -> PrivateMessage {
-        let toUserKey: UserKey = UserKey.blankUser  // TODO fix bug in client-server template:  no way to refer to linked 'to' user
+        let toUserKey: UserKey = UserKey.blankUser  // TODO: fix bug in client-server template:  no way to refer to linked 'to' user
         return PrivateMessage(
             id: firebaseMessage.id,
             timestamp: firebaseMessage.createTimestamp.dateValue(),
@@ -178,7 +178,7 @@ private extension MessagesConnector {
     
     func makeMessageReferenceStruct<T>(
         from firebaseReference: T
-    ) throws -> MessageReference {
+    ) throws -> PostReference {
         let id: UUID
         let referenceId: UUID
         if let publicComment = firebaseReference as? GetPublicCommentReferencesQuery.Data.PublicCommentReference {
@@ -193,7 +193,7 @@ private extension MessagesConnector {
         } else {
             throw FetchDataError.invalidFunctionInput
         }
-        return MessageReference(
+        return PostReference(
             id: id,
             referenceId: referenceId)
     }

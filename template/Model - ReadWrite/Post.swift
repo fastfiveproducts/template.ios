@@ -1,5 +1,5 @@
 //
-//  Message.swift
+//  Post.swift
 //
 //  Created by Pete Maiser, January 2025 through May 2025
 //      made availble here:
@@ -13,8 +13,8 @@
 import Foundation
 
 
-// base message
-protocol Message: Listable {
+// base
+protocol Post: Listable {
     var id: UUID { get }
     var timestamp: Date { get }
     var from: UserKey { get }
@@ -26,8 +26,8 @@ protocol Message: Listable {
 }
 
 
-// used to submit-send a Message:
-struct MessageCandidate: DebugPrintable {
+// used to submit-send
+struct PostCandidate: DebugPrintable {
     let from: UserKey
     var to: UserKey
     var title: String
@@ -47,7 +47,7 @@ struct MessageCandidate: DebugPrintable {
 
 
 // optional reference to any other object:
-struct MessageReference {
+struct PostReference {
     let id: UUID
     let referenceId: UUID
     
@@ -57,8 +57,8 @@ struct MessageReference {
 }
 
 
-// message search
-extension Message {
+// search
+extension Post {
     func contains(_ string: String) -> Bool {
         var properties = [title, content].map { $0.lowercased() }
         if !to.displayName.isEmpty {
@@ -74,16 +74,9 @@ extension Message {
 }
 
 
-// message view perspective
-enum MessagePerspective { case
-    comment,
-    inbox,
-    sent
-}
-
-
-// message subtype of "public comment" (one-to-everyone, public)
-struct PublicComment: Message, Listable {
+// subtype of "public comment" (one-to-everyone, public)
+// also supports to one-to-everyone with a 'to' for replies or callout
+struct PublicComment: Post, Listable {
     private(set) var id: UUID
     private(set) var timestamp: Date
     let from: UserKey
@@ -92,7 +85,7 @@ struct PublicComment: Message, Listable {
     let content: String
     var references: Set<UUID> = []
     
-    // to conform to Message, establich a short displayable type description
+    // to conform to Post, establich a short displayable type description
     static let typeDisplayName: String = "Comment"
        
     // to conform to Listable, use known data to describe the object
@@ -110,8 +103,8 @@ struct PublicComment: Message, Listable {
 }
 
 
-// message subtype of "private message" (one-to-one, private)
-struct PrivateMessage: Message, Listable  {
+// subtype of "private message" (one-to-one, private)
+struct PrivateMessage: Post, Listable  {
     private(set) var id: UUID
     private(set) var timestamp: Date
     let from: UserKey
@@ -121,7 +114,7 @@ struct PrivateMessage: Message, Listable  {
     var references: Set<UUID> = []
     var status: [MessageStatus] = []
     
-    // to conform to Message, establich a short displayable type description
+    // to conform to Post, establich a short displayable type description
     static let typeDisplayName: String = "Message"
     
     // to conform to Listable, use known data to describe the object
@@ -159,6 +152,15 @@ struct MessageStatus: Codable, Hashable {
 
 
 // placeholders
+extension PostCandidate {
+    static let placeholder = PostCandidate(
+        from: UserKey.blankUser,
+        to: UserKey.blankUser,
+        title: "",
+        content: ""
+    )
+}
+
 extension PublicComment {
     static let usePlaceholder = false
     static let placeholder = PublicComment(

@@ -20,7 +20,7 @@ struct StoreListSectionView<T: Listable>: View {
         if case let .loaded(objects) = store.list, objects.isEmpty {
             EmptyView()
         } else {
-            Section(header: Text("\(T.typeDescription)s:")) {
+            Section(header: Text("\(T.typeDescription)s")) {
                 StoreListView(store: store)
             }
         }

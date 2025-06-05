@@ -24,7 +24,7 @@ struct templateApp: App {
     var body: some Scene {
         WindowGroup {
             HomeView(
-                viewModel: HomeViewModel(currentUserService: CurrentUserService.shared),
+                viewModel: HomeViewModel(),
                 currentUserService: CurrentUserService.shared,      // will setup its own listener upon initialziation
                 announcementStore: AnnouncementStore.shared,        // call fetch below as fire-and-forget
                 publicCommentStore: PublicCommentStore.shared,      // call fetch below as fire-and-forget

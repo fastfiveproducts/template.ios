@@ -99,7 +99,7 @@ enum UpsertDataError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
             case .invalidFunctionInput:
-                return NSLocalizedString("Invalid function input.", comment: "Internal Error")
+                return NSLocalizedString("Invalid function input, check fields and try again.", comment: "Internal Error")
             case .unexpectdInternalError:
                 return NSLocalizedString("Unknown Internal Error, try again.", comment: "Internal Error")
                 

@@ -41,7 +41,7 @@ struct SignUpInOutView: View, DebugPrintable {
             if currentUserService.isSignedIn {
                 Text(currentUserService.userAccount.profile.displayName)
                 LabeledContent {
-                    Text(currentUserService.userAccount.email)
+                    Text(currentUserService.userAccount.auth.email)
                 } label: { Text("email address:") }
                     .labeledContentStyle(TopLabeledContentStyle())
                 Button(action: toggleLogin) {
@@ -53,7 +53,7 @@ struct SignUpInOutView: View, DebugPrintable {
             }
             else {
                 LabeledContent {
-                    TextField(text: $viewModel.capturedEmailText, prompt: Text(currentUserService.isSignedIn ? currentUserService.userAccount.email : "sign-in or sign-up email address")) {}
+                    TextField(text: $viewModel.capturedEmailText, prompt: Text(currentUserService.isSignedIn ? currentUserService.userAccount.auth.email : "sign-in or sign-up email address")) {}
                         .disabled(createAccountMode)
                         .autocapitalization(.none)
                         .keyboardType(.emailAddress)
@@ -99,7 +99,7 @@ struct SignUpInOutView: View, DebugPrintable {
 
         }
         .onAppear {focusedField = .username}
-        //        .alert("Error", error: $viewModel.error)  // TODO not sure if I need this here or the one in the parent view is enough
+        //        .alert("Error", error: $viewModel.error)  // TODO: not sure if I need this here or the one in the parent view is enough
         
         Section {
             if currentUserService.isSigningIn {
@@ -118,7 +118,7 @@ struct SignUpInOutView: View, DebugPrintable {
             )
         }
     }
-//        .alert("Error", error: $viewModel.error)  // TODO not sure if I need this here or the one in the parent view is enough
+//        .alert("Error", error: $viewModel.error)  // TODO: not sure if I need this here or the one in the parent view is enough
 }
 
 private extension SignUpInOutView {

@@ -41,24 +41,9 @@ struct UserKey: Equatable, Codable {
 
 // Overall User Account
 struct UserAccount: Equatable, Codable {
-    var email: String
-    var phoneNumber: String?
+    var auth: UserAuth
     var profile: UserProfile
-    var userKey: UserKey { UserKey(uid: profile.uid, displayName: profile.displayName) }
 }
-
-// used to create or update a User:
-//struct UserCandidate {
-//    let email: String
-//    let password: String
-//    let phoneNumber: String
-//    let displayName: String
-//    var isValid: Bool {
-//        !email.isEmpty &&
-//        !phoneNumber.isEmpty &&
-//        !displayName.isEmpty
-//    }
-//}
 
 // used to create or update a User Profile:
 struct UserProfileCandidate {
@@ -68,18 +53,18 @@ struct UserProfileCandidate {
     var isValid: Bool { !uid.isEmpty && !displayName.isEmpty }
 }
 
-extension UserAccount {
-    static let blankUser = UserAccount(email: "", phoneNumber: "", profile: UserProfile.blankUser)
-}
-
-extension UserAuth {
-    static let blankUser = UserAuth(uid: "", email: "", phoneNumber: "")
-}
-
 extension UserKey {
     static let blankUser = UserKey(uid: "", displayName: "")
 }
 
+extension UserAuth {
+    static let blankUser = UserAuth(uid: UserKey.blankUser.uid, email: "", phoneNumber: "")
+}
+
 extension UserProfile {
-    static let blankUser = UserProfile(uid: "", displayName: "", photoUrl: "")
+    static let blankUser = UserProfile(uid: UserKey.blankUser.uid, displayName: "", photoUrl: "")
+}
+
+extension UserAccount {
+    static let blankUser = UserAccount(auth: UserAuth.blankUser, profile: UserProfile.blankUser)
 }

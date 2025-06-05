@@ -25,32 +25,38 @@ struct HomeView: View {
     var body: some View {
         NavigationStack {
             Form {
+                // Live Announcements
+                // also an example of StoreListSectionView, with data
                 StoreListSectionView(store: announcementStore)
                 
-                Section(header: Text("Home")) {
-                    HStack {
-                        Spacer()
-                        VStack {
-                            Image(systemName: "globe")
-                                .imageScale(.large)
-                                .foregroundStyle(.tint)
-                            Text("Hello, world!")
-                        }
-                        Spacer()
-                    }
-                }
+                // This is Placeholder-Test Content, and shows Nothing!
+                StoreListSectionView(store: ListableStore<Announcement>.testEmpty())
                 
+                // This is Placeholder-Test Content, List View
+                Section(header: Text("Test Announcements")) {
+                    StoreListView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects))
+                }
+
+                // This is Placeholder-Test Content
+                TextCaptureSectionView()
+                
+                // Live Comments, configured for User Testing Support
                 Section(header: Text("Test Talk")) {
                     if currentUserService.isSignedIn {
                         NavigationLink(
                             "Write Comment",
-                            destination: PublicCommentBoard(
-                                store: publicCommentStore,
-                                currentUserId: currentUserService.userAccount.userKey.uid,
-                                sendViewModel: viewModel.makePublishCommentViewModel())
+                            destination: UserCommentStackView(
+                                currentUserService: currentUserService,
+                                viewModel: CreatePostViewModel<PublicComment>(),
+                                store: publicCommentStore
+                            )
                         )
                     }
-                    MessageListView(store: publicCommentStore, messagePerspective: .comment)
+                    PostsScrollView(
+                        store: publicCommentStore,
+                        currentUserId: currentUserService.userKey.uid,
+                        showFromUser: true
+                    )
                 }
                 
             }
@@ -64,10 +70,10 @@ struct HomeView: View {
                 if currentUserService.isSignedIn {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink(
-                            destination: PrivateMessageBoard(
+                            destination: UserMessageStackView(
+                                currentUserService: currentUserService,
+                                viewModel: CreatePostViewModel<PrivateMessage>(),
                                 store: privateMessageStore,
-                                currentUserId: currentUserService.userAccount.userKey.uid,
-                                sendViewModel: viewModel.makeSendMessageViewModel()
                             ),
                             label: {
                                 Label("Messages", systemImage: "envelope")
@@ -101,7 +107,7 @@ struct HomeView: View {
 #Preview ("test-data signed-in") {
     let currentUserService = CurrentUserTestService.sharedSignedIn
     HomeView(
-        viewModel: HomeViewModel(currentUserService: currentUserService),
+        viewModel: HomeViewModel(),
         currentUserService: currentUserService,
         announcementStore: AnnouncementStore.testLoaded(),
         publicCommentStore: PublicCommentStore.testLoaded(),
@@ -111,7 +117,7 @@ struct HomeView: View {
 #Preview ("test-data signed-out") {
     let currentUserService = CurrentUserTestService.sharedSignedOut
     HomeView(
-        viewModel: HomeViewModel(currentUserService: currentUserService),
+        viewModel: HomeViewModel(),
         currentUserService: currentUserService,
         announcementStore: AnnouncementStore.testLoaded(),
         publicCommentStore: PublicCommentStore.testLoaded(),

@@ -92,7 +92,7 @@ struct CreateAccountView: View, DebugPrintable {
             if (viewModel.notRobot) {
                 createAccount() }
         }
-        // .alert("Error", error: $viewModel.error)  // TODO not sure if I need this here or the one in the parent view is enough
+        // .alert("Error", error: $viewModel.error)  // TODO: not sure if I need this here or the one in the parent view is enough
         
         Section {
             if currentUserService.isCreatingUser {
@@ -125,8 +125,8 @@ private extension CreateAccountView {
             Task {
                 do {
                     viewModel.createdUserId = try await currentUserService.signInOrCreateUser(
-                                                email: viewModel.capturedEmailText,
-                                                password: viewModel.capturedPasswordText)
+                        email: viewModel.capturedEmailText,
+                        password: viewModel.capturedPasswordText)
                 } catch {
                     debugprint("(View) Cloud Error creating User Account: \(error)")
                     viewModel.error = error
@@ -135,14 +135,12 @@ private extension CreateAccountView {
                 do {
                     try await currentUserService.createUserProfile(viewModel.profileCandidate)
                 } catch {
-                    debugprint("(View) User \(viewModel.createdUserId) created but Clould error creating User Profile: \(error)")
+                    debugprint("(View) User \(viewModel.createdUserId) created, but Clould error creating User Profile: \(error)")
                     viewModel.error = error
                     throw AccountCreationError.userProfileCreationIncomplete(error)
                 }
             }
         }
-        
-        
     }
 }
 

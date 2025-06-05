@@ -1,5 +1,5 @@
 //
-//  MessageStores.swift
+//  PostStores.swift
 //
 //  Created by Pete Maiser, January 2025 through May 2025
 //      made availble here:
@@ -27,7 +27,7 @@ final class PublicCommentStore: ListableStore<PublicComment> {
     // override ListableStore func below to set how to fetch data into the store
     override var fetchFromService: () async throws -> [PublicComment] {
         {
-            try await MessagesConnector().fetchPublicComments()
+            try await PostsConnector().fetchPublicComments()
         }
     }
     
@@ -49,7 +49,7 @@ final class PrivateMessageStore: ListableStore<PrivateMessage> {
     // override ListableStore func below to set how to fetch data into the store
     override var fetchFromService: () async throws -> [PrivateMessage] {
         {
-            try await MessagesConnector().fetchMyPrivateMessages()
+            try await PostsConnector().fetchMyPrivateMessages()
         }
     }
         
