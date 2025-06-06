@@ -27,11 +27,10 @@ struct templateApp: App {
                 viewModel: HomeViewModel(),
                 currentUserService: CurrentUserService.shared,      // will setup its own listener upon initialziation
                 announcementStore: AnnouncementStore.shared,        // call fetch below as fire-and-forget
-                publicCommentStore: PublicCommentStore.shared,      // call fetch below as fire-and-forget
-                privateMessageStore: PrivateMessageStore.shared     // will observer user sign-in and fetch at that point
+                publicCommentStore: PublicCommentStore.shared,      // will observe user sign-in and fetch at that point
+                privateMessageStore: PrivateMessageStore.shared     // will observe user sign-in and fetch at that point
             )
                 .task {AnnouncementStore.shared.fetch()}
-                .task {PublicCommentStore.shared.fetch()}
         }
     }
 }

@@ -84,6 +84,7 @@ struct PostsConnector {
         guard comment.isValid else { throw UpsertDataError.invalidFunctionInput }
         let operationResult = try await DataConnect.defaultConnector.createPublicCommentMutation.execute(
             toUserId: comment.to.uid,
+            toUserDisplayNameText: comment.to.displayName,
             createDeviceIdentifierstamp: deviceIdentifierstamp(),
             createDeviceTimestamp: deviceTimestamp(),
             title: comment.title,
@@ -102,6 +103,7 @@ struct PostsConnector {
         guard message.isValid else { throw UpsertDataError.invalidFunctionInput }
         let operationResult = try await DataConnect.defaultConnector.createPrivateMessageMutation.execute(
             toUserId: message.to.uid,
+            toUserDisplayNameText: message.to.displayName,
             createDeviceIdentifierstamp: deviceIdentifierstamp(),
             createDeviceTimestamp: deviceTimestamp(),
             title: message.title,
@@ -146,7 +148,10 @@ private extension PostsConnector {
     func makePublicCommentStruct(
         from firebaseMessage: ListPublicCommentsQuery.Data.PublicComment
     ) throws -> PublicComment {
-        let toUserKey: UserKey = UserKey.blankUser  // TODO: fix bug in client-server template:  no way to refer to linked 'to' user
+        let toUserKey: UserKey = UserKey.init(
+            uid: firebaseMessage.toUserId ?? "00000000-0000-0000-0000-000000000000",
+            displayName: firebaseMessage.toUserDisplayNameText ?? ""
+        )
         return PublicComment(
             id: firebaseMessage.id,
             timestamp: firebaseMessage.createTimestamp.dateValue(),
@@ -162,7 +167,10 @@ private extension PostsConnector {
     func makePrivateMessageStruct(
         from firebaseMessage: GetMyPrivateMessagesQuery.Data.PrivateMessage
     ) throws -> PrivateMessage {
-        let toUserKey: UserKey = UserKey.blankUser  // TODO: fix bug in client-server template:  no way to refer to linked 'to' user
+        let toUserKey: UserKey = UserKey.init(
+            uid: firebaseMessage.toUserId ?? "00000000-0000-0000-0000-000000000000",
+            displayName: firebaseMessage.toUserDisplayNameText ?? ""
+        )
         return PrivateMessage(
             id: firebaseMessage.id,
             timestamp: firebaseMessage.createTimestamp.dateValue(),

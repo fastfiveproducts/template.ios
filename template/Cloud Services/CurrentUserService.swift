@@ -290,7 +290,7 @@ extension CurrentUserService {
     func fetchMyUserProfile() async throws -> UserProfile {
         let queryRef = DataConnect.defaultConnector.getMyUserProfileQuery.ref()
         let operationResult = try await queryRef.execute()
-        let profiles = try operationResult.data.users.compactMap { firebaseProfile -> UserProfile? in
+        let profiles = try operationResult.data.userAccounts.compactMap { firebaseProfile -> UserProfile? in
             let profile = try makeUserProfile(from: firebaseProfile)
             guard profile.isValid else { throw FetchDataError.invalidCloudData }
             return profile
@@ -315,7 +315,7 @@ extension CurrentUserService {
         guard !uid.isEmpty else { throw FetchDataError.invalidFunctionInput}
         let queryRef = DataConnect.defaultConnector.getUserProfileQuery.ref(userId: uid)
         let operationResult = try await queryRef.execute()
-        let profiles = try operationResult.data.users.compactMap { firebaseProfile -> UserProfile? in
+        let profiles = try operationResult.data.userAccounts.compactMap { firebaseProfile -> UserProfile? in
             let profile = try makeUserProfile(from: firebaseProfile)
             guard profile.isValid else { throw FetchDataError.invalidCloudData }
             return profile
@@ -339,7 +339,7 @@ private extension UserAuth {
 
 extension CurrentUserService {
     private func makeUserProfile(
-        from firebaseProfile: GetUserProfileQuery.Data.User
+        from firebaseProfile: GetUserProfileQuery.Data.UserAccount
     ) throws -> UserProfile {
         return UserProfile(
             uid: firebaseProfile.id,
@@ -348,7 +348,7 @@ extension CurrentUserService {
         )
     }
     private func makeUserProfile(
-        from firebaseProfile: GetMyUserProfileQuery.Data.User
+        from firebaseProfile: GetMyUserProfileQuery.Data.UserAccount
     ) throws -> UserProfile {
         return UserProfile(
             uid: firebaseProfile.id,

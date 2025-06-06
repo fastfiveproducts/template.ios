@@ -1,5 +1,5 @@
 //
-//  ErrorAlertView.swift
+//  ErrorAlertViewModifier.swift
 //
 //  Created by Pete Maiser, January 2025 through May 2025
 //      made availble here:

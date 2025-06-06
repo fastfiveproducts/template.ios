@@ -19,14 +19,12 @@ struct UserCommentStackView: View, DebugPrintable {
          
     var body: some View {
         VStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Make Comment")
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                
+            
+            // MARK: -- Write
+            VStackBox(title: "Write Comment"){
                 LabeledContent {
                     TextEditor(text: $viewModel.capturedContentText)
-                        .frame(minHeight: 80)
+                        .frame(minHeight: 80, maxHeight: 100)
                         .padding(4)
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
@@ -50,14 +48,13 @@ struct UserCommentStackView: View, DebugPrintable {
                 .foregroundColor(.white)
                 .cornerRadius(8)
             }
-            .padding()
-            .background(Color(.systemGroupedBackground))
-            .cornerRadius(12)
             .onSubmit(submit)
             .onChange(of: viewModel.isWorking) {
                 guard !viewModel.isWorking, viewModel.error == nil else { return }
             }
 
+            // MARK: -- Past Comments
+            Divider()
             VStack(alignment: .leading, spacing: 8) {
                 Text("Your Past Comments")      // TODO: touch here to open a browing-specific View
                     .font(.title3)
@@ -72,7 +69,6 @@ struct UserCommentStackView: View, DebugPrintable {
                 .padding(.horizontal)
             }
         }
-        .padding()
         .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
         .environment(\.font, Font.body)
         .disabled(viewModel.isWorking)

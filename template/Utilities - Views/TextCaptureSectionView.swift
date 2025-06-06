@@ -59,6 +59,7 @@ class TextCaptureViewModel: ObservableObject
 // ***** Sample Use - View *****
 struct TextCaptureSectionView: View {
     @ObservedObject var viewModel = TextCaptureViewModel()
+    var showHeader: Bool = true
     
     @FocusState private var focusedFieldIndex: Int?
     private func nextField() {
@@ -66,7 +67,7 @@ struct TextCaptureSectionView: View {
     }
     
     var body: some View {
-        Section(header: Text(viewModel.title)) {
+        Section(header: showHeader ? Text(viewModel.title) : nil) {
             ForEach(viewModel.textFieldList.indices, id: \.self) { i in
                 if viewModel.textFieldList[i].autoDisplay {
                     displayLabeledTextField(atIndex: i)

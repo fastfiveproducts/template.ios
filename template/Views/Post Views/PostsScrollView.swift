@@ -47,13 +47,13 @@ struct PostsScrollView<T: Post>: View {
                 .padding()
 
         case .none:
-            Text("No content.")
-                .padding()
+            Text("Empty")
+                .padding(.top, 10)
 
         case .loaded:
             if filteredPosts.isEmpty {
-                Text("No matching content.")
-                    .padding()
+                Text("Empty")
+                    .padding(.top, 10)
             } else {
                 ScrollView {
                     LazyVStack(spacing: 4) {
@@ -100,6 +100,15 @@ struct PostsScrollView<T: Post>: View {
             Section(header: Text("Inbox Messages")) {
                 PostsScrollView(
                     store: PrivateMessageStore.testLoaded(),
+                    currentUserId: currentUserService.userKey.uid,
+                    toUserId: currentUserService.userKey.uid,
+                    showFromUser: true
+                )
+            }
+            
+            Section(header: Text("Inbox Empty")) {
+                PostsScrollView(
+                    store: PrivateMessageStore.testEmpty(),
                     currentUserId: currentUserService.userKey.uid,
                     toUserId: currentUserService.userKey.uid,
                     showFromUser: true

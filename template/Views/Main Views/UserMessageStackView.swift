@@ -16,15 +16,14 @@ struct UserMessageStackView: View, DebugPrintable {
     @ObservedObject var currentUserService: CurrentUserService
     @ObservedObject var viewModel: CreatePostViewModel<PrivateMessage>
     @ObservedObject var store: PrivateMessageStore
-
+    
     var body: some View {
         VStack(spacing: 16) {
-            VStack(alignment: .leading, spacing: 8) {
-                Text("Write Message")
-                    .font(.headline)
-
+            
+            // MARK: -- Write
+            VStackBox(title: "Write Message"){
                 Text("To User Placeholder") // TODO: Replace with user lookup
-
+                
                 LabeledContent {
                     TextField("new message", text: $viewModel.capturedTitleText)
                         .padding(4)
@@ -36,10 +35,10 @@ struct UserMessageStackView: View, DebugPrintable {
                     Text("subject")
                 }
                 .labeledContentStyle(TopLabeledContentStyle())
-
+                
                 LabeledContent {
                     TextEditor(text: $viewModel.capturedContentText)
-                        .frame(minHeight: 80)
+                        .frame(minHeight: 80, maxHeight: 100)
                         .padding(4)
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
@@ -49,7 +48,7 @@ struct UserMessageStackView: View, DebugPrintable {
                     Text("message text")
                 }
                 .labeledContentStyle(TopLabeledContentStyle())
-
+                
                 Button(action: submit) {
                     if viewModel.isWorking {
                         ProgressView()
@@ -63,17 +62,17 @@ struct UserMessageStackView: View, DebugPrintable {
                 .foregroundColor(.white)
                 .cornerRadius(8)
             }
-            .padding()
-            .background(Color(.systemGroupedBackground))
-            .cornerRadius(12)
             .onSubmit(submit)
             .onChange(of: viewModel.isWorking) {
                 guard !viewModel.isWorking, viewModel.error == nil else { return }
             }
-
+            
+            // MARK: -- Inbox
+            Divider()
             VStack(alignment: .leading, spacing: 8) {
                 Text("Inbox")       // TODO: touch here to open a browing-specific View
-                    .font(.headline)
+                    .font(.title3)
+                    .fontWeight(.semibold)
                     .padding(.horizontal)
                 PostsScrollView(
                     store: store,
@@ -81,13 +80,15 @@ struct UserMessageStackView: View, DebugPrintable {
                     toUserId: currentUserService.userKey.uid,
                     showFromUser: true
                 )
+                .padding(.horizontal)
             }
-
+            
+            // MARK: -- Sent
             Divider()
-
             VStack(alignment: .leading, spacing: 8) {
                 Text("Sent")        // TODO: touch here to open a browing-specific View
-                    .font(.headline)
+                    .font(.title3)
+                    .fontWeight(.semibold)
                     .padding(.horizontal)
                 PostsScrollView(
                     store: store,
@@ -95,15 +96,19 @@ struct UserMessageStackView: View, DebugPrintable {
                     fromUserId: currentUserService.userKey.uid,
                     showToUser: true
                 )
+                .padding(.horizontal)
             }
         }
-        .padding()
+   //     .padding()
         .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
         .environment(\.font, Font.body)
         .disabled(viewModel.isWorking)
         .alert("Error", error: $viewModel.error)
-    }
+    }    
+}
 
+
+private extension UserMessageStackView {
     private func submit() {
         debugprint("(View) submit called")
         viewModel.isWorking = true

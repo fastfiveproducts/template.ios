@@ -13,6 +13,7 @@ import SwiftUI
 
 struct StoreListView<T: Listable>: View {
     @ObservedObject var store: ListableStore<T>
+    var showDividers: Bool = true
     
     var body: some View {
         switch store.list {
@@ -22,8 +23,15 @@ struct StoreListView<T: Listable>: View {
                 ProgressView()
             }
         case let .loaded(objects):
-            List(objects) { object in
-                Text(object.objectDescription)
+            ForEach(objects.indices, id: \.self) { index in
+                VStack(alignment: .leading, spacing: 4) {
+                    let object = objects[index]
+                    Text(object.objectDescription)
+                    if showDividers && index < objects.count - 1 {
+                        Divider()
+                            .padding(.top, 6)
+                    }
+                }
             }
         case .error(let error):
             Text("Cloud Error loading \(T.typeDescription)s: \(error)")
@@ -34,20 +42,39 @@ struct StoreListView<T: Listable>: View {
 }
 
 #if DEBUG
-#Preview ("Loading, Loaded, Error") {
+#Preview ("Form: Loaded") {
     Form {
-        Section {
-            StoreListView(store: ListableStore<Announcement>.testLoading())
-            StoreListView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects))
-            StoreListView(store: ListableStore<Announcement>.testError())
+        Section(header: Text("Announcements")) {
+            StoreListView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects), showDividers: false)
         }
     }
+    .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
+    .environment(\.font, Font.body)
+}
+#Preview ("VStackBox: Loaded") {
+    VStackBox(title: "Announcements") {
+        StoreListView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects))
+    }
+    .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
+    .environment(\.font, Font.body)
+}
+#Preview ("Form: Loading, Error") {
+    Form {
+        Section {
+            StoreListView(store: ListableStore<Announcement>.testLoading(), showDividers: false)
+            StoreListView(store: ListableStore<Announcement>.testError(), showDividers: false)
+        }
+    }
+    .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
+    .environment(\.font, Font.body)
 }
 #Preview ("Empty") {
     Form {
         Section {
-            StoreListView(store: ListableStore<Announcement>.testEmpty())
+            StoreListView(store: ListableStore<Announcement>.testEmpty(), showDividers: false)
         }
     }
+    .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
+    .environment(\.font, Font.body)
 }
 #endif
