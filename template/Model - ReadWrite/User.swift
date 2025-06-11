@@ -15,19 +15,28 @@
 
 import Foundation
 
+// User
 struct User: Equatable, Codable {
-    var email: String
-    var phoneNumber: String?
-    var profile: UserProfile
-    var userKey: UserKey { UserKey(uid: profile.uid, displayName: profile.displayName) }
+    var auth: UserAuth              // from the Authentication Service, masters users themselves (parent because it masters User Id)
+    var account: UserAccount        // from the Application Data Service, masters data about users (child)
 }
 
+// Auth Service Data
 struct UserAuth: Equatable, Codable {
-    let uid: String
+    let uid: String                 // "User Id" is 'uid' to distinguish it from the UUI Application Ids
     var email: String
     var phoneNumber: String?
 }
 
+// User Account Data Service
+struct UserAccount: Equatable, Codable {
+    let uid: String                 // mastered by the Auth Service
+    let displayName: String         // mastered by the Application Data Service
+    let photoUrl: String
+    var isValid: Bool { !uid.isEmpty && !displayName.isEmpty }
+}
+
+// Light, public, local-client helper-structure is most of the user data used throughout the app
 struct UserKey: Equatable, Codable {
     let uid: String
     let displayName: String
@@ -36,52 +45,26 @@ struct UserKey: Equatable, Codable {
         !displayName.isEmpty }
 }
 
-// used to create or update a User:
-struct UserCandidate {
-    let email: String
-    let phoneNumber: String
-    let displayName: String
-    var isValid: Bool {
-        !email.isEmpty &&
-        !phoneNumber.isEmpty &&
-        !displayName.isEmpty
-    }
-}
-
-struct UserProfile: Equatable, Codable {
-    private(set) var id: UUID?
+// used to create or update a User Account:
+struct UserAccountCandidate {
     let uid: String
-    private(set) var createTimestamp: Date?
-    let updateDeviceStamp: String
-    let updateDeviceTimestamp: String
-    let createUserEmail: String
     let displayName: String
-    private(set) var photoUrl: String?
-    private(set) var settingsString: String?
-    var isValid: Bool { !uid.isEmpty && !displayName.isEmpty }
-}
-
-// used to create or update a User Profile:
-struct UserProfileCandidate {
-    private(set) var id: UUID?
-    let uid: String
-    var updateDeviceStamp: String
-    var updateDeviceTimestamp: String
-    var createUserEmail: String
-    var displayName: String
-    var photoUrl: String?
-    var settingsString: String?
+    let photoUrl: String
     var isValid: Bool { !uid.isEmpty && !displayName.isEmpty }
 }
 
 extension User {
-    static let blankUser = User(email: "", phoneNumber: "", profile: UserProfile.blankUser)
+    static let blankUser = User(auth: UserAuth.blankUser, account: UserAccount.blankUser)
 }
 
 extension UserAuth {
-    static let blankUser = UserAuth(uid: "", email: "", phoneNumber: "")
+    static let blankUser = UserAuth(uid: UserKey.blankUser.uid, email: "", phoneNumber: "")
 }
 
-extension UserProfile {
-    static let blankUser = UserProfile(uid: "", updateDeviceStamp: "", updateDeviceTimestamp: "", createUserEmail: "", displayName: "")
+extension UserAccount {
+    static let blankUser = UserAccount(uid: UserKey.blankUser.uid, displayName: "", photoUrl: "")
+}
+
+extension UserKey {
+    static let blankUser = UserKey(uid: "", displayName: "")
 }

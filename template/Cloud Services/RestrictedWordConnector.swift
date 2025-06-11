@@ -1,5 +1,5 @@
 //
-//  RestrictedTextService.swift
+//  RestrictedWordConnector.swift
 //
 //  Created by Pete Maiser in the year 2025 and made availble here:
 //      https://github.com/fastfiveproducts/template.ios
@@ -13,9 +13,9 @@ import Foundation
 import FirebaseDataConnect
 import DefaultConnector
 
-struct RestrictedTextService {
+struct RestrictedWordConnector {
     
-    func fetchRestrictedText() async throws -> [String] {
+    func fetchRestrictedWords() async throws -> [String] {
         return ["badword", "worseword"]   // TODO: fetch the data we need to do restricted text functionality
     }
 
