@@ -72,7 +72,8 @@ struct HomeView: View {
                             PostsScrollView(
                                 store: publicCommentStore,
                                 currentUserId: currentUserService.userKey.uid,
-                                showFromUser: true
+                                showFromUser: true,
+                                hideWhenEmpty: true
                             )
                         } else {
                             HStack {
@@ -93,7 +94,7 @@ struct HomeView: View {
                 }
                 
                 // MARK: -- Messages
-                if currentUserService.isSignedIn {
+                if currentUserService.isSignedIn && privateMessageStore.list.count > 0 {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink(destination: UserMessageStackView(
                             currentUserService: currentUserService,

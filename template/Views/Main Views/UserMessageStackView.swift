@@ -12,6 +12,9 @@
 
 import SwiftUI
 
+// ***** User Private Message Functionality *****
+// ***** WARNING - placeholder only - not fully implemented - not tested *****
+
 struct UserMessageStackView: View, DebugPrintable {
     @ObservedObject var currentUserService: CurrentUserService
     @ObservedObject var viewModel: CreatePostViewModel<PrivateMessage>

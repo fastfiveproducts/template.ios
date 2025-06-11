@@ -28,11 +28,11 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
     }
     
     // Capture
-    var capturedEmailText = ""
-    var capturedPhoneNumberText = ""
-    var capturedPasswordText = ""
-    var capturedPasswordMatchText = ""
-    var capturedDisplayNameText = ""
+    @Published var capturedEmailText = ""
+    @Published var capturedPhoneNumberText = ""
+    @Published var capturedPasswordText = ""
+    @Published var capturedPasswordMatchText = ""
+    @Published var capturedDisplayNameText = ""
     @Published var notRobot: Bool = false {
         didSet {
             statusText = ("")
@@ -68,6 +68,9 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
         } else if capturedPasswordMatchText.isEmpty {
             statusText = ("Please enter your password match")
             isReady = false
+        } else if capturedPasswordText != capturedPasswordMatchText {
+            statusText = ("Passwords don't match, plese check and try again.")
+            isReady = false
         } else if capturedDisplayNameText.isEmpty {
             statusText = ("Please enter your display name")
             isReady = false
@@ -78,6 +81,17 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
             isReady = false
         }
         return isReady
+    }
+    
+    // Reset
+    func resetCreateAccount() {
+        capturedPasswordText = ""
+        capturedPasswordMatchText = ""
+        capturedDisplayNameText = ""
+        notRobot = false
+        dislikesRobots = false
+        error = nil
+        createAccountMode = false
     }
     
     // Create

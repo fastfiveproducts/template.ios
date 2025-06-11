@@ -17,26 +17,23 @@ import Foundation
 
 enum AccountCreationError: Error, LocalizedError {
     case invalidInput
-    case userProfileInputsNotFound
     case userIdNotFound
-    case userCreationIncomplete(Error)
     case userAccountCreationIncomplete(Error)
     case userDisplayNameCreationFailed
+    case setUserDisplayNameFailed
     
     var errorDescription: String? {
         switch self {
             case .invalidInput:
                 return NSLocalizedString("Missing Data, please check all fields and try again", comment: "User Input Error")
-            case .userProfileInputsNotFound:
-                return NSLocalizedString("Could not complete user create process, please go to sign in page and try again", comment: "Unexpected Internal Error")
             case .userIdNotFound:
-                return NSLocalizedString("Could not complete user create process, please go to sign in page and try again", comment: "Unexpected Cloud Services Error")
-            case let .userCreationIncomplete(error):
-                return NSLocalizedString("Error in user creation, please try again.  Error: \(error)", comment: "Cloud Services Communications Error")
+                return NSLocalizedString("Could not complete user create process, please try again", comment: "Unexpected Cloud Services Error")
             case let .userAccountCreationIncomplete(error):
                 return NSLocalizedString("Error in user profile creation, please try again.  Error: \(error)", comment: "Cloud Services Communications Error")
             case .userDisplayNameCreationFailed:
                 return NSLocalizedString("Error in user display name creation, default used; you can change display name later in your user profie.", comment: "Cloud Services Communications Error")
+            case .setUserDisplayNameFailed:
+                return NSLocalizedString("Error in user display name update, default used; you can change display name later in your user profie.", comment: "Cloud Services Communications Error")
         }
     }
 }
@@ -145,7 +142,7 @@ enum ApplicationWarning: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
             case .dataNotFound:
-                return NSLocalizedString("Data not available, check connection, or try to log in again.", comment:"Impaired Functionality")
+                return NSLocalizedString("Data not available, check connection, or try to sign in again.", comment:"Impaired Functionality")
             }
     }
 }

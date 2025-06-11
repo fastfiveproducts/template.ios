@@ -122,6 +122,7 @@ private extension CreateAccountView {
     
     private func startOver() {
         debugprint("(View) startOver called")
+        viewModel.resetCreateAccount()
     }
        
     private func createAccount() {
@@ -129,7 +130,7 @@ private extension CreateAccountView {
         if viewModel.isReadyToCreateAccount() {
             Task {
                 
-                // create the user in the Auth system first
+                // MARK: -- create the user in the Auth system first
                 do {
                     viewModel.createdUserId = try await currentUserService.signInOrCreateUser(
                         email: viewModel.capturedEmailText,
@@ -140,7 +141,7 @@ private extension CreateAccountView {
                     throw error
                 }
                                 
-                // create the user in the Application system
+                // MARK: --  then create the user in the Application system
                 // use the email address as the display name text to start,
                 // making the app functional even if the user's chosen display name is taken
                 do {
@@ -150,27 +151,27 @@ private extension CreateAccountView {
                     viewModel.error = error
                     throw AccountCreationError.userAccountCreationIncomplete(error)
                 }
+
+                // MARK: -- User Account is sufficiently created such that we will no longer throw errors,
+                // do less-critial tasks and clean-up
+                defer {
+                    viewModel.resetCreateAccount()
+                }
                 
                 // create the user's chosen Display Name
                 do {
                     try await currentUserService.createUserDisplayName(viewModel.accountCandidate.displayName)
                 } catch {
                     debugprint("(View) User \(viewModel.createdUserId) created and Account initialized, but Clould error creating User Display Name: \(error)")
-                    viewModel.error = error
-                    throw AccountCreationError.userDisplayNameCreationFailed
+                    viewModel.error = AccountCreationError.userDisplayNameCreationFailed
                 }
-                
-                // User Account is sufficiently created such that we will no long throw errors,
-                // so do less-critial tasks and clean-up
-                defer {
-                    viewModel.capturedPasswordText = ""
-                    viewModel.createAccountMode = false
-                }
+                                
+                // set that chosen display name
                 do {
                     try await currentUserService.setUserDisplayName(viewModel.accountCandidate.displayName)
                 } catch {
                     debugprint("(View) User \(viewModel.createdUserId) created, Account initialized, Display Name created, but Cloud Error setting Display Name: \(error)")
-                    viewModel.error = error
+                    viewModel.error = AccountCreationError.setUserDisplayNameFailed
                 }
             }
         }

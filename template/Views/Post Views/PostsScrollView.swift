@@ -23,6 +23,7 @@ struct PostsScrollView<T: Post>: View {
     // Optional visuals
     var showFromUser: Bool = false
     var showToUser: Bool = false
+    var hideWhenEmpty: Bool = false
 
     // Apply filters
     private var filteredPosts: [T] {
@@ -47,13 +48,19 @@ struct PostsScrollView<T: Post>: View {
                 .padding()
 
         case .none:
-            Text("Empty")
+            Text("nothing here")
                 .padding(.top, 10)
 
         case .loaded:
             if filteredPosts.isEmpty {
-                Text("Empty")
-                    .padding(.top, 10)
+                if hideWhenEmpty {
+                    EmptyView()
+                } else {
+                    Text("None!")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.horizontal)
+                        .padding(.top, 10)
+                }
             } else {
                 ScrollView {
                     LazyVStack(spacing: 4) {

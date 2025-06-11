@@ -36,7 +36,7 @@ struct StoreListView<T: Listable>: View {
         case .error(let error):
             Text("Cloud Error loading \(T.typeDescription)s: \(error)")
         case .none:
-            Text("\(T.typeDescription)s: none!")
+            Text("\(T.typeDescription)s: nothing here")
         }
     }
 }

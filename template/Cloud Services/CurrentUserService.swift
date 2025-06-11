@@ -164,8 +164,8 @@ class CurrentUserService: ObservableObject, DebugPrintable {
                     return result.user.uid  // user did not exist + create successful = we are done
                 } catch {
                     debugprint("User Create error: \(error)")
-                    self.error = AccountCreationError.userCreationIncomplete(error)
-                    throw AccountCreationError.userCreationIncomplete(error)
+                    self.error = error
+                    throw error
                 }
             } else {
                 debugprint("User Sign-In error: \(error)")
@@ -185,81 +185,69 @@ class CurrentUserService: ObservableObject, DebugPrintable {
 // ***** WARNING - placeholder only - not fully implemented - not tested *****
 extension CurrentUserService {
     
-    func requestNewUser(email: String, displayName: String) async throws {
-        guard !email.isEmpty, !displayName.isEmpty else {
+    func requestNewUser(email: String) async throws {
+        guard !email.isEmpty else {
             throw AccountCreationError.invalidInput
         }
         
-        // start the process
         isCreatingUser = true
-        UserDefaults.standard.set(displayName, forKey: "displayName")
-        
-        // request that service email a link to start account creation
         do {
-            try await requestSignInLinkEmail(toEmail: email)
+            isWaitingOnEmailVerification = true
+            UserDefaults.standard.set(email, forKey: "emailForSignIn")
+            let actionCodeSettings = ActionCodeSettings()
+            actionCodeSettings.url = URL(string: "https://placeholder.page.link/ios")
+            actionCodeSettings.handleCodeInApp = true
+            try await auth.sendSignInLink(toEmail: email, actionCodeSettings: actionCodeSettings)
         } catch {
             isCreatingUser = false
             throw error
         }
     }
-    
-    func requestSignInLinkEmail(toEmail email: String) async throws {
-          
-          isWaitingOnEmailVerification = true
-          UserDefaults.standard.set(email, forKey: "emailForSignIn")
-
-          let actionCodeSettings = ActionCodeSettings()
-          actionCodeSettings.url = URL(string: "https://placeholder.page.link/ios")
-          actionCodeSettings.handleCodeInApp = true
-          try await auth.sendSignInLink(toEmail: email, actionCodeSettings: actionCodeSettings)
-          
-      }
       
-      func completeSignInWithUrlLink(_ url: URL) async {
-          
-          isWaitingOnEmailVerification = false
-          
-          guard let email = UserDefaults.standard.string(forKey: "emailForSignIn"),
-                let diplayName = UserDefaults.standard.string(forKey: "displayName")
-          else {
-              self.error = SignInError.signInInputsNotFound
-              isCreatingUser = false
-              return
-          }
-          
-          var userId: String = ""
-          
-          if auth.isSignIn(withEmailLink: url.absoluteString) {
-              
-              isSigningIn = true
-              defer { isSigningIn = false }
-              do {
-                  let result = try await auth.signIn(withEmail: email, link: url.absoluteString)
-                  userId = result.user.uid
-                  debugPrint("[completeCreateAccount]: " + result.user.uid)
-                  postSignInSetup()
-              } catch {
-                  self.error = error
-                  isCreatingUser = false
-                  return
-              }
-          } else {
-              self.error = SignInError.emailLinkInvalid
-              isCreatingUser = false
-              return
-          }
-          
-          if isCreatingUser {
-              do {
-                  try await createUserAccount(UserAccountCandidate(uid: userId, displayName: diplayName, photoUrl: ""))
-                  UserDefaults.standard.removeObject(forKey: "emailForSignIn")
-                  UserDefaults.standard.removeObject(forKey: "displayName")
-              } catch {
-                  debugprint("(View) User \(userId) created but Clould error creating User Profile. Error: \(error)")
-                  self.error = error
-              }
-          }
-      }
+    func completeSignInWithUrlLink(_ url: URL) async {
+        
+        isWaitingOnEmailVerification = false
+        guard let email = UserDefaults.standard.string(forKey: "emailForSignIn")
+        else {
+            self.error = SignInError.signInInputsNotFound
+            isCreatingUser = false
+            return
+        }
+        
+        var userId: String = ""
+        
+        if auth.isSignIn(withEmailLink: url.absoluteString) {
+            
+            isSigningIn = true
+            defer { isSigningIn = false }
+            do {
+                let result = try await auth.signIn(withEmail: email, link: url.absoluteString)
+                userId = result.user.uid
+                debugPrint("[completeCreateAccount]: " + result.user.uid)
+                postSignInSetup()
+            } catch {
+                self.error = error
+                isCreatingUser = false
+                return
+            }
+        } else {
+            self.error = SignInError.emailLinkInvalid
+            isCreatingUser = false
+            return
+        }
+        
+        if isCreatingUser {
+            do {
+                // use the email address as the display name text to start,
+                // making the app functional even if the user's chosen display name is taken
+                try await createUserAccount(UserAccountCandidate(uid: userId, displayName: email, photoUrl: ""))
+                UserDefaults.standard.removeObject(forKey: "emailForSignIn")
+            } catch {
+                debugprint("(View) User \(userId) created but Clould error creating User Profile. Error: \(error)")
+                self.error = error
+            }
+        }
+    }
 }
 
 
