@@ -39,12 +39,11 @@ extension Announcement {
     static let testObjects: [Announcement] = [.testObject, .testObjectAnother]
 }
 
-extension UserKey {
-    static let testObject = UserKey(uid: "00000000-0000-0000-0000-000000000001", displayName: "Larry Ipsum")
-    static let testObjectAnother = UserKey(uid: "00000000-0000-0000-0000-000000000002", displayName: "Alison Loretta Ipsum")
-    static let testObjects: [UserKey] = [.testObject, .testObjectAnother]
+extension User {
+    static let testObject = User(auth: UserAuth.testObject, account: UserAccount.testObject)
+    static let testObjectAnother = User(auth: UserAuth.testObjectAnother, account: UserAccount.testObjectAnother)
+    static let testObjects: [User] = [.testObject, .testObjectAnother]
 }
-
 
 extension UserAuth {
     static let testObject = UserAuth(uid: UserKey.testObject.uid, email: "lorem@ipsum.com", phoneNumber: "+5555550101")
@@ -52,24 +51,23 @@ extension UserAuth {
     static let testObjects: [UserAuth] = [.testObject, .testObjectAnother]
 }
 
-extension UserProfile {
-    static let testObject = UserProfile(
+extension UserAccount {
+    static let testObject = UserAccount(
         uid: UserKey.testObject.uid,
         displayName: UserKey.testObject.displayName,
         photoUrl: "larryipsum.photo.com")
-    static let testObjectAnother = UserProfile(
+    static let testObjectAnother = UserAccount(
         uid: UserKey.testObjectAnother.uid,
         displayName: UserKey.testObjectAnother.displayName,
         photoUrl: "alisonipsum.photo.com")
-    static let testObjects: [UserProfile] = [.testObject, .testObjectAnother]
-}
-
-extension UserAccount {
-    static let testObject = UserAccount(auth: UserAuth.testObject, profile: UserProfile.testObject)
-    static let testObjectAnother = UserAccount(auth: UserAuth.testObjectAnother, profile: UserProfile.testObjectAnother)
     static let testObjects: [UserAccount] = [.testObject, .testObjectAnother]
 }
 
+extension UserKey {
+    static let testObject = UserKey(uid: "00000000-0000-0000-0000-000000000001", displayName: "Larry Ipsum")
+    static let testObjectAnother = UserKey(uid: "00000000-0000-0000-0000-000000000002", displayName: "Alison Loretta Ipsum")
+    static let testObjects: [UserKey] = [.testObject, .testObjectAnother]
+}
 
 extension PrivateMessage {
     static let testObject = PrivateMessage(

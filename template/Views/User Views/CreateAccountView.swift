@@ -79,7 +79,7 @@ struct CreateAccountView: View, DebugPrintable {
             .frame(maxWidth: .infinity)
             .foregroundColor(.white)
             .listRowBackground(Color.accentColor)
-            .disabled(!viewModel.notRobot || currentUserService.isCreatingUser || currentUserService.isCreatingUserProfile)
+            .disabled(!viewModel.notRobot || currentUserService.isCreatingUser || currentUserService.isCreatingUserAccount)
             
         }
         .onAppear { focusedField = .password }
@@ -101,10 +101,15 @@ struct CreateAccountView: View, DebugPrintable {
                     ProgressView()
                     Spacer()
                 }
-            }
-            else if currentUserService.isCreatingUserProfile {
+            } else if currentUserService.isCreatingUserAccount {
                 HStack {
-                    Text("Creating New User Profile...")
+                    Text("Creating User Profile...")
+                    ProgressView()
+                    Spacer()
+                }
+            } else if currentUserService.isUpdatingUserAccount {
+                HStack {
+                    Text("Setting Display Name...")
                     ProgressView()
                     Spacer()
                 }
@@ -116,28 +121,56 @@ struct CreateAccountView: View, DebugPrintable {
 private extension CreateAccountView {
     
     private func startOver() {
-        debugprint("(View) createAccount called")
+        debugprint("(View) startOver called")
     }
        
     private func createAccount() {
         debugprint("(View) createAccount called")
         if viewModel.isReadyToCreateAccount() {
             Task {
+                
+                // create the user in the Auth system first
                 do {
                     viewModel.createdUserId = try await currentUserService.signInOrCreateUser(
                         email: viewModel.capturedEmailText,
                         password: viewModel.capturedPasswordText)
                 } catch {
-                    debugprint("(View) Cloud Error creating User Account: \(error)")
+                    debugprint("(View) Cloud Error creating User in the Authentication system: \(error)")
                     viewModel.error = error
                     throw error
                 }
+                                
+                // create the user in the Application system
+                // use the email address as the display name text to start,
+                // making the app functional even if the user's chosen display name is taken
                 do {
-                    try await currentUserService.createUserProfile(viewModel.profileCandidate)
+                    try await currentUserService.createUserAccount(viewModel.accountCandidate, displayNameTextOverride: viewModel.capturedEmailText)
                 } catch {
-                    debugprint("(View) User \(viewModel.createdUserId) created, but Clould error creating User Profile: \(error)")
+                    debugprint("(View) User \(viewModel.createdUserId) created in the Authentication system, but Clould error creating User Account: \(error)")
                     viewModel.error = error
-                    throw AccountCreationError.userProfileCreationIncomplete(error)
+                    throw AccountCreationError.userAccountCreationIncomplete(error)
+                }
+                
+                // create the user's chosen Display Name
+                do {
+                    try await currentUserService.createUserDisplayName(viewModel.accountCandidate.displayName)
+                } catch {
+                    debugprint("(View) User \(viewModel.createdUserId) created and Account initialized, but Clould error creating User Display Name: \(error)")
+                    viewModel.error = error
+                    throw AccountCreationError.userDisplayNameCreationFailed
+                }
+                
+                // User Account is sufficiently created such that we will no long throw errors,
+                // so do less-critial tasks and clean-up
+                defer {
+                    viewModel.capturedPasswordText = ""
+                    viewModel.createAccountMode = false
+                }
+                do {
+                    try await currentUserService.setUserDisplayName(viewModel.accountCandidate.displayName)
+                } catch {
+                    debugprint("(View) User \(viewModel.createdUserId) created, Account initialized, Display Name created, but Cloud Error setting Display Name: \(error)")
+                    viewModel.error = error
                 }
             }
         }

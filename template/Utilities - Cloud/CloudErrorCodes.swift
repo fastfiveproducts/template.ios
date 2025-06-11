@@ -20,7 +20,8 @@ enum AccountCreationError: Error, LocalizedError {
     case userProfileInputsNotFound
     case userIdNotFound
     case userCreationIncomplete(Error)
-    case userProfileCreationIncomplete(Error)
+    case userAccountCreationIncomplete(Error)
+    case userDisplayNameCreationFailed
     
     var errorDescription: String? {
         switch self {
@@ -32,8 +33,10 @@ enum AccountCreationError: Error, LocalizedError {
                 return NSLocalizedString("Could not complete user create process, please go to sign in page and try again", comment: "Unexpected Cloud Services Error")
             case let .userCreationIncomplete(error):
                 return NSLocalizedString("Error in user creation, please try again.  Error: \(error)", comment: "Cloud Services Communications Error")
-            case let .userProfileCreationIncomplete(error):
+            case let .userAccountCreationIncomplete(error):
                 return NSLocalizedString("Error in user profile creation, please try again.  Error: \(error)", comment: "Cloud Services Communications Error")
+            case .userDisplayNameCreationFailed:
+                return NSLocalizedString("Error in user display name creation, default used; you can change display name later in your user profie.", comment: "Cloud Services Communications Error")
         }
     }
 }

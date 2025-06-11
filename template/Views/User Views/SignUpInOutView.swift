@@ -18,7 +18,6 @@ import SwiftUI
 struct SignUpInOutView: View, DebugPrintable {
     @ObservedObject var viewModel : UserAccountViewModel
     @ObservedObject var currentUserService: CurrentUserService
-    @State var createAccountMode: Bool
     
     @FocusState private var focusedField: Field?
     private func nextField() {
@@ -37,13 +36,18 @@ struct SignUpInOutView: View, DebugPrintable {
     
     var body: some View {
         
-        Section(header: Text(currentUserService.isSignedIn ? "Signed-In User" : ( createAccountMode ? "Sign-Up" : "Sign-In or Sign-Up"))) {
+        Section(header: Text(currentUserService.isSignedIn ? "Signed-In User" : ( viewModel.createAccountMode ? "Sign-Up" : "Sign-In or Sign-Up"))) {
             if currentUserService.isSignedIn {
-                Text(currentUserService.userAccount.profile.displayName)
                 LabeledContent {
-                    Text(currentUserService.userAccount.auth.email)
+                    Text(currentUserService.user.auth.email)
                 } label: { Text("email address:") }
                     .labeledContentStyle(TopLabeledContentStyle())
+                
+                LabeledContent {
+                    Text(currentUserService.user.account.displayName)
+                } label: { Text("display name:") }
+                    .labeledContentStyle(TopLabeledContentStyle())
+                
                 Button(action: toggleLogin) {
                     Text(currentUserService.isSignedIn ? "Sign Out" : "Submit")
                 }
@@ -53,8 +57,8 @@ struct SignUpInOutView: View, DebugPrintable {
             }
             else {
                 LabeledContent {
-                    TextField(text: $viewModel.capturedEmailText, prompt: Text(currentUserService.isSignedIn ? currentUserService.userAccount.auth.email : "sign-in or sign-up email address")) {}
-                        .disabled(createAccountMode)
+                    TextField(text: $viewModel.capturedEmailText, prompt: Text(currentUserService.isSignedIn ? currentUserService.user.auth.email : "sign-in or sign-up email address")) {}
+                        .disabled(viewModel.createAccountMode)
                         .autocapitalization(.none)
                         .keyboardType(.emailAddress)
                         .disableAutocorrection(true)
@@ -64,7 +68,7 @@ struct SignUpInOutView: View, DebugPrintable {
                 } label: { Text("email address:") }
                     .labeledContentStyle(TopLabeledContentStyle())
                 
-                if createAccountMode {
+                if viewModel.createAccountMode {
                     LabeledContent {
                         SecureField(text: $viewModel.capturedPasswordText, prompt: Text("password")) {}
                             .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
@@ -111,7 +115,7 @@ struct SignUpInOutView: View, DebugPrintable {
             }
         }
         
-        if createAccountMode {
+        if viewModel.createAccountMode {
             CreateAccountView(
                 viewModel: viewModel,
                 currentUserService: currentUserService
@@ -136,10 +140,11 @@ private extension SignUpInOutView {
                     let uid = try await currentUserService.signInExistingUser(
                                                 email: viewModel.capturedEmailText,
                                                 password: viewModel.capturedPasswordText)
+                    viewModel.capturedPasswordText = ""
                     debugprint("(View) User \(uid) signed in")
                 } catch {
-                    if error as! SignInError == SignInError.userNotFound {
-                        createAccountMode = true
+                    if let signInError = error as? SignInError, signInError == .userNotFound {
+                        viewModel.createAccountMode = true
                     } else {
                         debugprint("(View) Error signing into User Account: \(error)")
                         viewModel.error = error
@@ -158,8 +163,7 @@ private extension SignUpInOutView {
     Form {
         SignUpInOutView(
             viewModel: UserAccountViewModel(),
-            currentUserService: currentUserService,
-            createAccountMode: false
+            currentUserService: currentUserService
         )
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
@@ -170,20 +174,19 @@ private extension SignUpInOutView {
     Form {
         SignUpInOutView(
             viewModel: UserAccountViewModel(),
-            currentUserService: currentUserService,
-            createAccountMode: false
+            currentUserService: currentUserService
         )
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)
 }
 #Preview ("test-data creating-account") {
+    let viewModel = UserAccountViewModel(createAccountMode: true)
     let currentUserService = CurrentUserTestService.sharedSignedOut
     Form {
         SignUpInOutView(
-            viewModel: UserAccountViewModel(),
-            currentUserService: currentUserService,
-            createAccountMode: true
+            viewModel: viewModel,
+            currentUserService: currentUserService
         )
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)

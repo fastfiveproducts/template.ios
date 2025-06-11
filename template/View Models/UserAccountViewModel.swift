@@ -21,6 +21,11 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
     // Status
     @Published private(set) var statusText = ""
     @Published var error: Error?
+    @Published var createAccountMode = false
+    
+    init(createAccountMode: Bool = false) {
+        self.createAccountMode = createAccountMode
+    }
     
     // Capture
     var capturedEmailText = ""
@@ -77,8 +82,8 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
     
     // Create
     var createdUserId: String = ""
-    var profileCandidate: UserProfileCandidate {
-        return UserProfileCandidate(uid: createdUserId, displayName: capturedDisplayNameText, photoUrl: "")
+    var accountCandidate: UserAccountCandidate {
+        return UserAccountCandidate(uid: createdUserId, displayName: capturedDisplayNameText, photoUrl: "")
     }
 
 }

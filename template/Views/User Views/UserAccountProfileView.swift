@@ -1,5 +1,5 @@
 //
-//  UserProfileView.swift
+//  UserAccountProfileView.swift
 //
 //  Template by Pete Maiser, July 2024 through May 2025
 //      made availble here:
@@ -15,16 +15,16 @@
 
 import SwiftUI
 
-struct UserProfileView: View {
+struct UserAccountProfileView: View {
     var body: some View {
         Section {
-            Text("User Profile goes here, when the user is signed-in!  And when it is implemented.")
+            Text("User Account Profile goes here, when the user is signed-in!  And when it is implemented.")
         }
     }
 }
 
 #Preview {
     Form {
-        UserProfileView()
+        UserAccountProfileView()
     }
 }

@@ -25,9 +25,9 @@ struct UserAccountView: View {
     var body: some View {
         VStack {
             Form {
-                SignUpInOutView(viewModel: viewModel, currentUserService: currentUserService, createAccountMode: false)
+                SignUpInOutView(viewModel: viewModel, currentUserService: currentUserService)
                 if currentUserService.isSignedIn {
-                    UserProfileView()
+                    UserAccountProfileView()
                     UserAssociationView()
                     UserDemographicsView()
                 }
@@ -35,8 +35,7 @@ struct UserAccountView: View {
         }
         .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
         .environment(\.font, Font.body)
-        .alert("Error", error: $viewModel.error)                // TODO: not sure if I need both of these
-        .alert("Error", error: $currentUserService.error)       // TODO: not sure if I need both of these
+        .alert("Error", error: $viewModel.error)
     
         Text(viewModel.statusText)
     }
@@ -55,6 +54,15 @@ struct UserAccountView: View {
     let currentUserService = CurrentUserTestService.sharedSignedOut
     UserAccountView(
         viewModel: UserAccountViewModel(),
+        currentUserService: currentUserService
+    )
+}
+
+#Preview ("test-data creating-account") {
+    let viewModel = UserAccountViewModel(createAccountMode: true)
+    let currentUserService = CurrentUserTestService.sharedSignedOut
+    UserAccountView(
+        viewModel: viewModel,
         currentUserService: currentUserService
     )
 }
