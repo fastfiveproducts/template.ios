@@ -34,88 +34,96 @@ struct CreateAccountView: View, DebugPrintable {
 
     var body: some View {
         
-        Section(header: Text("Create New Account")) {
-            LabeledContent {
-                SecureField(text: $viewModel.capturedPasswordMatchText, prompt: Text("password")) {}
-                    .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
-                    .keyboardType(.emailAddress)
-                    .disableAutocorrection(true)
-                    .focused($focusedField, equals: .passwordAgain)
-                    .onTapGesture { nextField() }
-                    .onSubmit { nextField() }
-            } label: { Text("enter password again:") }
-                .labeledContentStyle(TopLabeledContentStyle())
+        if !viewModel.showStatusMode {
             
-            LabeledContent {
-                TextField(text: $viewModel.capturedDisplayNameText) {}
-                    .autocapitalization(.none)
-                    .keyboardType(.emailAddress)
-                    .disableAutocorrection(true)
-                    .focused($focusedField, equals: .displayName)
-                    .onTapGesture { nextField() }
-                    .onSubmit { nextField() }
-            } label: { Text("enter a Display Name:") }
-                .labeledContentStyle(TopLabeledContentStyle())
-            
-            Toggle(isOn: $viewModel.notRobot) {
-                Text("I am not a Robot")
+            Section(header: Text("Create New Account")) {
+                LabeledContent {
+                    SecureField(text: $viewModel.capturedPasswordMatchText, prompt: Text("password")) {}
+                        .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
+                        .keyboardType(.emailAddress)
+                        .disableAutocorrection(true)
+                        .focused($focusedField, equals: .passwordAgain)
+                        .onTapGesture { nextField() }
+                        .onSubmit { nextField() }
+                } label: { Text("enter password again:") }
+                    .labeledContentStyle(TopLabeledContentStyle())
+                
+                LabeledContent {
+                    TextField(text: $viewModel.capturedDisplayNameText) {}
+                        .autocapitalization(.none)
+                        .keyboardType(.emailAddress)
+                        .disableAutocorrection(true)
+                        .focused($focusedField, equals: .displayName)
+                        .onTapGesture { nextField() }
+                        .onSubmit { nextField() }
+                } label: { Text("enter a Display Name:") }
+                    .labeledContentStyle(TopLabeledContentStyle())
+                
+                Toggle(isOn: $viewModel.notRobot) {
+                    Text("I am not a Robot")
+                }
+                Toggle(isOn: $viewModel.dislikesRobots) {
+                    Text("I don't even like Robots")
+                }
+                
+                Button(action: createAccount) {
+                    Text("Submit")
+                }
+                .frame(maxWidth: .infinity)
+                .foregroundColor(.white)
+                .listRowBackground(Color.accentColor)
+                .disabled(
+                    !viewModel.notRobot ||
+                    currentUserService.isCreatingUser ||
+                    currentUserService.isCreatingUserAccount ||
+                    currentUserService.isUpdatingUserAccount
+                )
+                
             }
-            Toggle(isOn: $viewModel.dislikesRobots) {
-                Text("I don't even like Robots")
+            .onAppear { focusedField = .passwordAgain }
+            .onSubmit {
+                if (viewModel.notRobot) {
+                    createAccount() }
             }
-            
-            Button(action: createAccount) {
-                Text("Submit")
-            }
-            .frame(maxWidth: .infinity)
-            .foregroundColor(.white)
-            .listRowBackground(Color.accentColor)
-            .disabled(
-                !viewModel.notRobot ||
-                currentUserService.isCreatingUser ||
-                currentUserService.isCreatingUserAccount ||
-                currentUserService.isUpdatingUserAccount
-            )
-            
-        }
-        .onAppear { focusedField = .passwordAgain }
-        .onSubmit {
-            if (viewModel.notRobot) {
-                createAccount() }
         }
         
-        Section {
-            if currentUserService.isCreatingUser {
-                HStack {
-                    Text("Creating User...")
-                    ProgressView()
-                    Spacer()
+
+        if viewModel.showStatusMode {
+            Section (header: Text("Creating New Account")) {
+                VStack(alignment: .leading, spacing: 8) {
+                    statusRow("Creating User",
+                              isActive: currentUserService.isCreatingUser,
+                              isDone: !currentUserService.isCreatingUser && (currentUserService.isCreatingUserAccount || currentUserService.isUpdatingUserAccount || viewModel.showSuccessMode))
+                    
+                    statusRow("Creating User Profile",
+                              isActive: currentUserService.isCreatingUserAccount,
+                              isDone: !currentUserService.isCreatingUserAccount && (currentUserService.isUpdatingUserAccount || viewModel.showSuccessMode))
+                    
+                    statusRow("Setting Display Name",
+                              isActive: currentUserService.isUpdatingUserAccount,
+                              isDone: !currentUserService.isUpdatingUserAccount && viewModel.showSuccessMode)
+                    
+                    if viewModel.showSuccessMode {
+                        HStack {
+                            Image(systemName: "checkmark.circle.fill")
+                                .foregroundColor(.green)
+                            Text("Create Account Successful!")
+                                .fontWeight(.medium)
+                        }
+                        .padding(.top, 4)
+                    }
                 }
-            } else if currentUserService.isCreatingUserAccount {
-                HStack {
-                    Text("Creating User Profile...")
-                    ProgressView()
-                    Spacer()
-                }
-            } else if currentUserService.isUpdatingUserAccount {
-                HStack {
-                    Text("Setting Display Name...")
-                    ProgressView()
-                    Spacer()
-                }
+                .padding(.vertical, 8)
             }
-            
-            Button(action: startOver) {
-                Text("Start Over")
+        } else {
+            Section {
+                Button(action: startOver) {
+                    Text("Start Over")
+                }
+                .frame(maxWidth: .infinity)
+                .foregroundColor(.white)
+                .listRowBackground(Color.accentColor)
             }
-            .frame(maxWidth: .infinity)
-            .foregroundColor(.white)
-            .listRowBackground(Color.accentColor)
-            .disabled(
-                currentUserService.isCreatingUser ||
-                currentUserService.isCreatingUserAccount ||
-                currentUserService.isUpdatingUserAccount
-            )
         }
     }
 }
@@ -135,6 +143,24 @@ private extension CreateAccountView {
             }
         }
     }
+    
+    private func statusRow(_ label: String, isActive: Bool, isDone: Bool) -> some View {
+        HStack {
+            if isDone {
+                Image(systemName: "checkmark.circle")
+                    .foregroundColor(.green)
+            } else if isActive {
+                ProgressView()
+            } else {
+                Image(systemName: "circle")
+                    .foregroundColor(.gray)
+            }
+
+            Text(label + (isDone ? " DONE" : isActive ? "..." : ""))
+            
+            Spacer()
+        }
+    }
 }
 
 
@@ -152,12 +178,13 @@ private extension CreateAccountView {
         .environment(\.font, Font.body)
     }
 }
-#Preview ("test-data creating-user") {
+#Preview ("test-data showing status") {
     let currentUserService = CurrentUserTestService.sharedCreatingUser
+    let viewModel = UserAccountViewModel(createAccountMode: true, showStatusMode: true)
     ScrollViewReader { proxy in
         Form {
             CreateAccountView(
-                viewModel: UserAccountViewModel(),
+                viewModel: viewModel,
                 currentUserService: currentUserService
             )
         }

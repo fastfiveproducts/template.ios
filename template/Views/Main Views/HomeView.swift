@@ -59,16 +59,28 @@ struct HomeView: View {
 
                     // MARK: -- Testing Talk
                     Divider().padding(.horizontal)
-                    VStackBox(title: "Testing Talk") {
-                        if currentUserService.isSignedIn {
-                            NavigationLink("Write a Comment") {
-                                UserCommentStackView(
-                                    currentUserService: currentUserService,
-                                    viewModel: CreatePostViewModel<PublicComment>(),
-                                    store: publicCommentStore
-                                )
+                    VStackBox {
+                        HStack {
+                            Text("Testing Talk")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            Spacer()
+                            if currentUserService.isSignedIn {
+                                NavigationLink {
+                                    UserCommentStackView(
+                                        currentUserService: currentUserService,
+                                        viewModel: CreatePostViewModel<PublicComment>(),
+                                        store: publicCommentStore
+                                    )
+                                } label: {
+                                    Text("Write a Comment")
+                                        .font(.caption)
+                                        .foregroundColor(.accentColor)
+                                }
                             }
-
+                        }
+                    } content: {
+                        if currentUserService.isSignedIn {
                             PostsScrollView(
                                 store: publicCommentStore,
                                 currentUserId: currentUserService.userKey.uid,
@@ -148,19 +160,21 @@ struct HomeView: View {
         privateMessageStore: PrivateMessageStore.testLoaded()
     )
 }
-#endif
+#Preview ("Sample Form View") {
+    SampleFormView()
+}
 
-
-// Add later, perhaps add into a preview (?)
-#if DEBUG
 struct SampleFormView: View {
     var body: some View {
         Form {
 
             // This is a Placeholder-Test StoreListView, with test data
             Section(header: Text("Announcements")) {
-                StoreListView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects))
+                StoreListView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects), showDividers: false)
             }
+            
+            // This is a Placeholder-Test Text Capture View
+            TextCaptureSectionView()
             
             // This is a Placeholder-Test StoreListSectionView, with test data
             StoreListSectionView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects))
@@ -168,15 +182,9 @@ struct SampleFormView: View {
             // This is a Placeholder-Test StoreListSectionView disappearing when there is no data!
             StoreListSectionView(store: ListableStore<Announcement>.testEmpty())
             
-            // This is a Placeholder-Test Text Capture View
-            TextCaptureSectionView()
-            
         }
         .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
         .environment(\.font, Font.body)
     }
-}
-#Preview ("Sample Form View") {
-    SampleFormView()
 }
 #endif

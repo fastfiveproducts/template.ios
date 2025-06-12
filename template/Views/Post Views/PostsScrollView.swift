@@ -36,53 +36,59 @@ struct PostsScrollView<T: Post>: View {
     }
 
     var body: some View {
-        switch store.list {
-        case .loading:
-            ProgressView("Loading...")
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding()
+        VStack(alignment: .leading, spacing: 0) {
+            switch store.list {
+            case .loading:
+                ProgressView("Loading...")
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding()
 
-        case .error(let error):
-            Text("Error loading content: \(error.localizedDescription)")
-                .foregroundColor(.red)
-                .padding()
+            case .error(let error):
+                Text("Error loading content: \(error.localizedDescription)")
+                    .foregroundColor(.red)
+                    .padding()
 
-        case .none:
-            Text("nothing here")
-                .padding(.top, 10)
+            case .none:
+                Text("Nothing here")
+                    .padding(.top, 10)
 
-        case .loaded:
-            if filteredPosts.isEmpty {
-                if hideWhenEmpty {
-                    EmptyView()
-                } else {
-                    Text("None!")
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.horizontal)
-                        .padding(.top, 10)
-                }
-            } else {
-                ScrollView {
-                    LazyVStack(spacing: 4) {
-                        ForEach(filteredPosts) { post in
-                            PostBubbleView(
-                                post: post,
-                                isSent: post.from.uid == currentUserId,
-                                showFromUser: showFromUser,
-                                showToUser: showToUser
-                            )
+            case .loaded:
+                if filteredPosts.isEmpty {
+                    if hideWhenEmpty {
+                        EmptyView()
+                    } else {
+                        VStack(alignment: .leading) {
+                            Text("None!")
+                                .foregroundColor(.secondary)
+                                .padding(.horizontal)
+                                .padding(.top, 10)
+                            Spacer(minLength: 0) // optional, to push empty state up
                         }
                     }
-                    .padding(.top, 10)
+                } else {
+                    ScrollView {
+                        LazyVStack(spacing: 4) {
+                            ForEach(filteredPosts) { post in
+                                PostBubbleView(
+                                    post: post,
+                                    isSent: post.from.uid == currentUserId,
+                                    showFromUser: showFromUser,
+                                    showToUser: showToUser
+                                )
+                            }
+                        }
+                        .padding(.top, 10)
+                    }
                 }
             }
         }
+        .frame(maxWidth: .infinity, alignment: .topLeading)
     }
 }
 
 
 #if DEBUG
-#Preview {
+#Preview ("Various Views") {
     let currentUserService = CurrentUserTestService.sharedSignedIn
 
     ScrollView {
@@ -113,15 +119,6 @@ struct PostsScrollView<T: Post>: View {
                 )
             }
             
-            Section(header: Text("Inbox Empty")) {
-                PostsScrollView(
-                    store: PrivateMessageStore.testEmpty(),
-                    currentUserId: currentUserService.userKey.uid,
-                    toUserId: currentUserService.userKey.uid,
-                    showFromUser: true
-                )
-            }
-
             Section(header: Text("Sent Messages")) {
                 PostsScrollView(
                     store: PrivateMessageStore.testLoaded(),
@@ -141,6 +138,27 @@ struct PostsScrollView<T: Post>: View {
             }
         }
         .padding()
+    }
+    .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
+    .environment(\.font, Font.body)
+}
+
+#Preview ("Empty") {
+    let currentUserService = CurrentUserTestService.sharedSignedIn
+    
+    VStack(spacing: 16) {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("InBox")
+                .font(.title3)
+                .fontWeight(.semibold)
+                .padding(.horizontal)
+            PostsScrollView(
+                store: PrivateMessageStore.testEmpty(),
+                currentUserId: currentUserService.userKey.uid,
+                toUserId: currentUserService.userKey.uid,
+                showFromUser: true
+            )
+        }
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)

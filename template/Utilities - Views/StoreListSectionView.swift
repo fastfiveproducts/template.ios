@@ -21,7 +21,7 @@ struct StoreListSectionView<T: Listable>: View {
             EmptyView()
         } else {
             Section(header: Text("\(T.typeDescription)s")) {
-                StoreListView(store: store)
+                StoreListView(store: store, showDividers: false)
             }
         }
     }

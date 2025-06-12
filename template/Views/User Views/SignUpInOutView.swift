@@ -108,6 +108,11 @@ struct SignUpInOutView: View, DebugPrintable {
                     ProgressView()
                     Spacer()
                 }
+            } else if currentUserService.isSignedIn && viewModel.showStatusMode {
+                HStack {
+                    Text("Checking Email Address...AVAILABLE")
+                    Spacer()
+                }
             }
         }
         

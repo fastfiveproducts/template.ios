@@ -13,19 +13,28 @@
 import SwiftUI
 
 struct VStackBox<Content: View>: View {
-    let title: String
+    let titleView: AnyView
     let content: Content
     
+    // accept "title" as just text...
     init(title: String, @ViewBuilder content: () -> Content) {
-        self.title = title
-        self.content = content()
-    }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        self.titleView = AnyView(
             Text(title)
                 .font(.title2)
                 .fontWeight(.semibold)
+        )
+        self.content = content()
+    }
+
+    // or accept an entire view as the title
+    init<Title: View>(@ViewBuilder titleView: () -> Title, @ViewBuilder content: () -> Content) {
+        self.titleView = AnyView(titleView())
+        self.content = content()
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            titleView
             content
         }
         .padding()
@@ -36,10 +45,32 @@ struct VStackBox<Content: View>: View {
     }
 }
 
+#if DEBUG
 #Preview {
-    VStackBox(title: "Hello") {
-        Text("Hello World")
+    NavigationStack {
+        VStackBox {
+            HStack {
+                Text("View for Title")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                
+                Spacer()
+                
+                NavigationLink {
+                    VStackBox(title: "Text-only Title") {
+                        Text("Hello World")
+                    }
+                } label: {
+                    Text("Text Title")
+                        .font(.caption)
+                        .foregroundColor(.accentColor)
+                }
+            }
+        } content: {
+            Text("Hello World")
+        }
+        .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
+        .environment(\.font, Font.body)
     }
-    .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
-    .environment(\.font, Font.body)
 }
+#endif

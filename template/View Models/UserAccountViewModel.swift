@@ -22,9 +22,12 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
     @Published private(set) var statusText = ""
     @Published var error: Error?
     @Published var createAccountMode = false
+    @Published var showStatusMode = false
+    @Published var showSuccessMode = false
     
-    init(createAccountMode: Bool = false) {
+    init(createAccountMode: Bool = false, showStatusMode: Bool = false) {
         self.createAccountMode = createAccountMode
+        self.showStatusMode = showStatusMode
     }
     
     // Capture
@@ -84,14 +87,23 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
     }
     
     // Reset
-    func resetCreateAccount() {
-        capturedPasswordText = ""
-        capturedPasswordMatchText = ""
-        capturedDisplayNameText = ""
-        notRobot = false
-        dislikesRobots = false
-        error = nil
-        createAccountMode = false
+    func resetCreateAccount(withDelay delay: TimeInterval = 0.0) {
+        if delay > 0 {
+            Task { @MainActor in
+                try? await Task.sleep(nanoseconds: UInt64(delay * 1_000_000_000))
+                self.resetCreateAccount()
+            }
+        } else {
+            capturedPasswordText = ""
+            capturedPasswordMatchText = ""
+            capturedDisplayNameText = ""
+            notRobot = false
+            dislikesRobots = false
+            error = nil
+            createAccountMode = false
+            showStatusMode = false
+            showSuccessMode = false
+        }
     }
     
     // Create
@@ -101,6 +113,8 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
     }
     
     func createAccountWithService(_ currentUserService: CurrentUserService) async throws {
+        
+        showStatusMode = true
         
         // MARK: -- create the user in the Auth system first
         do {
@@ -127,7 +141,7 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
         // MARK: -- User Account is sufficiently created such that we will no longer throw errors,
         // do less-critial tasks and clean-up
         defer {
-            resetCreateAccount()
+            resetCreateAccount(withDelay: 4)
         }
         
         // create the user's chosen Display Name
@@ -141,6 +155,7 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
         // set that chosen display name
         do {
             try await currentUserService.setUserDisplayName(accountCandidate.displayName)
+            showSuccessMode = true
         } catch {
             debugprint("(View) User \(createdUserId) created, Account initialized, Display Name created, but Cloud Error setting Display Name: \(error)")
             self.error = AccountCreationError.setUserDisplayNameFailed

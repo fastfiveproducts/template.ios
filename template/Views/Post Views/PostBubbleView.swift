@@ -92,7 +92,7 @@ struct PostBubbleView: View {
 
 
 #if DEBUG
-#Preview {
+#Preview ("Various Views") {
     ScrollView {
         VStack(alignment: .leading, spacing: 16) {
             Section(header: Text("All Comments View")) {

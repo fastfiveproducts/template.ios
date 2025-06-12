@@ -24,7 +24,7 @@ struct UserAccountView: View {
         VStack {
             Form {
                 SignUpInOutView(viewModel: viewModel, currentUserService: currentUserService)
-                if currentUserService.isSignedIn {
+                if currentUserService.isSignedIn && !viewModel.showStatusMode {
                     UserAccountProfileView()
                     UserAssociationView()
                     UserDemographicsView()
@@ -52,15 +52,6 @@ struct UserAccountView: View {
     let currentUserService = CurrentUserTestService.sharedSignedOut
     UserAccountView(
         viewModel: UserAccountViewModel(),
-        currentUserService: currentUserService
-    )
-}
-
-#Preview ("test-data creating-account") {
-    let viewModel = UserAccountViewModel(createAccountMode: true)
-    let currentUserService = CurrentUserTestService.sharedSignedOut
-    UserAccountView(
-        viewModel: viewModel,
         currentUserService: currentUserService
     )
 }
