@@ -16,6 +16,19 @@ struct UserCommentStackView: View, DebugPrintable {
     @ObservedObject var currentUserService: CurrentUserService
     @ObservedObject var viewModel: CreatePostViewModel<PublicComment>
     @ObservedObject var store: PublicCommentStore
+    
+    @Environment(\.dismiss) private var dismiss
+    
+    @FocusState private var focusedField: Field?
+    private func nextField() {
+        switch focusedField {
+            case .firstField:
+                focusedField = .none
+            case .none:
+                focusedField = .none
+        }
+    }
+    private enum Field: Hashable { case firstField }
          
     var body: some View {
         VStack(spacing: 16) {
@@ -30,6 +43,7 @@ struct UserCommentStackView: View, DebugPrintable {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.secondary, lineWidth: 1)
                         )
+                        .focused($focusedField, equals: .firstField)
                 } label: {
                     Text("Comment Text")
                 }
@@ -48,9 +62,11 @@ struct UserCommentStackView: View, DebugPrintable {
                 .foregroundColor(.white)
                 .cornerRadius(8)
             }
+            .onAppear {focusedField = .firstField}
             .onSubmit(submit)
             .onChange(of: viewModel.isWorking) {
                 guard !viewModel.isWorking, viewModel.error == nil else { return }
+                dismiss()
             }
 
             // MARK: -- Past Comments
@@ -82,29 +98,18 @@ private extension UserCommentStackView {
         debugprint("(View) submit called")
         viewModel.isWorking = true
         Task {
+            defer { viewModel.isWorking = false }
             do {
                 viewModel.postCandidate = PostCandidate(
                     from: currentUserService.userKey,
                     to: UserKey.blankUser,
                     title: viewModel.capturedTitleText,
                     content: viewModel.capturedContentText)
-                viewModel.createdPostId = try await PostsConnector().createPublicComment(viewModel.postCandidate)   // <--- TODO have a way to just print when in Previews
-                viewModel.createdPost = PublicComment(
-                    id: viewModel.createdPostId,
-                    timestamp: Date(),
-                    from: viewModel.postCandidate.from,
-                    to: viewModel.postCandidate.to,
-                    title: viewModel.postCandidate.title,
-                    content: viewModel.postCandidate.content
-                )
-                debugprint(viewModel.createdPost.objectDescription)       // <-- TODO need to add to the Store (or force a refresh)
-                viewModel.isWorking = false
-                return
+                viewModel.createdPost = try await store.createPublicComment(from: viewModel.postCandidate)
+                debugprint(viewModel.createdPost.objectDescription)
             } catch {
-                debugprint("Cloud Error publishing Comment: \(error).")
-                viewModel.isWorking = false
+                debugprint("Cloud Error publishing Comment: \(error)")
                 viewModel.error = error
-                throw error
             }
         }
     }

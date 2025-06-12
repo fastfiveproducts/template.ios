@@ -72,6 +72,18 @@ class ListableStore<T: Listable>: SignInOutObserver  {
         }
     }
     
+    // insert new data into local store
+    func insert(_ item: T) {
+        switch list {
+        case .loaded(let currentItems):
+            list = .loaded([item] + currentItems)
+        case .none, .loading:
+            list = .loaded([item])
+        case .error:
+            list = .loaded([item])
+        }
+    }
+    
 }
 
 #if DEBUG

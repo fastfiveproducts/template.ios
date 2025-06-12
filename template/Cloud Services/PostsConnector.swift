@@ -80,7 +80,7 @@ struct PostsConnector {
         return references
     }
     
-    func createPublicComment(_ comment: PostCandidate) async throws -> UUID {
+    func createPublicComment(_ comment: PostCandidate) async throws -> PublicComment {
         guard comment.isValid else { throw UpsertDataError.invalidFunctionInput }
         let operationResult = try await DataConnect.defaultConnector.createPublicCommentMutation.execute(
             toUserId: comment.to.uid,
@@ -91,15 +91,16 @@ struct PostsConnector {
             content: comment.content
         )
         let commentId = operationResult.data.publicComment_insert.id
+        let localComment = makePublicCommentStruct(from: comment, withId: commentId)
         if !comment.references.isEmpty {
             for rid in comment.references {
                 _ = try await createPublicCommentReference(commentId: commentId, referenceId: rid)
             }
         }
-        return commentId
+        return localComment
     }
     
-    func createPrivateMessage(_ message: PostCandidate) async throws -> UUID {
+    func createPrivateMessage(_ message: PostCandidate) async throws -> PrivateMessage {
         guard message.isValid else { throw UpsertDataError.invalidFunctionInput }
         let operationResult = try await DataConnect.defaultConnector.createPrivateMessageMutation.execute(
             toUserId: message.to.uid,
@@ -110,12 +111,13 @@ struct PostsConnector {
             content: message.content
         )
         let messageId = operationResult.data.privateMessage_insert.id
+        let localMessage = makePrivateMessageStruct(from: message, withId: messageId)
         if !message.references.isEmpty {
             for rid in message.references {
                 _ = try await createPrivateMessageReference(messageId: messageId, referenceId: rid)
             }
         }
-        return messageId
+        return localMessage
     }
                          
     func createPublicCommentReference(commentId: UUID, referenceId: UUID) async throws {
@@ -161,7 +163,17 @@ private extension PostsConnector {
             content: firebaseMessage.content,
             references: []
         )
-        
+    }
+    
+    func makePublicCommentStruct(from postCandidate: PostCandidate, withId createdId:UUID) -> PublicComment {
+        return PublicComment(
+            id: createdId,
+            timestamp: Date(),
+            from: postCandidate.from,
+            to: postCandidate.to,
+            title: postCandidate.title,
+            content: postCandidate.content
+        )
     }
     
     func makePrivateMessageStruct(
@@ -181,7 +193,17 @@ private extension PostsConnector {
             references: [],
             status: []
         )
-        
+    }
+    
+    func makePrivateMessageStruct(from postCandidate: PostCandidate, withId createdId:UUID) -> PrivateMessage {
+        return PrivateMessage(
+            id: createdId,
+            timestamp: Date(),
+            from: postCandidate.from,
+            to: postCandidate.to,
+            title: postCandidate.title,
+            content: postCandidate.content
+        )
     }
     
     func makeMessageReferenceStruct<T>(

@@ -94,7 +94,9 @@ struct HomeView: View {
                 }
                 
                 // MARK: -- Messages
-                if currentUserService.isSignedIn && privateMessageStore.list.count > 0 {
+                if currentUserService.isSignedIn
+                && privateMessageStore.list.count > 0       //  only displays when messages exist, essentially turning-off Message functionality
+                {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink(destination: UserMessageStackView(
                             currentUserService: currentUserService,

@@ -20,6 +20,19 @@ struct UserMessageStackView: View, DebugPrintable {
     @ObservedObject var viewModel: CreatePostViewModel<PrivateMessage>
     @ObservedObject var store: PrivateMessageStore
     
+    @FocusState private var focusedField: Field?
+    private func nextField() {
+        switch focusedField {
+            case .firstField:
+                focusedField = .secondField
+            case .secondField:
+                focusedField = .none
+            case .none:
+                focusedField = .none
+        }
+    }
+    private enum Field: Hashable { case firstField, secondField }
+    
     var body: some View {
         VStack(spacing: 16) {
             
@@ -34,6 +47,10 @@ struct UserMessageStackView: View, DebugPrintable {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.secondary, lineWidth: 1)
                         )
+                        .disableAutocorrection(true)
+                        .focused($focusedField, equals: .firstField)
+                        .onTapGesture { nextField() }
+                        .onSubmit { nextField() }
                 } label: {
                     Text("subject")
                 }
@@ -47,6 +64,7 @@ struct UserMessageStackView: View, DebugPrintable {
                             RoundedRectangle(cornerRadius: 8)
                                 .stroke(Color.secondary, lineWidth: 1)
                         )
+                        .focused($focusedField, equals: .secondField)
                 } label: {
                     Text("message text")
                 }
@@ -65,9 +83,10 @@ struct UserMessageStackView: View, DebugPrintable {
                 .foregroundColor(.white)
                 .cornerRadius(8)
             }
-            .onSubmit(submit)
+            .onAppear {focusedField = .firstField}
             .onChange(of: viewModel.isWorking) {
                 guard !viewModel.isWorking, viewModel.error == nil else { return }
+                // do something, if needed
             }
             
             // MARK: -- Inbox
@@ -102,7 +121,6 @@ struct UserMessageStackView: View, DebugPrintable {
                 .padding(.horizontal)
             }
         }
-   //     .padding()
         .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
         .environment(\.font, Font.body)
         .disabled(viewModel.isWorking)
@@ -115,7 +133,9 @@ private extension UserMessageStackView {
     private func submit() {
         debugprint("(View) submit called")
         viewModel.isWorking = true
+        
         Task {
+            defer { viewModel.isWorking = false }
             do {
                 viewModel.postCandidate = PostCandidate(
                     from: currentUserService.userKey,
@@ -123,20 +143,10 @@ private extension UserMessageStackView {
                     title: viewModel.capturedTitleText,
                     content: viewModel.capturedContentText
                 )
-                viewModel.createdPostId = try await PostsConnector().createPrivateMessage(viewModel.postCandidate)
-                viewModel.createdPost = PrivateMessage(
-                    id: viewModel.createdPostId,
-                    timestamp: Date(),
-                    from: viewModel.postCandidate.from,
-                    to: viewModel.postCandidate.to,
-                    title: viewModel.postCandidate.title,
-                    content: viewModel.postCandidate.content
-                )
-                debugprint( viewModel.createdPost.objectDescription)
-                viewModel.isWorking = false
+                viewModel.createdPost = try await store.createPrivateMessage(from: viewModel.postCandidate)
+                debugprint(viewModel.createdPost.objectDescription)
             } catch {
-                debugprint("Cloud Error sending Message: \(error).")
-                viewModel.isWorking = false
+                debugprint("Cloud Error publishing Comment: \(error)")
                 viewModel.error = error
             }
         }

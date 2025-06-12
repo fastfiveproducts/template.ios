@@ -69,6 +69,5 @@ class CreatePostViewModel<T: Post>: ObservableObject, DebugPrintable {
     
     // Create
     var postCandidate = PostCandidate.placeholder
-    var createdPostId = UUID(uuidString: "00000000-0000-0000-0000-000000000000")!
     var createdPost = T.placeholder
 }

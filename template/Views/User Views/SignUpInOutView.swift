@@ -25,17 +25,14 @@ struct SignUpInOutView: View, DebugPrintable {
             case .username:
                 focusedField = .password
             case .password:
-                focusedField = .button
-            case .button:
                 focusedField = .none
             case .none:
                 focusedField = .none
         }
     }
-    private enum Field: Hashable { case username; case password; case button }
+    private enum Field: Hashable { case username; case password }
     
     var body: some View {
-        
         Section(header: Text(currentUserService.isSignedIn ? "Signed-In User" : ( viewModel.createAccountMode ? "Sign-Up" : "Sign-In or Sign-Up"))) {
             if currentUserService.isSignedIn {
                 LabeledContent {
@@ -76,7 +73,7 @@ struct SignUpInOutView: View, DebugPrintable {
                             .disableAutocorrection(true)
                             .focused($focusedField, equals: .password)
                             .onTapGesture { nextField() }
-                            .onSubmit { toggleLogin() }
+                            .onSubmit { createAccount() }
                     } label: { Text("password:") }
                         .labeledContentStyle(TopLabeledContentStyle())
                 } else {
@@ -103,7 +100,6 @@ struct SignUpInOutView: View, DebugPrintable {
 
         }
         .onAppear {focusedField = .username}
-        //        .alert("Error", error: $viewModel.error)  // TODO: not sure if I need this here or the one in the parent view is enough
         
         Section {
             if currentUserService.isSigningIn {
@@ -122,7 +118,6 @@ struct SignUpInOutView: View, DebugPrintable {
             )
         }
     }
-//        .alert("Error", error: $viewModel.error)  // TODO: not sure if I need this here or the one in the parent view is enough
 }
 
 private extension SignUpInOutView {
@@ -151,6 +146,15 @@ private extension SignUpInOutView {
                         throw error
                     }
                 }
+            }
+        }
+    }
+    
+    private func createAccount() {
+        debugprint("createAccount called")
+        if viewModel.isReadyToCreateAccount() {
+            Task {
+                try await viewModel.createAccountWithService(currentUserService)
             }
         }
     }

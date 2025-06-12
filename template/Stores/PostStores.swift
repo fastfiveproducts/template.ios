@@ -31,6 +31,17 @@ final class PublicCommentStore: ListableStore<PublicComment> {
         }
     }
     
+    func createPublicComment(from candidate: PostCandidate) async throws -> PublicComment {
+        do {
+            let newPost = try await PostsConnector().createPublicComment(candidate)
+            insert(newPost)
+            return newPost
+        } catch {
+            debugprint("Failed to create public comment: \(error)")
+            throw error
+        }
+    }
+    
 }
 
 
@@ -50,6 +61,17 @@ final class PrivateMessageStore: ListableStore<PrivateMessage> {
     override var fetchFromService: () async throws -> [PrivateMessage] {
         {
             try await PostsConnector().fetchMyPrivateMessages()
+        }
+    }
+    
+    func createPrivateMessage(from candidate: PostCandidate) async throws -> PrivateMessage {
+        do {
+            let newPost = try await PostsConnector().createPrivateMessage(candidate)
+            insert(newPost)
+            return newPost
+        } catch {
+            debugprint("Failed to create private message: \(error)")
+            throw error
         }
     }
         

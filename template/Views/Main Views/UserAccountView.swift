@@ -17,8 +17,6 @@ import SwiftUI
 struct UserAccountView: View {
     @StateObject var viewModel: UserAccountViewModel
     @ObservedObject var currentUserService: CurrentUserService
-    
-    @Environment(\.dismiss) private var dismiss
 
     @Namespace var createUserViewId
           

@@ -22,17 +22,15 @@ struct CreateAccountView: View, DebugPrintable {
     @FocusState private var focusedField: Field?
     private func nextField() {
         switch focusedField {
-            case .password:
+            case .passwordAgain:
                 focusedField = .displayName
             case .displayName:
-                focusedField = .none
-            case .button:
                 focusedField = .none
             case .none:
                 focusedField = .none
         }
     }
-    private enum Field: Hashable { case password; case displayName, button}
+    private enum Field: Hashable { case passwordAgain; case displayName}
 
     var body: some View {
         
@@ -42,7 +40,7 @@ struct CreateAccountView: View, DebugPrintable {
                     .autocapitalization(/*@START_MENU_TOKEN@*/.none/*@END_MENU_TOKEN@*/)
                     .keyboardType(.emailAddress)
                     .disableAutocorrection(true)
-                    .focused($focusedField, equals: .password)
+                    .focused($focusedField, equals: .passwordAgain)
                     .onTapGesture { nextField() }
                     .onSubmit { nextField() }
             } label: { Text("enter password again:") }
@@ -65,13 +63,6 @@ struct CreateAccountView: View, DebugPrintable {
             Toggle(isOn: $viewModel.dislikesRobots) {
                 Text("I don't even like Robots")
             }
-
-            Button(action: startOver) {
-                Text("Start Over")
-            }
-            .frame(maxWidth: .infinity)
-            .foregroundColor(.white)
-            .listRowBackground(Color.accentColor)
             
             Button(action: createAccount) {
                 Text("Submit")
@@ -79,20 +70,19 @@ struct CreateAccountView: View, DebugPrintable {
             .frame(maxWidth: .infinity)
             .foregroundColor(.white)
             .listRowBackground(Color.accentColor)
-            .disabled(!viewModel.notRobot || currentUserService.isCreatingUser || currentUserService.isCreatingUserAccount)
+            .disabled(
+                !viewModel.notRobot ||
+                currentUserService.isCreatingUser ||
+                currentUserService.isCreatingUserAccount ||
+                currentUserService.isUpdatingUserAccount
+            )
             
         }
-        .onAppear { focusedField = .password }
-        .onChange(of: viewModel.notRobot) {
-            if viewModel.notRobot == true {
-                focusedField = .button
-            }
-        }
+        .onAppear { focusedField = .passwordAgain }
         .onSubmit {
             if (viewModel.notRobot) {
                 createAccount() }
         }
-        // .alert("Error", error: $viewModel.error)  // TODO: not sure if I need this here or the one in the parent view is enough
         
         Section {
             if currentUserService.isCreatingUser {
@@ -114,6 +104,18 @@ struct CreateAccountView: View, DebugPrintable {
                     Spacer()
                 }
             }
+            
+            Button(action: startOver) {
+                Text("Start Over")
+            }
+            .frame(maxWidth: .infinity)
+            .foregroundColor(.white)
+            .listRowBackground(Color.accentColor)
+            .disabled(
+                currentUserService.isCreatingUser ||
+                currentUserService.isCreatingUserAccount ||
+                currentUserService.isUpdatingUserAccount
+            )
         }
     }
 }
@@ -121,58 +123,15 @@ struct CreateAccountView: View, DebugPrintable {
 private extension CreateAccountView {
     
     private func startOver() {
-        debugprint("(View) startOver called")
+        debugprint("startOver called")
         viewModel.resetCreateAccount()
     }
        
     private func createAccount() {
-        debugprint("(View) createAccount called")
+        debugprint("createAccount called")
         if viewModel.isReadyToCreateAccount() {
             Task {
-                
-                // MARK: -- create the user in the Auth system first
-                do {
-                    viewModel.createdUserId = try await currentUserService.signInOrCreateUser(
-                        email: viewModel.capturedEmailText,
-                        password: viewModel.capturedPasswordText)
-                } catch {
-                    debugprint("(View) Cloud Error creating User in the Authentication system: \(error)")
-                    viewModel.error = error
-                    throw error
-                }
-                                
-                // MARK: --  then create the user in the Application system
-                // use the email address as the display name text to start,
-                // making the app functional even if the user's chosen display name is taken
-                do {
-                    try await currentUserService.createUserAccount(viewModel.accountCandidate, displayNameTextOverride: viewModel.capturedEmailText)
-                } catch {
-                    debugprint("(View) User \(viewModel.createdUserId) created in the Authentication system, but Clould error creating User Account: \(error)")
-                    viewModel.error = error
-                    throw AccountCreationError.userAccountCreationIncomplete(error)
-                }
-
-                // MARK: -- User Account is sufficiently created such that we will no longer throw errors,
-                // do less-critial tasks and clean-up
-                defer {
-                    viewModel.resetCreateAccount()
-                }
-                
-                // create the user's chosen Display Name
-                do {
-                    try await currentUserService.createUserDisplayName(viewModel.accountCandidate.displayName)
-                } catch {
-                    debugprint("(View) User \(viewModel.createdUserId) created and Account initialized, but Clould error creating User Display Name: \(error)")
-                    viewModel.error = AccountCreationError.userDisplayNameCreationFailed
-                }
-                                
-                // set that chosen display name
-                do {
-                    try await currentUserService.setUserDisplayName(viewModel.accountCandidate.displayName)
-                } catch {
-                    debugprint("(View) User \(viewModel.createdUserId) created, Account initialized, Display Name created, but Cloud Error setting Display Name: \(error)")
-                    viewModel.error = AccountCreationError.setUserDisplayNameFailed
-                }
+                try await viewModel.createAccountWithService(currentUserService)
             }
         }
     }

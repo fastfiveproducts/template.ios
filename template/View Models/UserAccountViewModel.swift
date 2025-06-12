@@ -46,10 +46,10 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
         var isReady = true
         
         if capturedEmailText.isEmpty {
-            statusText = ("Please enter your sign-in email")
+            statusText = ("Please enter a sign-in email")
             isReady = false
         } else if capturedPasswordText.isEmpty {
-            statusText = ("Please re-enter your password")
+            statusText = ("Please re-enter a password")
             isReady = false
         }
         return isReady
@@ -60,16 +60,16 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
         var isReady = true
         
         if capturedEmailText.isEmpty {
-            statusText = ("Please enter your sign-in email")
+            statusText = ("Please enter a sign-in email")
             isReady = false
         } else if capturedPasswordText.isEmpty {
-            statusText = ("Please enter your password")
+            statusText = ("Complete both password fields with the same password")
             isReady = false
         } else if capturedPasswordMatchText.isEmpty {
-            statusText = ("Please enter your password match")
+            statusText = ("Complete both password fields with the same password")
             isReady = false
         } else if capturedPasswordText != capturedPasswordMatchText {
-            statusText = ("Passwords don't match, plese check and try again.")
+            statusText = ("Passwords don't match, please try again")
             isReady = false
         } else if capturedDisplayNameText.isEmpty {
             statusText = ("Please enter your display name")
@@ -98,6 +98,54 @@ class UserAccountViewModel: ObservableObject, DebugPrintable
     var createdUserId: String = ""
     var accountCandidate: UserAccountCandidate {
         return UserAccountCandidate(uid: createdUserId, displayName: capturedDisplayNameText, photoUrl: "")
+    }
+    
+    func createAccountWithService(_ currentUserService: CurrentUserService) async throws {
+        
+        // MARK: -- create the user in the Auth system first
+        do {
+            createdUserId = try await currentUserService.signInOrCreateUser(
+                email: capturedEmailText,
+                password: capturedPasswordText)
+        } catch {
+            debugprint("(View) Cloud Error creating User in the Authentication system: \(error)")
+            self.error = error
+            throw error
+        }
+        
+        // MARK: --  then create the user in the Application system
+        // use the email address as the display name text to start,
+        // making the app functional even if the user's chosen display name is taken
+        do {
+            try await currentUserService.createUserAccount(accountCandidate, displayNameTextOverride: capturedEmailText)
+        } catch {
+            debugprint("(View) User \(createdUserId) created in the Authentication system, but Clould error creating User Account: \(error)")
+            self.error = AccountCreationError.userAccountCreationIncomplete(error)
+            throw AccountCreationError.userAccountCreationIncomplete(error)
+        }
+        
+        // MARK: -- User Account is sufficiently created such that we will no longer throw errors,
+        // do less-critial tasks and clean-up
+        defer {
+            resetCreateAccount()
+        }
+        
+        // create the user's chosen Display Name
+        do {
+            try await currentUserService.createUserDisplayName(accountCandidate.displayName)
+        } catch {
+            debugprint("(View) User \(createdUserId) created and Account initialized, but Clould error creating User Display Name: \(error)")
+            self.error = AccountCreationError.userDisplayNameCreationFailed
+        }
+        
+        // set that chosen display name
+        do {
+            try await currentUserService.setUserDisplayName(accountCandidate.displayName)
+        } catch {
+            debugprint("(View) User \(createdUserId) created, Account initialized, Display Name created, but Cloud Error setting Display Name: \(error)")
+            self.error = AccountCreationError.setUserDisplayNameFailed
+        }
+        
     }
 
 }
