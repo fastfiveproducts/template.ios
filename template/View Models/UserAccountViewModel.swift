@@ -2,14 +2,15 @@
 //  UserAccountViewModel.swift
 //
 //  Template by Pete Maiser, July 2024 through May 2025
-//      made availble here:
+//      Template v0.1.1
+//      © Fast Five Products LLC, 2025
 //      https://github.com/fastfiveproducts/template.ios
-//      provided via, and used per, terms of the MIT License
+//      used here per terms of the MIT License
 //
 //  This particular implementation is for:
 //      APP_NAME
-//      DATE
-//      YOUR_NAME
+//      started from template 20YY-MM-DD
+//      modifications cannot be used or copied without permission from YOUR_NAME
 //
 
 

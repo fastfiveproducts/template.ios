@@ -1,10 +1,10 @@
 //
 //  RestrictedWordStore.swift
 //
-//  Created by Pete Maiser, January 2025 through May 2025
-//      made availble here:
+//  Template created by Pete Maiser, July 2024 through May 2025
+//      © Fast Five Products LLC, 2025
 //      https://github.com/fastfiveproducts/template.ios
-//      per terms of the MIT License
+//      made available, and used here, per terms of the MIT License
 //      changes should be rare; it is recommended changes are applied to the template
 //      and the entire file compared-and-then-replaced here if/as appropriate
 //
@@ -12,6 +12,9 @@
 //  and a function that can be used to check if a string contains one of those words
 //
 //  Keywords: bad words, objectional words, swear words, blocked words, restricted text
+//
+//      Template v0.1.1
+//
 
 
 import Foundation
