@@ -29,12 +29,14 @@ final class PublicCommentStore: ListableStore<PublicComment> {
     // override ListableStore func below to set how to fetch data into the store
     override var fetchFromService: () async throws -> [PublicComment] {
         {
+            // ***** Template functionality:  retrieve data from Firebase Data Connect
             try await PostsConnector().fetchPublicComments()
         }
     }
     
     func createPublicComment(from candidate: PostCandidate) async throws -> PublicComment {
         do {
+            // ***** Template functionality:  write data to Firebase Data Connect
             let newPost = try await PostsConnector().createPublicComment(candidate)
             insert(newPost)
             return newPost
@@ -62,12 +64,14 @@ final class PrivateMessageStore: ListableStore<PrivateMessage> {
     // override ListableStore func below to set how to fetch data into the store
     override var fetchFromService: () async throws -> [PrivateMessage] {
         {
+            // ***** Template functionality:  retrieve data from Firebase Data Connect
             try await PostsConnector().fetchMyPrivateMessages()
         }
     }
     
     func createPrivateMessage(from candidate: PostCandidate) async throws -> PrivateMessage {
         do {
+            // ***** Template functionality:  write data to Firebase Data Connect
             let newPost = try await PostsConnector().createPrivateMessage(candidate)
             insert(newPost)
             return newPost

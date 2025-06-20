@@ -23,6 +23,7 @@ final class AnnouncementStore: ListableStore<Announcement> {
     // override ListableStore func below to set how to fetch data into the store
     override var fetchFromService: () async throws -> [Announcement] {
         {
+            // ***** Template functionality:  retrieve data from Firestore
             try await FirestoreConnector().fetchAnnouncements()
         }
     }

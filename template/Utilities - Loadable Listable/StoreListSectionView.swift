@@ -37,10 +37,14 @@ struct StoreListSectionView<T: Listable>: View {
         StoreListSectionView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects))
         StoreListSectionView(store: ListableStore<Announcement>.testError())
     }
+    .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
+    .environment(\.font, Font.body)
 }
 #Preview ("Empty") {
     Form {
         StoreListSectionView(store: ListableStore<Announcement>.testEmpty())
     }
+    .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
+    .environment(\.font, Font.body)
 }
 #endif
