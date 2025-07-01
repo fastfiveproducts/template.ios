@@ -34,10 +34,11 @@ struct HomeView: View {
 
                         if !currentUserService.isSignedIn {
                             Divider().padding(.horizontal)
-                            NavigationLink(destination: UserAccountView(
-                                viewModel: UserAccountViewModel(),
-                                currentUserService: currentUserService
-                            )) {
+                            NavigationLink {
+                                UserAccountView(
+                                    viewModel: UserAccountViewModel(),
+                                    currentUserService: currentUserService)
+                            } label: {
                                 HStack {
                                     Text("Tap Here or ") + Text(Image(systemName: "person")) + Text(" to Sign In!")
                                 }
@@ -48,13 +49,22 @@ struct HomeView: View {
                     }
                     
                     // MARK: -- Text Capture Section
+                    Divider().padding(.horizontal)
                     VStackBox(title: "Text Capture Sample") {
-                        TextCaptureSectionView(showHeader: false)
+                        if currentUserService.isSignedIn {
+                            TextCaptureSectionView(showHeader: false)
+                                .padding(.horizontal)
+                                .background(Color(.systemGroupedBackground))
+                                .cornerRadius(6)
+                                .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                        }  else {
+                            HStack {
+                                Text("Not Signed In!")
+                                Spacer()
+                                Text("...tap ") + Text(Image(systemName: "person")) + Text(" above")
+                            }
                             .padding(.horizontal)
-                            .background(Color(.systemGroupedBackground))
-                            .cornerRadius(6)
-                            .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-
+                        }
                     }
 
                     // MARK: -- Testing Talk
@@ -105,16 +115,42 @@ struct HomeView: View {
                         .font(.title)
                 }
                 
+                // MARK: -- Activity Log
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink {
+                        VStackBox() {
+                            Text("Replace this VStackBox with an Activity Log View!")
+                        }
+                    } label: {
+                        Label("Activity Log", systemImage: "book.pages")
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
+                }
+                
+                
+                // MARK: -- Settings
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    NavigationLink {
+                        VStackBox() {
+                            Text("Replace this VStackBox with a Settings View!")
+                        }
+                    } label: {
+                        Label("Settings", systemImage: "gearshape.fill")
+                    }
+                    .buttonStyle(BorderlessButtonStyle())
+                }
+                
                 // MARK: -- Messages
                 if currentUserService.isSignedIn
                 && privateMessageStore.list.count > 0       //  only displays when messages exist, essentially turning-off Message functionality
                 {
                     ToolbarItem(placement: .navigationBarTrailing) {
-                        NavigationLink(destination: UserMessageStackView(
-                            currentUserService: currentUserService,
-                            viewModel: CreatePostViewModel<PrivateMessage>(),
-                            store: privateMessageStore
-                        )) {
+                        NavigationLink {
+                            UserMessageStackView(
+                                currentUserService: currentUserService,
+                                viewModel: CreatePostViewModel<PrivateMessage>(),
+                                store: privateMessageStore)
+                        } label: {
                             Label("Messages", systemImage: "envelope")
                         }
                         .buttonStyle(BorderlessButtonStyle())
@@ -123,11 +159,12 @@ struct HomeView: View {
                 
                 // MARK: -- User Account & Profile
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    NavigationLink(destination: UserAccountView(
-                        viewModel: UserAccountViewModel(),
-                        currentUserService: currentUserService
-                    )) {
-                        Image(systemName: currentUserService.isSignedIn ? "person.fill" : "person")
+                    NavigationLink {
+                        UserAccountView(
+                            viewModel: UserAccountViewModel(),
+                            currentUserService: currentUserService)
+                    } label: {
+                        Label("User Account", systemImage: currentUserService.isSignedIn ? "person.fill" : "person")
                     }
                     .buttonStyle(BorderlessButtonStyle())
                 }
