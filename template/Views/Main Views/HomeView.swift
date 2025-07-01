@@ -48,11 +48,55 @@ struct HomeView: View {
                         }
                     }
                     
-                    // MARK: -- Text Capture Section
+                    // MARK: -- Text Capture Section, Local File
                     Divider().padding(.horizontal)
-                    VStackBox(title: "Text Capture Sample") {
+                    VStackBox {
+                        HStack {
+                            Text ("Local File Sample")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            Spacer()
+                            NavigationLink {
+                                VStackBox() {
+                                    Text("Replace this VStackBox with a Detail View!")
+                                }
+                            } label: {
+                                Text("Records")
+                                    .font(.caption)
+                                    .foregroundColor(.accentColor)
+                            }
+                        }
+                    } content: {
+                        TextCaptureView(showHeader: false)
+                            .padding(.horizontal)
+                            .background(Color(.systemGroupedBackground))
+                            .cornerRadius(6)
+                            .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
+                    }
+                    
+                    // MARK: -- Text Capture Section, SwiftData
+                    Divider().padding(.horizontal)
+                    VStackBox {
+                        HStack {
+                            Text ("SwiftData Sample")
+                                .font(.title2)
+                                .fontWeight(.semibold)
+                            Spacer()
+                            if currentUserService.isSignedIn {
+                                NavigationLink {
+                                    VStackBox() {
+                                        Text("Replace this VStackBox with a Detail View!")
+                                    }
+                                } label: {
+                                    Text("Records")
+                                        .font(.caption)
+                                        .foregroundColor(.accentColor)
+                                }
+                            }
+                        }
+                    } content: {
                         if currentUserService.isSignedIn {
-                            TextCaptureSectionView(showHeader: false)
+                            TextCaptureView(showHeader: false)
                                 .padding(.horizontal)
                                 .background(Color(.systemGroupedBackground))
                                 .cornerRadius(6)
@@ -211,7 +255,7 @@ struct SampleFormView: View {
             }
             
             // This is a Placeholder-Test Text Capture View
-            TextCaptureSectionView()
+            TextCaptureView()
             
             // This is a Placeholder-Test StoreListSectionView, with test data
             StoreListSectionView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects))

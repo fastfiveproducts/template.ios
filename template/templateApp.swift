@@ -11,6 +11,7 @@
 
 
 import SwiftUI
+import SwiftData
 import Firebase
 import FirebaseAppCheck
 
@@ -29,6 +30,7 @@ struct templateApp: App {
             )
                 .task {AnnouncementStore.shared.fetch()}
         }
+        .modelContainer(for: SampleLocalObject.self)
     }
 }
 

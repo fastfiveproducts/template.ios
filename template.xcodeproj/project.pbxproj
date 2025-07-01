@@ -25,7 +25,6 @@
 		B511E9CB2DE62E8F009C0DA4 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = B511E9CA2DE62E8F009C0DA4 /* Post.swift */; };
 		B511E9CE2DE62F43009C0DA4 /* RestrictedWordConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B511E9CD2DE62F43009C0DA4 /* RestrictedWordConnector.swift */; };
 		B511E9D42DE65166009C0DA4 /* CustomLabeledContentStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B511E9D32DE65166009C0DA4 /* CustomLabeledContentStyle.swift */; };
-		B511E9D52DE65166009C0DA4 /* TextCaptureSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B511E9D22DE65166009C0DA4 /* TextCaptureSectionView.swift */; };
 		B511E9D72DE656DF009C0DA4 /* PostsConnector.swift in Sources */ = {isa = PBXBuildFile; fileRef = B511E9D62DE656D6009C0DA4 /* PostsConnector.swift */; };
 		B511E9DC2DE66672009C0DA4 /* AnnouncementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B511E9DB2DE66672009C0DA4 /* AnnouncementStore.swift */; };
 		B51416762DF35966004D898C /* VStackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51416752DF35966004D898C /* VStackBox.swift */; };
@@ -58,7 +57,7 @@
 		B5837CDA2DE69C8300339039 /* DefaultConnector in Frameworks */ = {isa = PBXBuildFile; productRef = B5837CD92DE69C8300339039 /* DefaultConnector */; };
 		B5837CE22DE6A0AF00339039 /* CreatePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */; };
 		B5D128472DE914EF004A5286 /* PostStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D128462DE914EA004A5286 /* PostStores.swift */; };
-		B5DABDD52E00741D00EF6F6E /* SampleLocalStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD42E00741D00EF6F6E /* SampleLocalStruct.swift */; };
+		B5DABDD52E00741D00EF6F6E /* LocalStorageSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD42E00741D00EF6F6E /* LocalStorageSample.swift */; };
 		B5DABDD72E00755C00EF6F6E /* SampleLocalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD62E00755C00EF6F6E /* SampleLocalStore.swift */; };
 		B5DF31752DE8E72A00E1EF24 /* RestrictedWordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */; };
 		B5DF31772DE9054500E1EF24 /* ListableStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31762DE9054500E1EF24 /* ListableStore.swift */; };
@@ -84,7 +83,6 @@
 		B511E9C82DE62CE5009C0DA4 /* CurrentUserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserService.swift; sourceTree = "<group>"; };
 		B511E9CA2DE62E8F009C0DA4 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		B511E9CD2DE62F43009C0DA4 /* RestrictedWordConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictedWordConnector.swift; sourceTree = "<group>"; };
-		B511E9D22DE65166009C0DA4 /* TextCaptureSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCaptureSectionView.swift; sourceTree = "<group>"; };
 		B511E9D32DE65166009C0DA4 /* CustomLabeledContentStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabeledContentStyle.swift; sourceTree = "<group>"; };
 		B511E9D62DE656D6009C0DA4 /* PostsConnector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsConnector.swift; sourceTree = "<group>"; };
 		B511E9DB2DE66672009C0DA4 /* AnnouncementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementStore.swift; sourceTree = "<group>"; };
@@ -110,7 +108,7 @@
 		B5837CD62DE69B2F00339039 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostViewModel.swift; sourceTree = "<group>"; };
 		B5D128462DE914EA004A5286 /* PostStores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStores.swift; sourceTree = "<group>"; };
-		B5DABDD42E00741D00EF6F6E /* SampleLocalStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLocalStruct.swift; sourceTree = "<group>"; };
+		B5DABDD42E00741D00EF6F6E /* LocalStorageSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageSample.swift; sourceTree = "<group>"; };
 		B5DABDD62E00755C00EF6F6E /* SampleLocalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLocalStore.swift; sourceTree = "<group>"; };
 		B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictedWordStore.swift; sourceTree = "<group>"; };
 		B5DF31762DE9054500E1EF24 /* ListableStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableStore.swift; sourceTree = "<group>"; };
@@ -180,7 +178,7 @@
 			children = (
 				B511E9CA2DE62E8F009C0DA4 /* Post.swift */,
 				B511E9C32DE62B49009C0DA4 /* User.swift */,
-				B5DABDD42E00741D00EF6F6E /* SampleLocalStruct.swift */,
+				B5DABDD42E00741D00EF6F6E /* LocalStorageSample.swift */,
 			);
 			path = "Model - ReadWrite";
 			sourceTree = "<group>";
@@ -283,7 +281,6 @@
 			children = (
 				B511E9AD2DE6253D009C0DA4 /* HomeView.swift */,
 				B547681D2E060E820005540F /* TextCaptureView.swift */,
-				B511E9D22DE65166009C0DA4 /* TextCaptureSectionView.swift */,
 				B5837CC52DE6836A00339039 /* UserAccountView.swift */,
 				B54B79C12DF1F2B900E5A21F /* UserCommentStackView.swift */,
 				B54B79C32DF1F4A800E5A21F /* UserMessageStackView.swift */,
@@ -431,7 +428,7 @@
 				B5837CBB2DE66AA800339039 /* UserAccountViewModel.swift in Sources */,
 				B5837CBC2DE66AA800339039 /* HomeViewModel.swift in Sources */,
 				B5DF31772DE9054500E1EF24 /* ListableStore.swift in Sources */,
-				B5DABDD52E00741D00EF6F6E /* SampleLocalStruct.swift in Sources */,
+				B5DABDD52E00741D00EF6F6E /* LocalStorageSample.swift in Sources */,
 				B511E9B62DE6253D009C0DA4 /* Loadable.swift in Sources */,
 				B5E0705F2DEA258D006B33D7 /* StoreListSectionView.swift in Sources */,
 				B511E9C92DE62CE5009C0DA4 /* CurrentUserService.swift in Sources */,
@@ -446,7 +443,6 @@
 				B5E4017E2DEF6385002357B6 /* CreateAccountView.swift in Sources */,
 				B5837CE22DE6A0AF00339039 /* CreatePostViewModel.swift in Sources */,
 				B54B79C02DF1EAC400E5A21F /* PostsScrollView.swift in Sources */,
-				B511E9D52DE65166009C0DA4 /* TextCaptureSectionView.swift in Sources */,
 				B5837CAE2DE6672F00339039 /* FirestoreConnector.swift in Sources */,
 				B5DABDD72E00755C00EF6F6E /* SampleLocalStore.swift in Sources */,
 				B511E9BC2DE6253D009C0DA4 /* templateApp.swift in Sources */,
