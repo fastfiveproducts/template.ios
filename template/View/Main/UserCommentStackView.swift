@@ -74,7 +74,7 @@ struct UserCommentStackView: View, DebugPrintable {
             // MARK: -- Past Comments
             Divider()
             VStack(alignment: .leading, spacing: 8) {
-                Text("Your Past Comments")      // TODO: touch here to open a browing-specific View
+                Text("Your Past Comments")      // TODO: touch here to open a browsing-specific View
                     .font(.title3)
                     .fontWeight(.semibold)
                     .padding(.horizontal)

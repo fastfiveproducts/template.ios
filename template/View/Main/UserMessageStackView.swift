@@ -94,7 +94,7 @@ struct UserMessageStackView: View, DebugPrintable {
             // MARK: -- Inbox
             Divider()
             VStack(alignment: .leading, spacing: 8) {
-                Text("Inbox")       // TODO: touch here to open a browing-specific View
+                Text("Inbox")       // TODO: touch here to open a browsing-specific View
                     .font(.title3)
                     .fontWeight(.semibold)
                     .padding(.horizontal)
@@ -110,7 +110,7 @@ struct UserMessageStackView: View, DebugPrintable {
             // MARK: -- Sent
             Divider()
             VStack(alignment: .leading, spacing: 8) {
-                Text("Sent")        // TODO: touch here to open a browing-specific View
+                Text("Sent")        // TODO: touch here to open a browsing-specific View
                     .font(.title3)
                     .fontWeight(.semibold)
                     .padding(.horizontal)

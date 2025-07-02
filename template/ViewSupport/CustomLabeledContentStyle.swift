@@ -8,7 +8,7 @@
 //      changes should be rare; it is recommended changes are applied to the template
 //      and the entire file compared-and-then-replaced here if/as appropriate
 //
-//      Template v0.1.1
+//      Template v0.1.2 (revisions)
 //
 
 
@@ -27,16 +27,18 @@ struct TopLabeledContentStyle: LabeledContentStyle {
 
 #if DEBUG
 fileprivate struct TopLabelLabeledContentStylePreview: View {
-    var config: TextCaptureConfiguration
+    var labelText: String
+    var promptText: String
+    var text: Binding<String>
     @FocusState private var focusedFieldIndex: Int?
     var body: some View {
         LabeledContent {
-            TextField(config.prompt, text:.constant(""))
-                .textInputAutocapitalization(config.autoCapitalization)
+            TextField(promptText, text:text)
+                .textInputAutocapitalization(TextInputAutocapitalization.words)
                 .disableAutocorrection(true)
                 .onSubmit {}
                 .focused($focusedFieldIndex, equals: 0)
-        } label: { Text(config.name) }
+        } label: { Text(labelText) }
             .labeledContentStyle(TopLabeledContentStyle())
     }
 }
@@ -45,8 +47,14 @@ fileprivate struct TopLabelLabeledContentStylePreview: View {
 #Preview ("TopLabelLabeledContentStyle") {
     Form {
         Section {
-            TopLabelLabeledContentStylePreview(config: TextCaptureConfiguration(name: "Your Name", prompt: "required:  Name or Intitials"))
-            TopLabelLabeledContentStylePreview(config: TextCaptureConfiguration(name: "More Stuff", prompt: "stuff we want to know"))
+            TopLabelLabeledContentStylePreview(
+                labelText: "Your Name",
+                promptText: "Name or Intitials",
+                text: .constant(""))
+            TopLabelLabeledContentStylePreview(
+                labelText: "More Stuff",
+                promptText: "stuff we want to know",
+                text: .constant(""))
         }
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)

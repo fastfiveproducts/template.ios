@@ -32,7 +32,7 @@ import Foundation
 
 struct StructSample: Listable {
     var id = UUID()
-    var paswordHint: String
+    var passwordHint: String
     var favoriteColor: String
     var dogName: String
 
@@ -46,6 +46,56 @@ struct StructSample: Listable {
 
 extension StructSample {
     static var usePlaceholder: Bool { false }
-    static var placeholder: StructSample { StructSample(paswordHint: "", favoriteColor: "", dogName: "") }
+    static var placeholder: StructSample { .init(passwordHint: "", favoriteColor: "", dogName: "") }
 
+}
+
+extension FormCaptureViewModel where T == StructSample {
+    static func configured() -> FormCaptureViewModel<T> {
+        FormCaptureViewModel(
+            title: "Sample Form",
+            fields: [
+                PasswordHintField(),
+                FavoriteColorField(),
+                DogNameField()
+            ],
+            makeCaptured: { fields in
+                StructSample(
+                    passwordHint: fields[0].text,
+                    favoriteColor: fields[1].text,
+                    dogName: fields[2].text
+                )
+            }
+        )
+    }
+}
+
+struct PasswordHintField: Capturable {
+    var labelText: String = "password hint"
+    var promptText: String = "optional: Password Hint"
+    var text: String = ""
+    var required: Bool { false }
+    var checkRestrictedWordList: Bool { false }
+    var autoCapitalize: Bool { false }
+}
+
+struct FavoriteColorField: Capturable {
+    var labelText: String = "favorite color"
+    var promptText: String = "required: Favorite Color"
+    var text: String = ""
+}
+
+struct DogNameField: Capturable {
+    var labelText: String = "dog name"
+    var promptText: String = "required: Your Dog's Name"
+    var text: String = ""
+}
+
+
+extension StructSample {
+    static let testObject = StructSample(
+        passwordHint: "Sunshine",
+        favoriteColor: "Blue",
+        dogName: "Daisy"
+    )
 }

@@ -32,7 +32,8 @@ import Foundation
 import SwiftData
 
 @Model
-class ObjectSample {
+class ObjectSample /* : Listable */ {
+    var id = UUID()
     @Attribute var paswordHint: String
     @Attribute var favoriteColor: String
     @Attribute var dogName: String
@@ -42,8 +43,18 @@ class ObjectSample {
         self.favoriteColor = favoriteColor
         self.dogName = dogName
     }
+    
+    // to conform to Listable, use known data to describe the object
+    var objectDescription: String {
+        "Favorite Color: \(favoriteColor), Dog Name: \(dogName)"
+    }
 
     var isValid: Bool {
         !favoriteColor.isEmpty && !dogName.isEmpty
     }
+}
+
+extension ObjectSample {
+    static var usePlaceholder: Bool { false }
+    static var placeholder = ObjectSample(paswordHint: "", favoriteColor: "", dogName: "")
 }
