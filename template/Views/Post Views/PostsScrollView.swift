@@ -15,7 +15,7 @@
 import SwiftUI
 
 struct PostsScrollView<T: Post>: View {
-    @ObservedObject var store: ListableStore<T>
+    @ObservedObject var store: ListableCloudStore<T>
     var currentUserId: String
 
     // Optional filters

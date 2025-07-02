@@ -15,7 +15,7 @@
 import SwiftUI
 
 struct StoreListSectionView<T: Listable>: View {
-    @ObservedObject var store: ListableStore<T>
+    @ObservedObject var store: ListableCloudStore<T>
     
     var body: some View {
         // Hide section entirely if it's a loaded empty list
@@ -33,16 +33,16 @@ struct StoreListSectionView<T: Listable>: View {
 #if DEBUG
 #Preview ("Loading, Loaded, Error") {
     Form {
-        StoreListSectionView(store: ListableStore<Announcement>.testLoading())
-        StoreListSectionView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects))
-        StoreListSectionView(store: ListableStore<Announcement>.testError())
+        StoreListSectionView(store: ListableCloudStore<Announcement>.testLoading())
+        StoreListSectionView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects))
+        StoreListSectionView(store: ListableCloudStore<Announcement>.testError())
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)
 }
 #Preview ("Empty") {
     Form {
-        StoreListSectionView(store: ListableStore<Announcement>.testEmpty())
+        StoreListSectionView(store: ListableCloudStore<Announcement>.testEmpty())
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)

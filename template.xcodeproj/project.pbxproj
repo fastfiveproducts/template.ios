@@ -29,6 +29,8 @@
 		B511E9DC2DE66672009C0DA4 /* AnnouncementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B511E9DB2DE66672009C0DA4 /* AnnouncementStore.swift */; };
 		B51416762DF35966004D898C /* VStackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51416752DF35966004D898C /* VStackBox.swift */; };
 		B5185B1A2DE7E78A0086BB32 /* StoreListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5185B192DE7E78A0086BB32 /* StoreListView.swift */; };
+		B52D95B02E14A3C900D3B027 /* ObjectSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D95AF2E14A3C900D3B027 /* ObjectSample.swift */; };
+		B52D95B22E14A9DE00D3B027 /* ListableFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D95B12E14A9DE00D3B027 /* ListableFileStore.swift */; };
 		B547681C2E060D9D0005540F /* DefaultConnector in Frameworks */ = {isa = PBXBuildFile; productRef = B547681B2E060D9D0005540F /* DefaultConnector */; };
 		B547681E2E060E820005540F /* TextCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B547681D2E060E820005540F /* TextCaptureView.swift */; };
 		B54768202E060F630005540F /* DefaultConnector in Frameworks */ = {isa = PBXBuildFile; productRef = B547681F2E060F630005540F /* DefaultConnector */; };
@@ -57,10 +59,10 @@
 		B5837CDA2DE69C8300339039 /* DefaultConnector in Frameworks */ = {isa = PBXBuildFile; productRef = B5837CD92DE69C8300339039 /* DefaultConnector */; };
 		B5837CE22DE6A0AF00339039 /* CreatePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */; };
 		B5D128472DE914EF004A5286 /* PostStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D128462DE914EA004A5286 /* PostStores.swift */; };
-		B5DABDD52E00741D00EF6F6E /* LocalStorageSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD42E00741D00EF6F6E /* LocalStorageSample.swift */; };
+		B5DABDD52E00741D00EF6F6E /* StructSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD42E00741D00EF6F6E /* StructSample.swift */; };
 		B5DABDD72E00755C00EF6F6E /* SampleLocalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD62E00755C00EF6F6E /* SampleLocalStore.swift */; };
 		B5DF31752DE8E72A00E1EF24 /* RestrictedWordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */; };
-		B5DF31772DE9054500E1EF24 /* ListableStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31762DE9054500E1EF24 /* ListableStore.swift */; };
+		B5DF31772DE9054500E1EF24 /* ListableCloudStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */; };
 		B5E0705F2DEA258D006B33D7 /* StoreListSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E0705E2DEA2581006B33D7 /* StoreListSectionView.swift */; };
 		B5E4017E2DEF6385002357B6 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E4017D2DEF6385002357B6 /* CreateAccountView.swift */; };
 /* End PBXBuildFile section */
@@ -88,6 +90,8 @@
 		B511E9DB2DE66672009C0DA4 /* AnnouncementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementStore.swift; sourceTree = "<group>"; };
 		B51416752DF35966004D898C /* VStackBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VStackBox.swift; sourceTree = "<group>"; };
 		B5185B192DE7E78A0086BB32 /* StoreListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreListView.swift; sourceTree = "<group>"; };
+		B52D95AF2E14A3C900D3B027 /* ObjectSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSample.swift; sourceTree = "<group>"; };
+		B52D95B12E14A9DE00D3B027 /* ListableFileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableFileStore.swift; sourceTree = "<group>"; };
 		B547681D2E060E820005540F /* TextCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCaptureView.swift; sourceTree = "<group>"; };
 		B54768212E0612310005540F /* TextCaptureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCaptureViewModel.swift; sourceTree = "<group>"; };
 		B54B79BD2DF1E8BD00E5A21F /* PostBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBubbleView.swift; sourceTree = "<group>"; };
@@ -108,10 +112,10 @@
 		B5837CD62DE69B2F00339039 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostViewModel.swift; sourceTree = "<group>"; };
 		B5D128462DE914EA004A5286 /* PostStores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStores.swift; sourceTree = "<group>"; };
-		B5DABDD42E00741D00EF6F6E /* LocalStorageSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalStorageSample.swift; sourceTree = "<group>"; };
+		B5DABDD42E00741D00EF6F6E /* StructSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructSample.swift; sourceTree = "<group>"; };
 		B5DABDD62E00755C00EF6F6E /* SampleLocalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLocalStore.swift; sourceTree = "<group>"; };
 		B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictedWordStore.swift; sourceTree = "<group>"; };
-		B5DF31762DE9054500E1EF24 /* ListableStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableStore.swift; sourceTree = "<group>"; };
+		B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableCloudStore.swift; sourceTree = "<group>"; };
 		B5E0705E2DEA2581006B33D7 /* StoreListSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreListSectionView.swift; sourceTree = "<group>"; };
 		B5E4017D2DEF6385002357B6 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -178,7 +182,8 @@
 			children = (
 				B511E9CA2DE62E8F009C0DA4 /* Post.swift */,
 				B511E9C32DE62B49009C0DA4 /* User.swift */,
-				B5DABDD42E00741D00EF6F6E /* LocalStorageSample.swift */,
+				B5DABDD42E00741D00EF6F6E /* StructSample.swift */,
+				B52D95AF2E14A3C900D3B027 /* ObjectSample.swift */,
 			);
 			path = "Model - ReadWrite";
 			sourceTree = "<group>";
@@ -311,7 +316,8 @@
 			children = (
 				B511E9A62DE6253D009C0DA4 /* Loadable.swift */,
 				B511E9A52DE6253D009C0DA4 /* Listable.swift */,
-				B5DF31762DE9054500E1EF24 /* ListableStore.swift */,
+				B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */,
+				B52D95B12E14A9DE00D3B027 /* ListableFileStore.swift */,
 				B5185B192DE7E78A0086BB32 /* StoreListView.swift */,
 				B5E0705E2DEA2581006B33D7 /* StoreListSectionView.swift */,
 			);
@@ -427,8 +433,8 @@
 				B511E9B52DE6253D009C0DA4 /* Listable.swift in Sources */,
 				B5837CBB2DE66AA800339039 /* UserAccountViewModel.swift in Sources */,
 				B5837CBC2DE66AA800339039 /* HomeViewModel.swift in Sources */,
-				B5DF31772DE9054500E1EF24 /* ListableStore.swift in Sources */,
-				B5DABDD52E00741D00EF6F6E /* LocalStorageSample.swift in Sources */,
+				B5DF31772DE9054500E1EF24 /* ListableCloudStore.swift in Sources */,
+				B5DABDD52E00741D00EF6F6E /* StructSample.swift in Sources */,
 				B511E9B62DE6253D009C0DA4 /* Loadable.swift in Sources */,
 				B5E0705F2DEA258D006B33D7 /* StoreListSectionView.swift in Sources */,
 				B511E9C92DE62CE5009C0DA4 /* CurrentUserService.swift in Sources */,
@@ -436,9 +442,11 @@
 				B511E9B82DE6253D009C0DA4 /* SignInOutObserver.swift in Sources */,
 				B511E9B92DE6253D009C0DA4 /* ViewConfiguration.swift in Sources */,
 				B511E9DC2DE66672009C0DA4 /* AnnouncementStore.swift in Sources */,
+				B52D95B02E14A3C900D3B027 /* ObjectSample.swift in Sources */,
 				B511E9CB2DE62E8F009C0DA4 /* Post.swift in Sources */,
 				B511E9BB2DE6253D009C0DA4 /* HomeView.swift in Sources */,
 				B511E9D42DE65166009C0DA4 /* CustomLabeledContentStyle.swift in Sources */,
+				B52D95B22E14A9DE00D3B027 /* ListableFileStore.swift in Sources */,
 				B5DF31752DE8E72A00E1EF24 /* RestrictedWordStore.swift in Sources */,
 				B5E4017E2DEF6385002357B6 /* CreateAccountView.swift in Sources */,
 				B5837CE22DE6A0AF00339039 /* CreatePostViewModel.swift in Sources */,

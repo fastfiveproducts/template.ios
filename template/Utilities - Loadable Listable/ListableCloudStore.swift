@@ -1,5 +1,5 @@
 //
-//  ListableStore.swift
+//  ListableCloudStore.swift
 //
 //  Template created by Pete Maiser, July 2024 through May 2025
 //      © Fast Five Products LLC, 2025
@@ -8,14 +8,14 @@
 //      changes should be rare; it is recommended changes are applied to the template
 //      and the entire file compared-and-then-replaced here if/as appropriate
 //
-//      Template v0.1.1
+//      Template v0.1.2 (renamed from ListableStore to ListableCloudStore)
 //
 
 
 import Foundation
 
 @MainActor
-class ListableStore<T: Listable>: SignInOutObserver  {
+class ListableCloudStore<T: Listable>: SignInOutObserver  {
         
     // primary data available from the store
     @Published var list: Loadable<[T]> = .none
@@ -74,8 +74,8 @@ class ListableStore<T: Listable>: SignInOutObserver  {
         }
     }
     
-    // insert new data into local store
-    func insert(_ item: T) {
+    // add new data to local store
+    func add(_ item: T) {
         switch list {
         case .loaded(let currentItems):
             list = .loaded([item] + currentItems)
@@ -89,27 +89,27 @@ class ListableStore<T: Listable>: SignInOutObserver  {
 }
 
 #if DEBUG
-extension ListableStore {
-    static func testLoaded(with objects: [T]) -> ListableStore<T> {
-        let store = ListableStore<T>()
+extension ListableCloudStore {
+    static func testLoaded(with objects: [T]) -> ListableCloudStore<T> {
+        let store = ListableCloudStore<T>()
         store.list = .loaded(objects)
         return store
     }
 
-    static func testEmpty() -> ListableStore<T> {
-        let store = ListableStore<T>()
+    static func testEmpty() -> ListableCloudStore<T> {
+        let store = ListableCloudStore<T>()
         store.list = .loaded([])
         return store
     }
 
-    static func testLoading() -> ListableStore<T> {
-        let store = ListableStore<T>()
+    static func testLoading() -> ListableCloudStore<T> {
+        let store = ListableCloudStore<T>()
         store.list = .loading
         return store
     }
 
-    static func testError(_ error: Error = NSError(domain: "Preview", code: 1, userInfo: nil)) -> ListableStore<T> {
-        let store = ListableStore<T>()
+    static func testError(_ error: Error = NSError(domain: "Preview", code: 1, userInfo: nil)) -> ListableCloudStore<T> {
+        let store = ListableCloudStore<T>()
         store.list = .error(error)
         return store
     }

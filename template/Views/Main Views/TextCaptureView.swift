@@ -32,6 +32,10 @@ struct TextCaptureView: View {
                     displayLabeledTextField(atIndex: i)
                 }
             }
+            Button("Submit") {
+
+            }
+            .disabled(false)
         }
     }
         
@@ -55,5 +59,7 @@ struct TextCaptureView: View {
     Form {
         TextCaptureView()
     }
+    .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
+    .environment(\.font, Font.body)
 }
 #endif

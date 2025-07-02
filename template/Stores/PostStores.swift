@@ -14,7 +14,7 @@
 
 import Foundation
 
-final class PublicCommentStore: ListableStore<PublicComment> {
+final class PublicCommentStore: ListableCloudStore<PublicComment> {
     
     // initiate this store as a Swift Singleton
     // this is also how to 'get' the singleton store
@@ -38,7 +38,7 @@ final class PublicCommentStore: ListableStore<PublicComment> {
         do {
             // ***** Template functionality:  write data to Firebase Data Connect
             let newPost = try await PostsConnector().createPublicComment(candidate)
-            insert(newPost)
+            add(newPost)
             return newPost
         } catch {
             debugprint("Failed to create public comment: \(error)")
@@ -49,7 +49,7 @@ final class PublicCommentStore: ListableStore<PublicComment> {
 }
 
 
-final class PrivateMessageStore: ListableStore<PrivateMessage> {
+final class PrivateMessageStore: ListableCloudStore<PrivateMessage> {
     
     // initiate this store as a Swift Singleton
     // this is also how to 'get' the singleton store
@@ -73,7 +73,7 @@ final class PrivateMessageStore: ListableStore<PrivateMessage> {
         do {
             // ***** Template functionality:  write data to Firebase Data Connect
             let newPost = try await PostsConnector().createPrivateMessage(candidate)
-            insert(newPost)
+            add(newPost)
             return newPost
         } catch {
             debugprint("Failed to create private message: \(error)")

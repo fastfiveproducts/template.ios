@@ -15,7 +15,7 @@
 import SwiftUI
 
 struct StoreListView<T: Listable>: View {
-    @ObservedObject var store: ListableStore<T>
+    @ObservedObject var store: ListableCloudStore<T>
     var showDividers: Bool = true
     
     var body: some View {
@@ -48,7 +48,7 @@ struct StoreListView<T: Listable>: View {
 #Preview ("Form: Loaded") {
     Form {
         Section(header: Text("Announcements")) {
-            StoreListView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects), showDividers: false)
+            StoreListView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects), showDividers: false)
         }
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
@@ -56,7 +56,7 @@ struct StoreListView<T: Listable>: View {
 }
 #Preview ("VStackBox: Loaded") {
     VStackBox(title: "Announcements") {
-        StoreListView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects))
+        StoreListView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects))
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)
@@ -64,8 +64,8 @@ struct StoreListView<T: Listable>: View {
 #Preview ("Form: Loading, Error") {
     Form {
         Section {
-            StoreListView(store: ListableStore<Announcement>.testLoading(), showDividers: false)
-            StoreListView(store: ListableStore<Announcement>.testError(), showDividers: false)
+            StoreListView(store: ListableCloudStore<Announcement>.testLoading(), showDividers: false)
+            StoreListView(store: ListableCloudStore<Announcement>.testError(), showDividers: false)
         }
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
@@ -74,7 +74,7 @@ struct StoreListView<T: Listable>: View {
 #Preview ("Empty") {
     Form {
         Section {
-            StoreListView(store: ListableStore<Announcement>.testEmpty(), showDividers: false)
+            StoreListView(store: ListableCloudStore<Announcement>.testEmpty(), showDividers: false)
         }
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)

@@ -251,17 +251,17 @@ struct SampleFormView: View {
 
             // This is a Placeholder-Test StoreListView, with test data
             Section(header: Text("Announcements")) {
-                StoreListView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects), showDividers: false)
+                StoreListView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects), showDividers: false)
             }
             
             // This is a Placeholder-Test Text Capture View
             TextCaptureView()
             
             // This is a Placeholder-Test StoreListSectionView, with test data
-            StoreListSectionView(store: ListableStore<Announcement>.testLoaded(with: Announcement.testObjects))
+            StoreListSectionView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects))
             
             // This is a Placeholder-Test StoreListSectionView disappearing when there is no data!
-            StoreListSectionView(store: ListableStore<Announcement>.testEmpty())
+            StoreListSectionView(store: ListableCloudStore<Announcement>.testEmpty())
             
         }
         .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
