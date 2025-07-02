@@ -140,13 +140,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B511E9AB2DE6253D009C0DA4 /* Utilities - System Log */ = {
+		B511E9AB2DE6253D009C0DA4 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
 				B511E9A12DE6253D009C0DA4 /* DebugLogging.swift */,
 				B511E9A22DE6253D009C0DA4 /* DeviceStamping.swift */,
+				B5837CB62DE6698900339039 /* TestDataLocal.swift */,
 			);
-			path = "Utilities - System Log";
+			path = Utilities;
 			sourceTree = "<group>";
 		};
 		B511E9AF2DE6253D009C0DA4 /* template */ = {
@@ -157,8 +158,7 @@
 				B511E9BF2DE62ABC009C0DA4 /* Model */,
 				B5DF31782DE9058700E1EF24 /* Model Support */,
 				B511E9DA2DE66649009C0DA4 /* Stores */,
-				B511E9AB2DE6253D009C0DA4 /* Utilities - System Log */,
-				B54768232E06136A0005540F /* Utilities - Testing */,
+				B511E9AB2DE6253D009C0DA4 /* Utilities */,
 				B5837CB02DE6683A00339039 /* View Models */,
 				B511E9D12DE650EE009C0DA4 /* View Support */,
 				B5837CAF2DE6682E00339039 /* Views */,
@@ -184,7 +184,6 @@
 			isa = PBXGroup;
 			children = (
 				B511E9C82DE62CE5009C0DA4 /* CurrentUserService.swift */,
-				B5837CD62DE69B2F00339039 /* GoogleService-Info.plist */,
 				B5837CAD2DE6672F00339039 /* FirestoreConnector.swift */,
 				B511E9D62DE656D6009C0DA4 /* PostsConnector.swift */,
 				B511E9CD2DE62F43009C0DA4 /* RestrictedWordConnector.swift */,
@@ -211,14 +210,6 @@
 				B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */,
 			);
 			path = Stores;
-			sourceTree = "<group>";
-		};
-		B54768232E06136A0005540F /* Utilities - Testing */ = {
-			isa = PBXGroup;
-			children = (
-				B5837CB62DE6698900339039 /* TestDataLocal.swift */,
-			);
-			path = "Utilities - Testing";
 			sourceTree = "<group>";
 		};
 		B55EA5142DE621CC00D9F8BC = {
@@ -298,6 +289,7 @@
 			isa = PBXGroup;
 			children = (
 				B511E9A42DE6253D009C0DA4 /* CloudErrorCodes.swift */,
+				B5837CD62DE69B2F00339039 /* GoogleService-Info.plist */,
 				B511E9A82DE6253D009C0DA4 /* SignInOutObserver.swift */,
 			);
 			path = "Cloud Support";
