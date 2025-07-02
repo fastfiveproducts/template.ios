@@ -163,6 +163,7 @@ extension PostCandidate {
 }
 
 extension PublicComment {
+    // to conform to Listable, add placeholder features
     static let usePlaceholder = false
     static let placeholder = PublicComment(
         id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,
@@ -175,6 +176,7 @@ extension PublicComment {
 }
 
 extension PrivateMessage {
+    // to conform to Listable, add placeholder features
     static let usePlaceholder = false
     static let placeholder = PrivateMessage(
         id: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!,

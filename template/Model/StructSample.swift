@@ -36,6 +36,7 @@ struct StructSample: Listable {
     var favoriteColor: String
     var dogName: String
 
+    // to conform to Listable, use known data to describe the object
     var objectDescription: String {
         "Favorite Color: \(favoriteColor), Dog Name: \(dogName)"
     }

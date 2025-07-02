@@ -1,8 +1,8 @@
 //
-//  TestDataLocal.swift
+//  TestObjectExtensions.swift
 //
 //  Template by Pete Maiser, July 2024 through May 2025
-//      Template v0.1.1
+//      Template v0.1.2 (renamed from TestDataLocal)
 //      © Fast Five Products LLC, 2025
 //      https://github.com/fastfiveproducts/template.ios
 //      used here per terms of the MIT License

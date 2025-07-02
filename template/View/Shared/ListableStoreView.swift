@@ -1,5 +1,5 @@
 //
-//  StoreListView.swift
+//  ListableStoreView.swift
 //
 //  Template created by Pete Maiser, July 2024 through May 2025
 //      © Fast Five Products LLC, 2025
@@ -8,15 +8,13 @@
 //      changes should be rare; it is recommended changes are applied to the template
 //      and the entire file compared-and-then-replaced here if/as appropriate
 //
-//      Template v0.1.1
+//      Template v0.1.2 (renamed from StoreListView)
 //
 
 
-// TODO:  THIS MAY BE RENAMED
-
 import SwiftUI
 
-struct StoreListView<T: Listable>: View {
+struct ListableStoreView<T: Listable>: View {
     @ObservedObject var store: ListableCloudStore<T>
     var showDividers: Bool = true
     
@@ -50,7 +48,7 @@ struct StoreListView<T: Listable>: View {
 #Preview ("Form: Loaded") {
     Form {
         Section(header: Text("Announcements")) {
-            StoreListView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects), showDividers: false)
+            ListableStoreView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects), showDividers: false)
         }
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
@@ -58,7 +56,7 @@ struct StoreListView<T: Listable>: View {
 }
 #Preview ("VStackBox: Loaded") {
     VStackBox(title: "Announcements") {
-        StoreListView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects))
+        ListableStoreView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects))
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)
@@ -66,8 +64,8 @@ struct StoreListView<T: Listable>: View {
 #Preview ("Form: Loading, Error") {
     Form {
         Section {
-            StoreListView(store: ListableCloudStore<Announcement>.testLoading(), showDividers: false)
-            StoreListView(store: ListableCloudStore<Announcement>.testError(), showDividers: false)
+            ListableStoreView(store: ListableCloudStore<Announcement>.testLoading(), showDividers: false)
+            ListableStoreView(store: ListableCloudStore<Announcement>.testError(), showDividers: false)
         }
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
@@ -76,7 +74,7 @@ struct StoreListView<T: Listable>: View {
 #Preview ("Empty") {
     Form {
         Section {
-            StoreListView(store: ListableCloudStore<Announcement>.testEmpty(), showDividers: false)
+            ListableStoreView(store: ListableCloudStore<Announcement>.testEmpty(), showDividers: false)
         }
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)

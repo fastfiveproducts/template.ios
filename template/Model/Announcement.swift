@@ -27,6 +27,7 @@ struct Announcement: Listable {
 }
 
 extension Announcement {
+    // to conform to Listable, add placeholder features
     static let usePlaceholder = false
     static let placeholder = Announcement(
         id: 0,

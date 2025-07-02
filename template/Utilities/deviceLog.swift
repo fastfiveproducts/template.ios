@@ -1,5 +1,5 @@
 //
-//  DebugLogging.swift
+//  deviceLog.swift
 //
 //  Template created by Pete Maiser, July 2024 through May 2025
 //      © Fast Five Products LLC, 2025
@@ -8,30 +8,12 @@
 //      changes should be rare; it is recommended changes are applied to the template
 //      and the entire file compared-and-then-replaced here if/as appropriate
 //
-//      Template v0.1.1
+//      Template v0.1.2 (split-renamed from DebugLogging)
 //
 
 
 import Foundation
 import os.log
-
-protocol DebugPrintable {}
-
-extension DebugPrintable {
-    static var debug: Bool {
-        #if DEBUG
-            return true
-        #else
-            return false
-        #endif
-    }
-    
-    func debugprint(_ str: String) {
-        if Self.debug {
-            print("\(String(describing: self.self)) \(str)")
-        }
-    }
-}
 
 func deviceLog(_ message: StaticString, category: String = "General", error: Error? = nil) {
     
