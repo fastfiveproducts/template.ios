@@ -58,9 +58,9 @@
 		B5837CD72DE69B2F00339039 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5837CD62DE69B2F00339039 /* GoogleService-Info.plist */; };
 		B5837CDA2DE69C8300339039 /* DefaultConnector in Frameworks */ = {isa = PBXBuildFile; productRef = B5837CD92DE69C8300339039 /* DefaultConnector */; };
 		B5837CE22DE6A0AF00339039 /* CreatePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */; };
+		B587E2692E15967F0057389C /* ListableFileStoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E2682E15967F0057389C /* ListableFileStoreViewModel.swift */; };
 		B5D128472DE914EF004A5286 /* PostStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D128462DE914EA004A5286 /* PostStores.swift */; };
 		B5DABDD52E00741D00EF6F6E /* StructSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD42E00741D00EF6F6E /* StructSample.swift */; };
-		B5DABDD72E00755C00EF6F6E /* SampleLocalStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD62E00755C00EF6F6E /* SampleLocalStore.swift */; };
 		B5DF31752DE8E72A00E1EF24 /* RestrictedWordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */; };
 		B5DF31772DE9054500E1EF24 /* ListableCloudStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */; };
 		B5E0705F2DEA258D006B33D7 /* StoreListSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E0705E2DEA2581006B33D7 /* StoreListSectionView.swift */; };
@@ -111,9 +111,9 @@
 		B5837CC52DE6836A00339039 /* UserAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountView.swift; sourceTree = "<group>"; };
 		B5837CD62DE69B2F00339039 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostViewModel.swift; sourceTree = "<group>"; };
+		B587E2682E15967F0057389C /* ListableFileStoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableFileStoreViewModel.swift; sourceTree = "<group>"; };
 		B5D128462DE914EA004A5286 /* PostStores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStores.swift; sourceTree = "<group>"; };
 		B5DABDD42E00741D00EF6F6E /* StructSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructSample.swift; sourceTree = "<group>"; };
-		B5DABDD62E00755C00EF6F6E /* SampleLocalStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleLocalStore.swift; sourceTree = "<group>"; };
 		B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictedWordStore.swift; sourceTree = "<group>"; };
 		B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableCloudStore.swift; sourceTree = "<group>"; };
 		B5E0705E2DEA2581006B33D7 /* StoreListSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreListSectionView.swift; sourceTree = "<group>"; };
@@ -140,28 +140,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B511E9AB2DE6253D009C0DA4 /* Utilities - Logging */ = {
+		B511E9AB2DE6253D009C0DA4 /* Utilities - System Log */ = {
 			isa = PBXGroup;
 			children = (
 				B511E9A12DE6253D009C0DA4 /* DebugLogging.swift */,
 				B511E9A22DE6253D009C0DA4 /* DeviceStamping.swift */,
 			);
-			path = "Utilities - Logging";
+			path = "Utilities - System Log";
 			sourceTree = "<group>";
 		};
 		B511E9AF2DE6253D009C0DA4 /* template */ = {
 			isa = PBXGroup;
 			children = (
 				B511E9CC2DE62EF0009C0DA4 /* Cloud Services */,
-				B511E9BE2DE62AA1009C0DA4 /* Model - ReadOnly */,
-				B511E9BF2DE62ABC009C0DA4 /* Model - ReadWrite */,
+				B5D1284C2DE925B6004A5286 /* Cloud Support */,
+				B511E9BF2DE62ABC009C0DA4 /* Model */,
+				B5DF31782DE9058700E1EF24 /* Model Support */,
 				B511E9DA2DE66649009C0DA4 /* Stores */,
-				B5D1284C2DE925B6004A5286 /* Utilities - Cloud */,
-				B511E9AB2DE6253D009C0DA4 /* Utilities - Logging */,
-				B5DF31782DE9058700E1EF24 /* Utilities - Loadable Listable */,
+				B511E9AB2DE6253D009C0DA4 /* Utilities - System Log */,
 				B54768232E06136A0005540F /* Utilities - Testing */,
-				B511E9D12DE650EE009C0DA4 /* Utilities - Views */,
 				B5837CB02DE6683A00339039 /* View Models */,
+				B511E9D12DE650EE009C0DA4 /* View Support */,
 				B5837CAF2DE6682E00339039 /* Views */,
 				B511E9AC2DE6253D009C0DA4 /* Assets.xcassets */,
 				B511E9AE2DE6253D009C0DA4 /* templateApp.swift */,
@@ -169,23 +168,16 @@
 			path = template;
 			sourceTree = "<group>";
 		};
-		B511E9BE2DE62AA1009C0DA4 /* Model - ReadOnly */ = {
+		B511E9BF2DE62ABC009C0DA4 /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				B511E9C12DE62B08009C0DA4 /* Announcement.swift */,
-			);
-			path = "Model - ReadOnly";
-			sourceTree = "<group>";
-		};
-		B511E9BF2DE62ABC009C0DA4 /* Model - ReadWrite */ = {
-			isa = PBXGroup;
-			children = (
 				B511E9CA2DE62E8F009C0DA4 /* Post.swift */,
 				B511E9C32DE62B49009C0DA4 /* User.swift */,
 				B5DABDD42E00741D00EF6F6E /* StructSample.swift */,
 				B52D95AF2E14A3C900D3B027 /* ObjectSample.swift */,
 			);
-			path = "Model - ReadWrite";
+			path = Model;
 			sourceTree = "<group>";
 		};
 		B511E9CC2DE62EF0009C0DA4 /* Cloud Services */ = {
@@ -200,7 +192,7 @@
 			path = "Cloud Services";
 			sourceTree = "<group>";
 		};
-		B511E9D12DE650EE009C0DA4 /* Utilities - Views */ = {
+		B511E9D12DE650EE009C0DA4 /* View Support */ = {
 			isa = PBXGroup;
 			children = (
 				B511E9D32DE65166009C0DA4 /* CustomLabeledContentStyle.swift */,
@@ -208,7 +200,7 @@
 				B511E9A92DE6253D009C0DA4 /* ViewConfiguration.swift */,
 				B51416752DF35966004D898C /* VStackBox.swift */,
 			);
-			path = "Utilities - Views";
+			path = "View Support";
 			sourceTree = "<group>";
 		};
 		B511E9DA2DE66649009C0DA4 /* Stores */ = {
@@ -217,7 +209,6 @@
 				B511E9DB2DE66672009C0DA4 /* AnnouncementStore.swift */,
 				B5D128462DE914EA004A5286 /* PostStores.swift */,
 				B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */,
-				B5DABDD62E00755C00EF6F6E /* SampleLocalStore.swift */,
 			);
 			path = Stores;
 			sourceTree = "<group>";
@@ -263,6 +254,7 @@
 			children = (
 				B5837CB92DE66AA800339039 /* HomeViewModel.swift */,
 				B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */,
+				B587E2682E15967F0057389C /* ListableFileStoreViewModel.swift */,
 				B54768212E0612310005540F /* TextCaptureViewModel.swift */,
 				B5837CBA2DE66AA800339039 /* UserAccountViewModel.swift */,
 			);
@@ -302,16 +294,16 @@
 			path = "Post Views";
 			sourceTree = "<group>";
 		};
-		B5D1284C2DE925B6004A5286 /* Utilities - Cloud */ = {
+		B5D1284C2DE925B6004A5286 /* Cloud Support */ = {
 			isa = PBXGroup;
 			children = (
 				B511E9A42DE6253D009C0DA4 /* CloudErrorCodes.swift */,
 				B511E9A82DE6253D009C0DA4 /* SignInOutObserver.swift */,
 			);
-			path = "Utilities - Cloud";
+			path = "Cloud Support";
 			sourceTree = "<group>";
 		};
-		B5DF31782DE9058700E1EF24 /* Utilities - Loadable Listable */ = {
+		B5DF31782DE9058700E1EF24 /* Model Support */ = {
 			isa = PBXGroup;
 			children = (
 				B511E9A62DE6253D009C0DA4 /* Loadable.swift */,
@@ -321,7 +313,7 @@
 				B5185B192DE7E78A0086BB32 /* StoreListView.swift */,
 				B5E0705E2DEA2581006B33D7 /* StoreListSectionView.swift */,
 			);
-			path = "Utilities - Loadable Listable";
+			path = "Model Support";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -438,6 +430,7 @@
 				B511E9B62DE6253D009C0DA4 /* Loadable.swift in Sources */,
 				B5E0705F2DEA258D006B33D7 /* StoreListSectionView.swift in Sources */,
 				B511E9C92DE62CE5009C0DA4 /* CurrentUserService.swift in Sources */,
+				B587E2692E15967F0057389C /* ListableFileStoreViewModel.swift in Sources */,
 				B55DDA742DEFAD870087AB54 /* UserDemographicsView.swift in Sources */,
 				B511E9B82DE6253D009C0DA4 /* SignInOutObserver.swift in Sources */,
 				B511E9B92DE6253D009C0DA4 /* ViewConfiguration.swift in Sources */,
@@ -452,7 +445,6 @@
 				B5837CE22DE6A0AF00339039 /* CreatePostViewModel.swift in Sources */,
 				B54B79C02DF1EAC400E5A21F /* PostsScrollView.swift in Sources */,
 				B5837CAE2DE6672F00339039 /* FirestoreConnector.swift in Sources */,
-				B5DABDD72E00755C00EF6F6E /* SampleLocalStore.swift in Sources */,
 				B511E9BC2DE6253D009C0DA4 /* templateApp.swift in Sources */,
 				B5D128472DE914EF004A5286 /* PostStores.swift in Sources */,
 				B54B79C42DF1F4A800E5A21F /* UserMessageStackView.swift in Sources */,

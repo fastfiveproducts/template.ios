@@ -1,8 +1,8 @@
 //
-//  ObjectSample.swift
+//  StructSample.swift
 //
-//  Template by Pete Maiser, July 2024 through June 2025
-//      Template v0.1.2 (June)
+//  Template by Pete Maiser, July 2024 through July 2025
+//      Template v0.1.2 (July)
 //      © Fast Five Products LLC, 2025
 //      https://github.com/fastfiveproducts/template.ios
 //      used here per terms of the MIT License
@@ -29,21 +29,22 @@
 
 
 import Foundation
-import SwiftData
 
-@Model
-class ObjectSample {
-    @Attribute var paswordHint: String
-    @Attribute var favoriteColor: String
-    @Attribute var dogName: String
+struct StructSample: Listable {
+    var id = UUID()
+    var paswordHint: String
+    var favoriteColor: String
+    var dogName: String
 
-    init(paswordHint: String, favoriteColor: String, dogName: String) {
-        self.paswordHint = paswordHint
-        self.favoriteColor = favoriteColor
-        self.dogName = dogName
+    var objectDescription: String {
+        "Favorite Color: \(favoriteColor), Dog Name: \(dogName)"
     }
+    
+    var isValid: Bool { !favoriteColor.isEmpty && !dogName.isEmpty }
+}
 
-    var isValid: Bool {
-        !favoriteColor.isEmpty && !dogName.isEmpty
-    }
+extension StructSample {
+    static var usePlaceholder: Bool { false }
+    static var placeholder: StructSample { StructSample(paswordHint: "", favoriteColor: "", dogName: "") }
+
 }
