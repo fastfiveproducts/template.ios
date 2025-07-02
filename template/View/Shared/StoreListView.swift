@@ -12,6 +12,8 @@
 //
 
 
+// TODO:  THIS MAY BE RENAMED
+
 import SwiftUI
 
 struct StoreListView<T: Listable>: View {
