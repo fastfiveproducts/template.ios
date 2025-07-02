@@ -26,7 +26,7 @@ class ListableFileStore<T: Listable>: ObservableObject {
         self.filename = filename
     }
 
-    // MARK: - Load from disk
+    // MARK: - Load previously-Saved items
     func load() {
         Task {
             list = .loading
@@ -45,7 +45,7 @@ class ListableFileStore<T: Listable>: ObservableObject {
         }
     }
 
-    // MARK: - Insert and Save
+    // MARK: - Insert item and Save
     func insert(_ item: T) {
         Task {
             switch list {
@@ -56,15 +56,33 @@ class ListableFileStore<T: Listable>: ObservableObject {
             }
         }
     }
+    
+    // MARK: - Update item and Save
+    func update(_ item: T) {
+        Task {
+            guard case .loaded(let currentItems) = list else { return }
+            let updated = currentItems.map { $0.id == item.id ? item : $0 }
+            await replaceWithList(updated)
+        }
+    }
 
-    // MARK: - Delete all and Save
+    // MARK: - Delete item and Save
+    func delete(_ item: T) {
+        Task {
+            guard case .loaded(let currentItems) = list else { return }
+            let updated = currentItems.filter { $0.id != item.id }
+            await replaceWithList(updated)
+        }
+    }
+
+    // MARK: - Delete all items and Save
     func deleteAll() {
         Task {
             await replaceWithList([])
         }
     }
 
-    // MARK: - Save and Update list
+    // MARK: - private update stored list, save list to disk
     private func replaceWithList(_ items: [T]) async {
         do {
             try saveToDisk(items)
@@ -74,17 +92,13 @@ class ListableFileStore<T: Listable>: ObservableObject {
         }
     }
 
-    // MARK: - Write file
     private func saveToDisk(_ items: [T]) throws {
         let url = fileURL()
         let data = try JSONEncoder().encode(items)
         try data.write(to: url, options: .atomic)
     }
 
-    // MARK: - URL helper
     private func fileURL() -> URL {
         fileManager.urls(for: .documentDirectory, in: .userDomainMask)[0].appendingPathComponent(filename)
     }
 }
-
-
