@@ -1,5 +1,5 @@
 //
-//  ObjectSample.swift
+//  TemplateObject.swift
 //
 //  Template by Pete Maiser, July 2024 through July 2025
 //      Template v0.1.2 (July)
@@ -15,10 +15,10 @@
 
 //  READ and Delete when using template:
 //
-//     StructSample: is a sample of a struct that is then later used in the app
+//     TemplateStruct: is a sample of a struct that is then later used in the app
 //     and persisted locally using FileManager
 //
-//     ObjectSample: is a sample of a class that is then later used in the app
+//     TemplateObject: is a sample of a class that is then later used in the app
 //     and persisted locally using SwiftData
 //
 //     Also note other examples/samples:
@@ -32,7 +32,7 @@ import Foundation
 import SwiftData
 
 @Model
-class ObjectSample /* : Listable */ {
+class TemplateObject /* : Listable */ {
     var id = UUID()
     @Attribute var paswordHint: String
     @Attribute var favoriteColor: String
@@ -54,7 +54,7 @@ class ObjectSample /* : Listable */ {
     }
 }
 
-extension ObjectSample {
+extension TemplateObject {
     static var usePlaceholder: Bool { false }
-    static var placeholder = ObjectSample(paswordHint: "", favoriteColor: "", dogName: "")
+    static var placeholder = TemplateObject(paswordHint: "", favoriteColor: "", dogName: "")
 }

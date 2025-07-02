@@ -9,7 +9,7 @@ the Fast Five Products LLC iOS application template App
 ##  Dependencies
 - requires an implementation of Firebase Data Connect
 - in particular the the the FastFive Products LLC Firebase template (https://github.com/fastfiveproducts/template.firebase)
-- after cloning, add your GoogleService-info.plist file to "Cloud Services" folder group
+- after cloning, add your GoogleService-info.plist file to "CloudSupport" folder group
 
 ##  Run on an iOS Siumulator via Xcode on a Mac
 - “Open a project or file” and open the Xcode project file

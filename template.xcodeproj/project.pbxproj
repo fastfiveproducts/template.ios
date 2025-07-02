@@ -29,7 +29,7 @@
 		B511E9DC2DE66672009C0DA4 /* AnnouncementStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B511E9DB2DE66672009C0DA4 /* AnnouncementStore.swift */; };
 		B51416762DF35966004D898C /* VStackBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51416752DF35966004D898C /* VStackBox.swift */; };
 		B5185B1A2DE7E78A0086BB32 /* ListableStoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5185B192DE7E78A0086BB32 /* ListableStoreView.swift */; };
-		B52D95B02E14A3C900D3B027 /* ObjectSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D95AF2E14A3C900D3B027 /* ObjectSample.swift */; };
+		B52D95B02E14A3C900D3B027 /* TemplateObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D95AF2E14A3C900D3B027 /* TemplateObject.swift */; };
 		B52D95B22E14A9DE00D3B027 /* ListableFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52D95B12E14A9DE00D3B027 /* ListableFileStore.swift */; };
 		B547681C2E060D9D0005540F /* DefaultConnector in Frameworks */ = {isa = PBXBuildFile; productRef = B547681B2E060D9D0005540F /* DefaultConnector */; };
 		B547681E2E060E820005540F /* FormCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B547681D2E060E820005540F /* FormCaptureView.swift */; };
@@ -63,7 +63,7 @@
 		B5837CE22DE6A0AF00339039 /* CreatePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */; };
 		B587E2692E15967F0057389C /* ListableFileStoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E2682E15967F0057389C /* ListableFileStoreViewModel.swift */; };
 		B5D128472DE914EF004A5286 /* PostStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D128462DE914EA004A5286 /* PostStores.swift */; };
-		B5DABDD52E00741D00EF6F6E /* StructSample.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD42E00741D00EF6F6E /* StructSample.swift */; };
+		B5DABDD52E00741D00EF6F6E /* TemplateStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD42E00741D00EF6F6E /* TemplateStruct.swift */; };
 		B5DF31752DE8E72A00E1EF24 /* RestrictedWordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */; };
 		B5DF31772DE9054500E1EF24 /* ListableCloudStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */; };
 		B5E0705F2DEA258D006B33D7 /* ListableStoreSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E0705E2DEA2581006B33D7 /* ListableStoreSectionView.swift */; };
@@ -93,7 +93,7 @@
 		B511E9DB2DE66672009C0DA4 /* AnnouncementStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnouncementStore.swift; sourceTree = "<group>"; };
 		B51416752DF35966004D898C /* VStackBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VStackBox.swift; sourceTree = "<group>"; };
 		B5185B192DE7E78A0086BB32 /* ListableStoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableStoreView.swift; sourceTree = "<group>"; };
-		B52D95AF2E14A3C900D3B027 /* ObjectSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObjectSample.swift; sourceTree = "<group>"; };
+		B52D95AF2E14A3C900D3B027 /* TemplateObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateObject.swift; sourceTree = "<group>"; };
 		B52D95B12E14A9DE00D3B027 /* ListableFileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableFileStore.swift; sourceTree = "<group>"; };
 		B547681D2E060E820005540F /* FormCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCaptureView.swift; sourceTree = "<group>"; };
 		B54768212E0612310005540F /* FormCaptureViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCaptureViewModel.swift; sourceTree = "<group>"; };
@@ -119,7 +119,7 @@
 		B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostViewModel.swift; sourceTree = "<group>"; };
 		B587E2682E15967F0057389C /* ListableFileStoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableFileStoreViewModel.swift; sourceTree = "<group>"; };
 		B5D128462DE914EA004A5286 /* PostStores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStores.swift; sourceTree = "<group>"; };
-		B5DABDD42E00741D00EF6F6E /* StructSample.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StructSample.swift; sourceTree = "<group>"; };
+		B5DABDD42E00741D00EF6F6E /* TemplateStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateStruct.swift; sourceTree = "<group>"; };
 		B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictedWordStore.swift; sourceTree = "<group>"; };
 		B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableCloudStore.swift; sourceTree = "<group>"; };
 		B5E0705E2DEA2581006B33D7 /* ListableStoreSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableStoreSectionView.swift; sourceTree = "<group>"; };
@@ -181,8 +181,8 @@
 				B511E9C12DE62B08009C0DA4 /* Announcement.swift */,
 				B511E9CA2DE62E8F009C0DA4 /* Post.swift */,
 				B511E9C32DE62B49009C0DA4 /* User.swift */,
-				B52D95AF2E14A3C900D3B027 /* ObjectSample.swift */,
-				B5DABDD42E00741D00EF6F6E /* StructSample.swift */,
+				B52D95AF2E14A3C900D3B027 /* TemplateObject.swift */,
+				B5DABDD42E00741D00EF6F6E /* TemplateStruct.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -257,9 +257,9 @@
 		B5837CB02DE6683A00339039 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */,
 				B54768212E0612310005540F /* FormCaptureViewModel.swift */,
 				B5837CB92DE66AA800339039 /* HomeViewModel.swift */,
-				B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */,
 				B5837CBA2DE66AA800339039 /* UserAccountViewModel.swift */,
 			);
 			path = ViewModels;
@@ -446,7 +446,7 @@
 				B5837CBB2DE66AA800339039 /* UserAccountViewModel.swift in Sources */,
 				B5837CBC2DE66AA800339039 /* HomeViewModel.swift in Sources */,
 				B5DF31772DE9054500E1EF24 /* ListableCloudStore.swift in Sources */,
-				B5DABDD52E00741D00EF6F6E /* StructSample.swift in Sources */,
+				B5DABDD52E00741D00EF6F6E /* TemplateStruct.swift in Sources */,
 				B511E9B62DE6253D009C0DA4 /* Loadable.swift in Sources */,
 				B5E0705F2DEA258D006B33D7 /* ListableStoreSectionView.swift in Sources */,
 				B511E9C92DE62CE5009C0DA4 /* CurrentUserService.swift in Sources */,
@@ -455,7 +455,7 @@
 				B511E9B82DE6253D009C0DA4 /* SignInOutObserver.swift in Sources */,
 				B511E9B92DE6253D009C0DA4 /* ViewConfiguration.swift in Sources */,
 				B511E9DC2DE66672009C0DA4 /* AnnouncementStore.swift in Sources */,
-				B52D95B02E14A3C900D3B027 /* ObjectSample.swift in Sources */,
+				B52D95B02E14A3C900D3B027 /* TemplateObject.swift in Sources */,
 				B511E9CB2DE62E8F009C0DA4 /* Post.swift in Sources */,
 				B511E9BB2DE6253D009C0DA4 /* HomeView.swift in Sources */,
 				B511E9D42DE65166009C0DA4 /* CustomLabeledContentStyle.swift in Sources */,

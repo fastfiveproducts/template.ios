@@ -67,9 +67,9 @@ struct FormCaptureView<T: Listable>: View {
 #Preview {
     Form {
         FormCaptureView(
-            viewModel: FormCaptureViewModel<StructSample>.configured(),
+            viewModel: FormCaptureViewModel<TemplateStruct>.configured(),
             onSubmit: { result in
-                print("Captured StructSample: \(result)")
+                print("Captured TemplateStruct: \(result)")
             }
         )
     }

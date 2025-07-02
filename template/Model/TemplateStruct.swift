@@ -1,5 +1,5 @@
 //
-//  StructSample.swift
+//  TemplateStruct.swift
 //
 //  Template by Pete Maiser, July 2024 through July 2025
 //      Template v0.1.2 (July)
@@ -15,10 +15,10 @@
 
 //  READ and Delete when using template:
 //
-//     StructSample: is a sample of a struct that is then later used in the app
+//     TemplateStruct: is a sample of a struct that is then later used in the app
 //     and persisted locally using FileManager
 //
-//     ObjectSample: is a sample of a class that is then later used in the app
+//     TemplateObject: is a sample of a class that is then later used in the app
 //     and persisted locally using SwiftData
 //
 //     Also note other examples/samples:
@@ -30,7 +30,7 @@
 
 import Foundation
 
-struct StructSample: Listable {
+struct TemplateStruct: Listable {
     var id = UUID()
     var passwordHint: String
     var favoriteColor: String
@@ -44,13 +44,13 @@ struct StructSample: Listable {
     var isValid: Bool { !favoriteColor.isEmpty && !dogName.isEmpty }
 }
 
-extension StructSample {
+extension TemplateStruct {
     static var usePlaceholder: Bool { false }
-    static var placeholder: StructSample { .init(passwordHint: "", favoriteColor: "", dogName: "") }
+    static var placeholder: TemplateStruct { .init(passwordHint: "", favoriteColor: "", dogName: "") }
 
 }
 
-extension FormCaptureViewModel where T == StructSample {
+extension FormCaptureViewModel where T == TemplateStruct {
     static func configured() -> FormCaptureViewModel<T> {
         FormCaptureViewModel(
             title: "Sample Form",
@@ -60,7 +60,7 @@ extension FormCaptureViewModel where T == StructSample {
                 DogNameField()
             ],
             makeCaptured: { fields in
-                StructSample(
+                TemplateStruct(
                     passwordHint: fields[0].text,
                     favoriteColor: fields[1].text,
                     dogName: fields[2].text
@@ -92,8 +92,8 @@ struct DogNameField: Capturable {
 }
 
 
-extension StructSample {
-    static let testObject = StructSample(
+extension TemplateStruct {
+    static let testObject = TemplateStruct(
         passwordHint: "Sunshine",
         favoriteColor: "Blue",
         dogName: "Daisy"
