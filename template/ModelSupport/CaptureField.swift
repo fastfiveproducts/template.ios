@@ -1,5 +1,5 @@
 //
-//  Capturable.swift
+//  CaptureField.swift
 //
 //  Template created by Pete Maiser, July 2024 through July 2025
 //      © Fast Five Products LLC, 2025
@@ -14,22 +14,14 @@
 
 import Foundation
 
-protocol Capturable {
-    var labelText: String { get }
-    var promptText: String { get }
-    var text: String { get set }
-    
-    var required: Bool { get }
-    var autoCapitalize: Bool { get }
-    var checkRestrictedWordList: Bool { get }
-    
-    var isValid: Bool { get }
-}
-
-extension Capturable {
-    var required: Bool { true }                     // override in struct if appropriate
-    var autoCapitalize: Bool { true }               // override in struct if appropriate
-    var checkRestrictedWordList: Bool { true }      // override in struct if appropriate
+struct CaptureField: Identifiable {
+    var id: String
+    var labelText: String
+    var promptText: String
+    var text: String
+    var required: Bool = true
+    var autoCapitalize: Bool = true
+    var checkRestrictedWordList: Bool = true
 
     var isValid: Bool {
         !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || !required

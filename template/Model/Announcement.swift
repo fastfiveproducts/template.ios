@@ -37,3 +37,24 @@ extension Announcement {
         displayEndDate: Date()
     )
 }
+
+
+#if DEBUG
+extension Announcement {
+    static let testObject = Announcement(
+        id: 202501311200,
+        title: "A Lorem Ipsum Title",
+        content: "Announcement content lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        displayStartDate: Calendar.current.date(byAdding: .day, value: -2, to: Date())!,
+        displayEndDate: Calendar.current.date(byAdding: .day, value: 364, to: Date())!
+    )
+    static let testObjectAnother = Announcement(
+        id: 202502281200,
+        title: "Another Lorem Ipsum Title",
+        content: "Another announcement content lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        displayStartDate: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
+        displayEndDate: Calendar.current.date(byAdding: .day, value: 365, to: Date())!
+    )
+    static let testObjects: [Announcement] = [.testObject, .testObjectAnother]
+}
+#endif

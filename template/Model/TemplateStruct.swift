@@ -50,48 +50,29 @@ extension TemplateStruct {
 
 }
 
-extension FormCaptureViewModel where T == TemplateStruct {
-    static func configured() -> FormCaptureViewModel<T> {
-        FormCaptureViewModel(
+extension CaptureFormViewModel where T == TemplateStruct {
+    static func configured() -> CaptureFormViewModel<T> {
+        CaptureFormViewModel(
             title: "Sample Form",
             fields: [
-                PasswordHintField(),
-                FavoriteColorField(),
-                DogNameField()
+                CaptureField(id: "passwordHint", labelText: "Password Hint", promptText: "optional: Password Hint", text: "", required: false, autoCapitalize: false, checkRestrictedWordList: false),
+                CaptureField(id: "favoriteColor", labelText: "Favorite Color", promptText: "required: Favorite Color", text: ""),
+                CaptureField(id: "dogName", labelText: "Dog Name", promptText: "required: Your Dog's Name", text: "")
             ],
-            makeCaptured: { fields in
-                TemplateStruct(
-                    passwordHint: fields[0].text,
-                    favoriteColor: fields[1].text,
-                    dogName: fields[2].text
+            makeStruct: { fields in
+                let dict = Dictionary(uniqueKeysWithValues: fields.map { ($0.id, $0) })
+                return TemplateStruct(
+                    passwordHint: dict["passwordHint"]?.text ?? "",
+                    favoriteColor: dict["favoriteColor"]?.text ?? "",
+                    dogName: dict["dogName"]?.text ?? ""
                 )
             }
         )
     }
 }
 
-struct PasswordHintField: Capturable {
-    var labelText: String = "password hint"
-    var promptText: String = "optional: Password Hint"
-    var text: String = ""
-    var required: Bool { false }
-    var checkRestrictedWordList: Bool { false }
-    var autoCapitalize: Bool { false }
-}
 
-struct FavoriteColorField: Capturable {
-    var labelText: String = "favorite color"
-    var promptText: String = "required: Favorite Color"
-    var text: String = ""
-}
-
-struct DogNameField: Capturable {
-    var labelText: String = "dog name"
-    var promptText: String = "required: Your Dog's Name"
-    var text: String = ""
-}
-
-
+#if DEBUG
 extension TemplateStruct {
     static let testObject = TemplateStruct(
         passwordHint: "Sunshine",
@@ -99,3 +80,4 @@ extension TemplateStruct {
         dogName: "Daisy"
     )
 }
+#endif

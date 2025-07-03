@@ -34,12 +34,12 @@ import SwiftData
 @Model
 class TemplateObject /* : Listable */ {
     var id = UUID()
-    @Attribute var paswordHint: String
+    @Attribute var passwordHint: String
     @Attribute var favoriteColor: String
     @Attribute var dogName: String
 
-    init(paswordHint: String, favoriteColor: String, dogName: String) {
-        self.paswordHint = paswordHint
+    init(passwordHint: String, favoriteColor: String, dogName: String) {
+        self.passwordHint = passwordHint
         self.favoriteColor = favoriteColor
         self.dogName = dogName
     }
@@ -56,5 +56,16 @@ class TemplateObject /* : Listable */ {
 
 extension TemplateObject {
     static var usePlaceholder: Bool { false }
-    static var placeholder = TemplateObject(paswordHint: "", favoriteColor: "", dogName: "")
+    static var placeholder = TemplateObject(passwordHint: "", favoriteColor: "", dogName: "")
 }
+
+
+#if DEBUG
+extension TemplateObject {
+    static let testObject = TemplateObject(
+        passwordHint: "Sunshine",
+        favoriteColor: "Blue",
+        dogName: "Daisy"
+    )
+}
+#endif

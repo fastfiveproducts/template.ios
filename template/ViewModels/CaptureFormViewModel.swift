@@ -1,5 +1,5 @@
 //
-//  FormCaptureViewModel.swift
+//  CaptureFormViewModel.swift
 //
 //  Created by Pete Maiser on 6/20/25.
 //      © Fast Five Products LLC, 2025
@@ -17,23 +17,23 @@ import SwiftUI
 
 
 @MainActor
-class FormCaptureViewModel<T: Listable>: ObservableObject {
-    @Published var fields: [Capturable]
+class CaptureFormViewModel<T: Listable>: ObservableObject {
+    @Published var fields: [CaptureField]
 
     let title: String
-    private let makeCaptured: ([Capturable]) -> T
+    private let makeStruct: ([CaptureField]) -> T
 
-    init(title: String, fields: [Capturable], makeCaptured: @escaping ([Capturable]) -> T) {
+    init(title: String, fields: [CaptureField], makeStruct: @escaping ([CaptureField]) -> T) {
         self.title = title
         self.fields = fields
-        self.makeCaptured = makeCaptured
+        self.makeStruct = makeStruct
     }
 
     var isValid: Bool {
         fields.allSatisfy { $0.isValid }
     }
 
-    func toCaptured() -> T {
-        makeCaptured(fields)
+    func insert() -> T {
+        makeStruct(fields)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  FormCaptureView.swift
+//  CaptureFormView.swift
 //
 //  Template created by Pete Maiser, July 2024 through May 2025
 //      © Fast Five Products LLC, 2025
@@ -15,8 +15,8 @@
 import Foundation
 import SwiftUI
 
-struct FormCaptureView<T: Listable>: View {
-    @ObservedObject var viewModel: FormCaptureViewModel<T>
+struct CaptureFormView<T: Listable>: View {
+    @ObservedObject var viewModel: CaptureFormViewModel<T>
     var showHeader: Bool = true
     var onSubmit: ((T) -> Void)?
 
@@ -34,7 +34,7 @@ struct FormCaptureView<T: Listable>: View {
 
             Button("Submit") {
                 if let onSubmit {
-                    onSubmit(viewModel.toCaptured())
+                    onSubmit(viewModel.insert())
                 }
             }
             .disabled(!viewModel.isValid)
@@ -66,8 +66,8 @@ struct FormCaptureView<T: Listable>: View {
 #if DEBUG
 #Preview {
     Form {
-        FormCaptureView(
-            viewModel: FormCaptureViewModel<TemplateStruct>.configured(),
+        CaptureFormView(
+            viewModel: CaptureFormViewModel<TemplateStruct>.configured(),
             onSubmit: { result in
                 print("Captured TemplateStruct: \(result)")
             }

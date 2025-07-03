@@ -67,8 +67,8 @@ struct HomeView: View {
                             }
                         }
                     } content: {
-                        FormCaptureView(
-                            viewModel: FormCaptureViewModel<TemplateStruct>.configured(),
+                        CaptureFormView(
+                            viewModel: CaptureFormViewModel<TemplateStruct>.configured(),
                             showHeader: false,
                             onSubmit: { result in
                                 print("Captured TemplateStruct: \(result)")
@@ -102,8 +102,8 @@ struct HomeView: View {
                         }
                     } content: {
                         if currentUserService.isSignedIn {
-                            FormCaptureView(
-                                viewModel: FormCaptureViewModel<TemplateStruct>.configured(),
+                            CaptureFormView(
+                                viewModel: CaptureFormViewModel<TemplateStruct>.configured(),
                                 showHeader: false,
                                 onSubmit: { result in
                                     print("Captured TemplateStruct: \(result)")
@@ -267,8 +267,8 @@ struct SampleFormView: View {
             }
             
             // This is a Placeholder-Test View
-            FormCaptureView(
-                viewModel: FormCaptureViewModel<TemplateStruct>.configured(),
+            CaptureFormView(
+                viewModel: CaptureFormViewModel<TemplateStruct>.configured(),
                 showHeader: false,
                 onSubmit: { result in
                     print("Captured TemplateStruct: \(result)")

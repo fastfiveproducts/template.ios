@@ -187,3 +187,62 @@ extension PrivateMessage {
         content: "No Messages!"
     )
 }
+
+
+#if DEBUG
+extension PrivateMessage {
+    static let testObject = PrivateMessage(
+        id: UUID(),
+        timestamp: Date(),
+        from: UserKey.testObject,
+        to: UserKey.testObjectAnother,
+        title: "Title Lorem Ipsum",
+        content: "Test Message from tO to tOA, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    )
+    static let testObjectAnother = PrivateMessage(
+        id: UUID(),
+        timestamp: Date(),
+        from: UserKey.testObjectAnother,
+        to: UserKey.testObject,
+        title: "Another Title Lorem ipsum",
+        content: "Test Message from tOA  to tO, more Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    )
+    static let testObjectTiny = PrivateMessage(
+        id: UUID(),
+        timestamp: Date(),
+        from: UserKey.testObject,
+        to: UserKey.testObjectAnother,
+        title: "t",
+        content: "tO to tOA"
+    )
+    static let testObjects: [PrivateMessage] = [.testObject, .testObjectAnother, .testObjectTiny]
+}
+
+extension PublicComment {
+    static let testObject = PublicComment(
+        id: UUID(),
+        timestamp: Date(),
+        from: UserKey.testObject,
+        to: UserKey.blankUser,
+        title: "",
+        content: "Test Comment from tO, lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    )
+    static let testObjectAnother = PublicComment(
+        id: UUID(),
+        timestamp: Date(),
+        from: UserKey.testObjectAnother,
+        to: UserKey.blankUser,
+        title: "",
+        content: "Test Comment from tOA, more lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    )
+    static let testObjectTiny = PublicComment(
+        id: UUID(),
+        timestamp: Date(),
+        from: UserKey.testObject,
+        to: UserKey.blankUser,
+        title: "",
+        content: "tO comment"
+    )
+    static let testObjects: [PublicComment] = [.testObject, .testObjectAnother, testObjectTiny]
+}
+#endif
