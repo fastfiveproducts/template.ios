@@ -210,38 +210,4 @@ struct HomeView: View {
         templateStructStore: ListableFileStore<TemplateStruct>()
     )
 }
-#Preview ("Sample Form View") {
-    SampleFormView()
-}
-
-struct SampleFormView: View {
-    var body: some View {
-        Form {
-
-            // This is a Placeholder-Test View, with test data
-            Section(header: Text("Announcements")) {
-                ListableStoreView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects), showDividers: false)
-            }
-            
-            // This is a Placeholder-Test View
-            CaptureFormView(
-                viewModel: TemplateStruct.makeCaptureFormViewModel(store: ListableFileStore<TemplateStruct>()),
-                showHeader: false
-            )
-                .padding(.horizontal)
-                .background(Color(.systemGroupedBackground))
-                .cornerRadius(6)
-                .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-            
-            // This is a Placeholder-Test View, with test data
-            ListableStoreSectionView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects))
-            
-            // This is a Placeholder-Test View disappearing when there is no data!
-            ListableStoreSectionView(store: ListableCloudStore<Announcement>.testEmpty())
-            
-        }
-        .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
-        .environment(\.font, Font.body)
-    }
-}
 #endif

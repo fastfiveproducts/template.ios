@@ -16,7 +16,10 @@ import SwiftUI
 
 struct ListableStoreView<T: Listable>: View {
     @ObservedObject var store: ListableCloudStore<T>
+    
+    var showSectionHeader: Bool = false
     var showDividers: Bool = true
+    var hideWhenEmpty: Bool = false
     
     var body: some View {
         switch store.list {
@@ -25,21 +28,45 @@ struct ListableStoreView<T: Listable>: View {
                 Text("\(T.typeDescription)s: ")
                 ProgressView()
             }
+            
         case let .loaded(objects):
-            ForEach(objects.indices, id: \.self) { index in
-                VStack(alignment: .leading, spacing: 4) {
-                    let object = objects[index]
-                    Text(object.objectDescription)
-                    if showDividers && index < objects.count - 1 {
-                        Divider()
-                            .padding(.top, 6)
-                    }
-                }
+            if hideWhenEmpty && objects.isEmpty {
+                EmptyView()
+            } else {
+                content(for: objects)
             }
+            
         case .error(let error):
-            Text("Cloud Error loading \(T.typeDescription)s: \(error)")
+            Text("Cloud Error loading \(T.typeDescription)s: \(error.localizedDescription)")
+            
         case .none:
             Text("\(T.typeDescription)s: nothing here")
+        }
+    }
+    
+    @ViewBuilder
+    private func content(for objects: [T]) -> some View {
+        let sectionHeader = Text("\(T.typeDescription)s")
+        
+        if showSectionHeader && !objects.isEmpty {
+            Section(header: sectionHeader) {
+                contentList(objects)
+            }
+        } else {
+            contentList(objects)
+        }
+    }
+
+    private func contentList(_ objects: [T]) -> some View {
+        ForEach(objects.indices, id: \.self) { index in
+            VStack(alignment: .leading, spacing: 4) {
+                let object = objects[index]
+                Text(object.objectDescription)
+                if showDividers && index < objects.count - 1 {
+                    Divider()
+                        .padding(.top, 6)
+                }
+            }
         }
     }
 }
@@ -51,6 +78,9 @@ struct ListableStoreView<T: Listable>: View {
         Section(header: Text("Announcements")) {
             ListableStoreView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects), showDividers: false)
         }
+        
+        // this will show the same way:
+        ListableStoreView(store: ListableCloudStore<Announcement>.testLoaded(with: Announcement.testObjects), showSectionHeader: true, showDividers: false)
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)
@@ -77,6 +107,9 @@ struct ListableStoreView<T: Listable>: View {
         Section {
             ListableStoreView(store: ListableCloudStore<Announcement>.testEmpty(), showDividers: false)
         }
+        
+        // this will show the same way, including hiding the header it would show if there was content
+        ListableStoreView(store: ListableCloudStore<Announcement>.testEmpty(), showSectionHeader: true, showDividers: false)
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)

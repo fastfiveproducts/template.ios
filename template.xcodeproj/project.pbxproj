@@ -63,7 +63,6 @@
 		B5DABDD52E00741D00EF6F6E /* TemplateStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD42E00741D00EF6F6E /* TemplateStruct.swift */; };
 		B5DF31752DE8E72A00E1EF24 /* RestrictedWordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */; };
 		B5DF31772DE9054500E1EF24 /* ListableCloudStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */; };
-		B5E0705F2DEA258D006B33D7 /* ListableStoreSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E0705E2DEA2581006B33D7 /* ListableStoreSectionView.swift */; };
 		B5E4017E2DEF6385002357B6 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E4017D2DEF6385002357B6 /* CreateAccountView.swift */; };
 /* End PBXBuildFile section */
 
@@ -116,7 +115,6 @@
 		B5DABDD42E00741D00EF6F6E /* TemplateStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateStruct.swift; sourceTree = "<group>"; };
 		B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictedWordStore.swift; sourceTree = "<group>"; };
 		B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableCloudStore.swift; sourceTree = "<group>"; };
-		B5E0705E2DEA2581006B33D7 /* ListableStoreSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableStoreSectionView.swift; sourceTree = "<group>"; };
 		B5E4017D2DEF6385002357B6 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -242,7 +240,7 @@
 			children = (
 				B5837CB32DE668D200339039 /* Main */,
 				B587E26C2E15A8740057389C /* Shared */,
-				B5837CB22DE668C900339039 /* User */,
+				B5837CB22DE668C900339039 /* UserAccountSubViews */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -258,7 +256,7 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
-		B5837CB22DE668C900339039 /* User */ = {
+		B5837CB22DE668C900339039 /* UserAccountSubViews */ = {
 			isa = PBXGroup;
 			children = (
 				B5837CC42DE6836A00339039 /* SignUpInOutView.swift */,
@@ -267,7 +265,7 @@
 				B55DDA712DEFAD690087AB54 /* UserAssociationView.swift */,
 				B55DDA732DEFAD870087AB54 /* UserDemographicsView.swift */,
 			);
-			path = User;
+			path = UserAccountSubViews;
 			sourceTree = "<group>";
 		};
 		B5837CB32DE668D200339039 /* Main */ = {
@@ -294,7 +292,6 @@
 			isa = PBXGroup;
 			children = (
 				B547681D2E060E820005540F /* CaptureFormView.swift */,
-				B5E0705E2DEA2581006B33D7 /* ListableStoreSectionView.swift */,
 				B5185B192DE7E78A0086BB32 /* ListableStoreView.swift */,
 				B54B79BD2DF1E8BD00E5A21F /* PostBubbleView.swift */,
 				B54B79BF2DF1EAC400E5A21F /* PostsScrollView.swift */,
@@ -437,7 +434,6 @@
 				B5DF31772DE9054500E1EF24 /* ListableCloudStore.swift in Sources */,
 				B5DABDD52E00741D00EF6F6E /* TemplateStruct.swift in Sources */,
 				B511E9B62DE6253D009C0DA4 /* Loadable.swift in Sources */,
-				B5E0705F2DEA258D006B33D7 /* ListableStoreSectionView.swift in Sources */,
 				B511E9C92DE62CE5009C0DA4 /* CurrentUserService.swift in Sources */,
 				B587E2692E15967F0057389C /* ListableFileStoreViewModel.swift in Sources */,
 				B55DDA742DEFAD870087AB54 /* UserDemographicsView.swift in Sources */,
