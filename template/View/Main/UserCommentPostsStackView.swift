@@ -1,5 +1,5 @@
 //
-//  UserCommentStackView.swift
+//  UserCommentPostsStackView.swift
 //
 //  Template created by Pete Maiser, July 2024 through May 2025
 //      © Fast Five Products LLC, 2025
@@ -8,15 +8,15 @@
 //      changes should be rare; it is recommended changes are applied to the template
 //      and the entire file compared-and-then-replaced here if/as appropriate
 //
-//      Template v0.1.1
+//      Template v0.1.2 (renamed)
 //
 
 
 import SwiftUI
 
-struct UserCommentStackView: View, DebugPrintable {
+struct UserCommentPostsStackView: View, DebugPrintable {
     @ObservedObject var currentUserService: CurrentUserService
-    @ObservedObject var viewModel: CreatePostViewModel<PublicComment>
+    @ObservedObject var viewModel: UserPostViewModel<PublicComment>
     @ObservedObject var store: PublicCommentStore
     
     @Environment(\.dismiss) private var dismiss
@@ -95,7 +95,7 @@ struct UserCommentStackView: View, DebugPrintable {
 }
 
 
-private extension UserCommentStackView {
+private extension UserCommentPostsStackView {
     private func submit() {
         debugprint("(View) submit called")
         viewModel.isWorking = true
@@ -121,9 +121,9 @@ private extension UserCommentStackView {
 #if DEBUG
 #Preview  {
     let currentUserService = CurrentUserTestService.sharedSignedIn
-    let viewModel = CreatePostViewModel<PublicComment>()
+    let viewModel = UserPostViewModel<PublicComment>()
     let store = PublicCommentStore.testLoaded()
-    UserCommentStackView(
+    UserCommentPostsStackView(
         currentUserService: currentUserService,
         viewModel: viewModel,
         store: store

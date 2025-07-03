@@ -37,8 +37,8 @@
 		B54B79BC2DF0FF1100E5A21F /* DefaultConnector in Frameworks */ = {isa = PBXBuildFile; productRef = B54B79BB2DF0FF1100E5A21F /* DefaultConnector */; };
 		B54B79BE2DF1E8BD00E5A21F /* PostBubbleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54B79BD2DF1E8BD00E5A21F /* PostBubbleView.swift */; };
 		B54B79C02DF1EAC400E5A21F /* PostsScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54B79BF2DF1EAC400E5A21F /* PostsScrollView.swift */; };
-		B54B79C22DF1F2B900E5A21F /* UserCommentStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54B79C12DF1F2B900E5A21F /* UserCommentStackView.swift */; };
-		B54B79C42DF1F4A800E5A21F /* UserMessageStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54B79C32DF1F4A800E5A21F /* UserMessageStackView.swift */; };
+		B54B79C22DF1F2B900E5A21F /* UserCommentPostsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54B79C12DF1F2B900E5A21F /* UserCommentPostsStackView.swift */; };
+		B54B79C42DF1F4A800E5A21F /* UserMessagePostsStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54B79C32DF1F4A800E5A21F /* UserMessagePostsStackView.swift */; };
 		B55DDA702DEFA2270087AB54 /* UserAccountProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55DDA6F2DEFA2270087AB54 /* UserAccountProfileView.swift */; };
 		B55DDA722DEFAD690087AB54 /* UserAssociationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55DDA712DEFAD690087AB54 /* UserAssociationView.swift */; };
 		B55DDA742DEFAD870087AB54 /* UserDemographicsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55DDA732DEFAD870087AB54 /* UserDemographicsView.swift */; };
@@ -57,7 +57,7 @@
 		B5837CD52DE69ABC00339039 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = B5837CD42DE69ABC00339039 /* FirebaseFirestore */; };
 		B5837CD72DE69B2F00339039 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5837CD62DE69B2F00339039 /* GoogleService-Info.plist */; };
 		B5837CDA2DE69C8300339039 /* DefaultConnector in Frameworks */ = {isa = PBXBuildFile; productRef = B5837CD92DE69C8300339039 /* DefaultConnector */; };
-		B5837CE22DE6A0AF00339039 /* CreatePostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */; };
+		B5837CE22DE6A0AF00339039 /* UserPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5837CE12DE6A0AF00339039 /* UserPostViewModel.swift */; };
 		B587E2692E15967F0057389C /* ListableFileStoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E2682E15967F0057389C /* ListableFileStoreViewModel.swift */; };
 		B5D128472DE914EF004A5286 /* PostStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D128462DE914EA004A5286 /* PostStores.swift */; };
 		B5DABDD52E00741D00EF6F6E /* TemplateStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD42E00741D00EF6F6E /* TemplateStruct.swift */; };
@@ -95,8 +95,8 @@
 		B54768212E0612310005540F /* CaptureFormViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureFormViewModel.swift; sourceTree = "<group>"; };
 		B54B79BD2DF1E8BD00E5A21F /* PostBubbleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostBubbleView.swift; sourceTree = "<group>"; };
 		B54B79BF2DF1EAC400E5A21F /* PostsScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostsScrollView.swift; sourceTree = "<group>"; };
-		B54B79C12DF1F2B900E5A21F /* UserCommentStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCommentStackView.swift; sourceTree = "<group>"; };
-		B54B79C32DF1F4A800E5A21F /* UserMessageStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMessageStackView.swift; sourceTree = "<group>"; };
+		B54B79C12DF1F2B900E5A21F /* UserCommentPostsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCommentPostsStackView.swift; sourceTree = "<group>"; };
+		B54B79C32DF1F4A800E5A21F /* UserMessagePostsStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserMessagePostsStackView.swift; sourceTree = "<group>"; };
 		B55DDA6F2DEFA2270087AB54 /* UserAccountProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountProfileView.swift; sourceTree = "<group>"; };
 		B55DDA712DEFAD690087AB54 /* UserAssociationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAssociationView.swift; sourceTree = "<group>"; };
 		B55DDA732DEFAD870087AB54 /* UserDemographicsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDemographicsView.swift; sourceTree = "<group>"; };
@@ -110,7 +110,7 @@
 		B5837CC42DE6836A00339039 /* SignUpInOutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpInOutView.swift; sourceTree = "<group>"; };
 		B5837CC52DE6836A00339039 /* UserAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountView.swift; sourceTree = "<group>"; };
 		B5837CD62DE69B2F00339039 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePostViewModel.swift; sourceTree = "<group>"; };
+		B5837CE12DE6A0AF00339039 /* UserPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostViewModel.swift; sourceTree = "<group>"; };
 		B587E2682E15967F0057389C /* ListableFileStoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableFileStoreViewModel.swift; sourceTree = "<group>"; };
 		B5D128462DE914EA004A5286 /* PostStores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStores.swift; sourceTree = "<group>"; };
 		B5DABDD42E00741D00EF6F6E /* TemplateStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateStruct.swift; sourceTree = "<group>"; };
@@ -251,9 +251,9 @@
 			isa = PBXGroup;
 			children = (
 				B54768212E0612310005540F /* CaptureFormViewModel.swift */,
-				B5837CE12DE6A0AF00339039 /* CreatePostViewModel.swift */,
 				B5837CB92DE66AA800339039 /* HomeViewModel.swift */,
 				B5837CBA2DE66AA800339039 /* UserAccountViewModel.swift */,
+				B5837CE12DE6A0AF00339039 /* UserPostViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -275,8 +275,8 @@
 			children = (
 				B511E9AD2DE6253D009C0DA4 /* HomeView.swift */,
 				B5837CC52DE6836A00339039 /* UserAccountView.swift */,
-				B54B79C12DF1F2B900E5A21F /* UserCommentStackView.swift */,
-				B54B79C32DF1F4A800E5A21F /* UserMessageStackView.swift */,
+				B54B79C12DF1F2B900E5A21F /* UserCommentPostsStackView.swift */,
+				B54B79C32DF1F4A800E5A21F /* UserMessagePostsStackView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -426,7 +426,7 @@
 				B55DDA702DEFA2270087AB54 /* UserAccountProfileView.swift in Sources */,
 				B55DDA722DEFAD690087AB54 /* UserAssociationView.swift in Sources */,
 				B511E9B42DE6253D009C0DA4 /* CloudErrorCodes.swift in Sources */,
-				B54B79C22DF1F2B900E5A21F /* UserCommentStackView.swift in Sources */,
+				B54B79C22DF1F2B900E5A21F /* UserCommentPostsStackView.swift in Sources */,
 				B54768222E0612310005540F /* CaptureFormViewModel.swift in Sources */,
 				B5837CC62DE6836A00339039 /* SignUpInOutView.swift in Sources */,
 				B54B79BE2DF1E8BD00E5A21F /* PostBubbleView.swift in Sources */,
@@ -450,12 +450,12 @@
 				B52D95B22E14A9DE00D3B027 /* ListableFileStore.swift in Sources */,
 				B5DF31752DE8E72A00E1EF24 /* RestrictedWordStore.swift in Sources */,
 				B5E4017E2DEF6385002357B6 /* CreateAccountView.swift in Sources */,
-				B5837CE22DE6A0AF00339039 /* CreatePostViewModel.swift in Sources */,
+				B5837CE22DE6A0AF00339039 /* UserPostViewModel.swift in Sources */,
 				B54B79C02DF1EAC400E5A21F /* PostsScrollView.swift in Sources */,
 				B5837CAE2DE6672F00339039 /* FirestoreConnector.swift in Sources */,
 				B511E9BC2DE6253D009C0DA4 /* templateApp.swift in Sources */,
 				B5D128472DE914EF004A5286 /* PostStores.swift in Sources */,
-				B54B79C42DF1F4A800E5A21F /* UserMessageStackView.swift in Sources */,
+				B54B79C42DF1F4A800E5A21F /* UserMessagePostsStackView.swift in Sources */,
 				B51416762DF35966004D898C /* VStackBox.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

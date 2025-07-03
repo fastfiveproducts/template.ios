@@ -88,9 +88,9 @@ struct HomeView: View {
                             Spacer()
                             if currentUserService.isSignedIn {
                                 NavigationLink {
-                                    UserCommentStackView(
+                                    UserCommentPostsStackView(
                                         currentUserService: currentUserService,
-                                        viewModel: CreatePostViewModel<PublicComment>(),
+                                        viewModel: UserPostViewModel<PublicComment>(),
                                         store: publicCommentStore
                                     )
                                 } label: {
@@ -157,9 +157,9 @@ struct HomeView: View {
                 {
                     ToolbarItem(placement: .navigationBarTrailing) {
                         NavigationLink {
-                            UserMessageStackView(
+                            UserMessagePostsStackView(
                                 currentUserService: currentUserService,
-                                viewModel: CreatePostViewModel<PrivateMessage>(),
+                                viewModel: UserPostViewModel<PrivateMessage>(),
                                 store: privateMessageStore)
                         } label: {
                             Label("Messages", systemImage: "envelope")

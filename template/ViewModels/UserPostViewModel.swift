@@ -1,5 +1,5 @@
 //
-//  CreatePostViewModel.swift
+//  UserPostViewModel.swift
 //
 //  Template created by Pete Maiser, July 2024 through May 2025
 //      © Fast Five Products LLC, 2025
@@ -8,14 +8,14 @@
 //      changes should be rare; it is recommended changes are applied to the template
 //      and the entire file compared-and-then-replaced here if/as appropriate
 //
-//      Template v0.1.1
+//      Template v0.1.2 (renamed)
 //
 
 
 import Foundation
 
 @MainActor
-class CreatePostViewModel<T: Post>: ObservableObject, DebugPrintable {
+class UserPostViewModel<T: Post>: ObservableObject, DebugPrintable {
     
     // Status
     @Published private(set) var statusText = ""

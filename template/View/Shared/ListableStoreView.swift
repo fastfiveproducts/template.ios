@@ -44,6 +44,7 @@ struct ListableStoreView<T: Listable>: View {
     }
 }
 
+
 #if DEBUG
 #Preview ("Form: Loaded") {
     Form {
