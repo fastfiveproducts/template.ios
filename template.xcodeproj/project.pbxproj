@@ -59,7 +59,6 @@
 		B5837CD72DE69B2F00339039 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5837CD62DE69B2F00339039 /* GoogleService-Info.plist */; };
 		B5837CDA2DE69C8300339039 /* DefaultConnector in Frameworks */ = {isa = PBXBuildFile; productRef = B5837CD92DE69C8300339039 /* DefaultConnector */; };
 		B5837CE22DE6A0AF00339039 /* UserPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5837CE12DE6A0AF00339039 /* UserPostViewModel.swift */; };
-		B587E2692E15967F0057389C /* ListableFileStoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B587E2682E15967F0057389C /* ListableFileStoreViewModel.swift */; };
 		B5D128472DE914EF004A5286 /* PostStores.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D128462DE914EA004A5286 /* PostStores.swift */; };
 		B5DABDD52E00741D00EF6F6E /* TemplateStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DABDD42E00741D00EF6F6E /* TemplateStruct.swift */; };
 		B5DF31752DE8E72A00E1EF24 /* RestrictedWordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */; };
@@ -112,7 +111,6 @@
 		B5837CC52DE6836A00339039 /* UserAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccountView.swift; sourceTree = "<group>"; };
 		B5837CD62DE69B2F00339039 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B5837CE12DE6A0AF00339039 /* UserPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPostViewModel.swift; sourceTree = "<group>"; };
-		B587E2682E15967F0057389C /* ListableFileStoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableFileStoreViewModel.swift; sourceTree = "<group>"; };
 		B5D128462DE914EA004A5286 /* PostStores.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostStores.swift; sourceTree = "<group>"; };
 		B5DABDD42E00741D00EF6F6E /* TemplateStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateStruct.swift; sourceTree = "<group>"; };
 		B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictedWordStore.swift; sourceTree = "<group>"; };
@@ -152,7 +150,6 @@
 		B511E9AF2DE6253D009C0DA4 /* template */ = {
 			isa = PBXGroup;
 			children = (
-				B57B22132E15BF0100BDE7F7 /* _WORKING */,
 				B511E9CC2DE62EF0009C0DA4 /* Cloud */,
 				B5D1284C2DE925B6004A5286 /* CloudSupport */,
 				B511E9BF2DE62ABC009C0DA4 /* Model */,
@@ -227,14 +224,6 @@
 				B55EA51D2DE621CC00D9F8BC /* template.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		B57B22132E15BF0100BDE7F7 /* _WORKING */ = {
-			isa = PBXGroup;
-			children = (
-				B587E2682E15967F0057389C /* ListableFileStoreViewModel.swift */,
-			);
-			path = _WORKING;
 			sourceTree = "<group>";
 		};
 		B5837CAF2DE6682E00339039 /* View */ = {
@@ -438,7 +427,6 @@
 				B5DABDD52E00741D00EF6F6E /* TemplateStruct.swift in Sources */,
 				B511E9B62DE6253D009C0DA4 /* Loadable.swift in Sources */,
 				B511E9C92DE62CE5009C0DA4 /* CurrentUserService.swift in Sources */,
-				B587E2692E15967F0057389C /* ListableFileStoreViewModel.swift in Sources */,
 				B55DDA742DEFAD870087AB54 /* UserDemographicsView.swift in Sources */,
 				B511E9B82DE6253D009C0DA4 /* SignInOutObserver.swift in Sources */,
 				B511E9B92DE6253D009C0DA4 /* ViewConfiguration.swift in Sources */,
