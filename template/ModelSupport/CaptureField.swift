@@ -15,7 +15,7 @@
 import Foundation
 
 struct CaptureField: Identifiable {
-    var id: String
+    var id: String            // this will be the 'name' of the field; use id to conform to Identifiable
     var labelText: String
     var promptText: String
     var text: String

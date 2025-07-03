@@ -52,7 +52,7 @@ struct HomeView: View {
                     Divider().padding(.horizontal)
                     VStackBox {
                         HStack {
-                            Text ("Local File Sample")
+                            Text ("Capture Form Example")
                                 .font(.title2)
                                 .fontWeight(.semibold)
                             Spacer()
@@ -78,49 +78,6 @@ struct HomeView: View {
                             .background(Color(.systemGroupedBackground))
                             .cornerRadius(6)
                             .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-                    }
-                    
-                    // MARK: -- Text Capture Section, SwiftData
-                    Divider().padding(.horizontal)
-                    VStackBox {
-                        HStack {
-                            Text ("SwiftData Sample")
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                            Spacer()
-                            if currentUserService.isSignedIn {
-                                NavigationLink {
-                                    VStackBox() {
-                                        Text("Replace this VStackBox with a Detail View!")
-                                    }
-                                } label: {
-                                    Text("Records")
-                                        .font(.caption)
-                                        .foregroundColor(.accentColor)
-                                }
-                            }
-                        }
-                    } content: {
-                        if currentUserService.isSignedIn {
-                            CaptureFormView(
-                                viewModel: CaptureFormViewModel<TemplateStruct>.configured(),
-                                showHeader: false,
-                                onSubmit: { result in
-                                    print("Captured TemplateStruct: \(result)")
-                                }
-                            )
-                                .padding(.horizontal)
-                                .background(Color(.systemGroupedBackground))
-                                .cornerRadius(6)
-                                .shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-                        }  else {
-                            HStack {
-                                Text("Not Signed In!")
-                                Spacer()
-                                Text("...tap ") + Text(Image(systemName: "person")) + Text(" above")
-                            }
-                            .padding(.horizontal)
-                        }
                     }
 
                     // MARK: -- Testing Talk

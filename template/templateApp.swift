@@ -30,7 +30,6 @@ struct templateApp: App {
             )
                 .task {AnnouncementStore.shared.fetch()}
         }
-        .modelContainer(for: TemplateObject.self)
     }
 }
 

@@ -19,7 +19,7 @@
 //     and persisted locally using FileManager
 //
 //     TemplateObject: is a sample of a class that is then later used in the app
-//     and persisted locally using SwiftData
+//     and persisted locally using SwiftData.  TODO:  actually add this
 //
 //     Also note other examples/samples:
 //     "Annoucement" in this app is ready-only and sourced from Firebase Firestore
@@ -32,6 +32,8 @@ import Foundation
 
 struct TemplateStruct: Listable {
     var id = UUID()
+    
+    // attributes
     var passwordHint: String
     var favoriteColor: String
     var dogName: String
@@ -41,15 +43,20 @@ struct TemplateStruct: Listable {
         "Favorite Color: \(favoriteColor), Dog Name: \(dogName)"
     }
     
+    // add a helper to determine if a paritulcar struct instance is valid
     var isValid: Bool { !favoriteColor.isEmpty && !dogName.isEmpty }
 }
 
+// to conform to Listable, add placeholder features --
+// some patterns use a 'placeholder' until/if data is available
 extension TemplateStruct {
-    static var usePlaceholder: Bool { false }
-    static var placeholder: TemplateStruct { .init(passwordHint: "", favoriteColor: "", dogName: "") }
 
+    static let usePlaceholder = false
+    static let placeholder = TemplateStruct(passwordHint: "", favoriteColor: "", dogName: "")
 }
 
+// prepare this struct to capturable via the CaptureForm view
+// via creating a struct-specific ViewModel that gives the view everything it needs to capture this data
 extension CaptureFormViewModel where T == TemplateStruct {
     static func configured() -> CaptureFormViewModel<T> {
         CaptureFormViewModel(
