@@ -40,7 +40,7 @@ struct TemplateStruct: Listable {
 
     // to conform to Listable, use known data to describe the object
     var objectDescription: String {
-        "Favorite Color: \(favoriteColor), Dog Name: \(dogName)"
+        "Hint: \(passwordHint), Color: \(favoriteColor), Dog: \(dogName)"
     }
     
     // add a helper to determine if a particular struct instance is valid
@@ -69,9 +69,9 @@ extension TemplateStruct {
         CaptureFormViewModel(
             title: "Sample Form",
             fields: [
-                CaptureField(id: "passwordHint", labelText: "Password Hint", promptText: "optional: Password Hint", text: "", required: false, autoCapitalize: false, checkRestrictedWordList: false),
-                CaptureField(id: "favoriteColor", labelText: "Favorite Color", promptText: "required: Favorite Color", text: ""),
-                CaptureField(id: "dogName", labelText: "Dog Name", promptText: "required: Your Dog's Name", text: "")
+                CaptureField(id: "passwordHint", labelText: "Password Hint", promptText: "optional: Password Hint", required: false, autoCapitalize: false, checkRestrictedWordList: false),
+                CaptureField(id: "favoriteColor", labelText: "Favorite Color", promptText: "required: Favorite Color"),
+                CaptureField(id: "dogName", labelText: "Dog's Name", promptText: "required: Your Dog's Name")
             ],
             makeStruct: { fields in
                 let dict = Dictionary(uniqueKeysWithValues: fields.map { ($0.id, $0) })

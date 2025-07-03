@@ -22,7 +22,13 @@ struct CaptureFormView<T: Listable>: View {
     @FocusState private var focusedFieldIndex: Int?
 
     private func nextField() {
-        focusedFieldIndex = (focusedFieldIndex ?? -1) + 1
+        let nextIndex = (focusedFieldIndex ?? -1) + 1
+        if nextIndex < viewModel.fields.count {
+            focusedFieldIndex = nextIndex
+        } else {
+            if viewModel.isValid { viewModel.insert() }
+            focusedFieldIndex = 0
+        }
     }
 
     var body: some View {

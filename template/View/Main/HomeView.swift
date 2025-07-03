@@ -58,8 +58,8 @@ struct HomeView: View {
                                 .fontWeight(.semibold)
                             Spacer()
                             NavigationLink {
-                                VStackBox() {
-                                    Text("Replace this VStackBox with a Detail View!")
+                                Form() {
+                                    ListableStoreView(store: templateStructStore, showSectionHeader: true, showDividers: false)
                                 }
                             } label: {
                                 Text("Records")

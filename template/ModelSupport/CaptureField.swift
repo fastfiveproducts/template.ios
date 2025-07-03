@@ -15,10 +15,10 @@
 import Foundation
 
 struct CaptureField: Identifiable {
-    var id: String            // this will be the 'name' of the field; use id to conform to Identifiable
+    var id: String            // this will be the 'name' of the field; 'id' ensures conformance to Identifiable
     var labelText: String
     var promptText: String
-    var text: String
+    var text: String = ""
     var required: Bool = true
     var autoCapitalize: Bool = true
     var checkRestrictedWordList: Bool = true
