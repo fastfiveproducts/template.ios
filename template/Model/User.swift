@@ -43,7 +43,7 @@ struct UserKey: Equatable, Codable {
     let displayName: String
     var isValid: Bool {
         !uid.isEmpty &&
-        !displayName.isEmpty }
+        !displayName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty }
 }
 
 // used to create or update a User Account:

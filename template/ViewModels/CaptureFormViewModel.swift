@@ -13,8 +13,6 @@
 
 
 import Foundation
-import SwiftUI
-
 
 @MainActor
 class CaptureFormViewModel<T: Listable>: ObservableObject {
@@ -22,18 +20,27 @@ class CaptureFormViewModel<T: Listable>: ObservableObject {
 
     let title: String
     private let makeStruct: ([CaptureField]) -> T
+    private let insertAction: (T) -> Void
 
-    init(title: String, fields: [CaptureField], makeStruct: @escaping ([CaptureField]) -> T) {
+    init(
+        title: String,
+        fields: [CaptureField],
+        makeStruct: @escaping ([CaptureField]) -> T,
+        insertAction: @escaping (T) -> Void
+    ) {
         self.title = title
         self.fields = fields
         self.makeStruct = makeStruct
+        self.insertAction = insertAction
     }
 
     var isValid: Bool {
         fields.allSatisfy { $0.isValid }
     }
 
-    func insert() -> T {
-        makeStruct(fields)
+    func insert() {
+        let newItem = makeStruct(fields)
+        insertAction(newItem)
     }
 }
+

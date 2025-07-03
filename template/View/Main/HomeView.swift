@@ -21,6 +21,7 @@ struct HomeView: View {
     @ObservedObject var announcementStore: AnnouncementStore
     @ObservedObject var publicCommentStore: PublicCommentStore
     @ObservedObject var privateMessageStore: PrivateMessageStore
+    @ObservedObject var templateStructStore = ListableFileStore<TemplateStruct>()
 
     var body: some View {
         NavigationStack {
@@ -68,11 +69,8 @@ struct HomeView: View {
                         }
                     } content: {
                         CaptureFormView(
-                            viewModel: CaptureFormViewModel<TemplateStruct>.configured(),
-                            showHeader: false,
-                            onSubmit: { result in
-                                print("Captured TemplateStruct: \(result)")
-                            }
+                            viewModel: TemplateStruct.makeCaptureFormViewModel(store: templateStructStore),
+                            showHeader: false
                         )
                             .padding(.horizontal)
                             .background(Color(.systemGroupedBackground))
@@ -197,7 +195,8 @@ struct HomeView: View {
         currentUserService: currentUserService,
         announcementStore: AnnouncementStore.testLoaded(),
         publicCommentStore: PublicCommentStore.testLoaded(),
-        privateMessageStore: PrivateMessageStore()              // loading empty because private messages not used yet
+        privateMessageStore: PrivateMessageStore(),             // loading empty because private messages not used yet
+        templateStructStore: ListableFileStore<TemplateStruct>()
     )
 }
 #Preview ("test-data signed-out") {
@@ -207,7 +206,8 @@ struct HomeView: View {
         currentUserService: currentUserService,
         announcementStore: AnnouncementStore.testLoaded(),
         publicCommentStore: PublicCommentStore.testLoaded(),
-        privateMessageStore: PrivateMessageStore.testLoaded()
+        privateMessageStore: PrivateMessageStore.testLoaded(),
+        templateStructStore: ListableFileStore<TemplateStruct>()
     )
 }
 #Preview ("Sample Form View") {
@@ -225,11 +225,8 @@ struct SampleFormView: View {
             
             // This is a Placeholder-Test View
             CaptureFormView(
-                viewModel: CaptureFormViewModel<TemplateStruct>.configured(),
-                showHeader: false,
-                onSubmit: { result in
-                    print("Captured TemplateStruct: \(result)")
-                }
+                viewModel: TemplateStruct.makeCaptureFormViewModel(store: ListableFileStore<TemplateStruct>()),
+                showHeader: false
             )
                 .padding(.horizontal)
                 .background(Color(.systemGroupedBackground))

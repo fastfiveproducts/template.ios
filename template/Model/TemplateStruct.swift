@@ -43,8 +43,16 @@ struct TemplateStruct: Listable {
         "Favorite Color: \(favoriteColor), Dog Name: \(dogName)"
     }
     
-    // add a helper to determine if a paritulcar struct instance is valid
-    var isValid: Bool { !favoriteColor.isEmpty && !dogName.isEmpty }
+    // add a helper to determine if a particular struct instance is valid
+    var isValid: Bool {
+        guard !favoriteColor.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              !dogName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        else {
+            debugprint("validation failed.")
+            return false
+        }
+        return true
+    }
 }
 
 // to conform to Listable, add placeholder features --
@@ -55,10 +63,9 @@ extension TemplateStruct {
     static let placeholder = TemplateStruct(passwordHint: "", favoriteColor: "", dogName: "")
 }
 
-// prepare this struct to capturable via the CaptureForm view
-// via creating a struct-specific ViewModel that gives the view everything it needs to capture this data
-extension CaptureFormViewModel where T == TemplateStruct {
-    static func configured() -> CaptureFormViewModel<T> {
+// create a CaptureForm ViewModel Fatory so this struct is capturable
+extension TemplateStruct {
+    @MainActor static func makeCaptureFormViewModel(store: ListableFileStore<TemplateStruct>) -> CaptureFormViewModel<TemplateStruct> {
         CaptureFormViewModel(
             title: "Sample Form",
             fields: [
@@ -73,6 +80,9 @@ extension CaptureFormViewModel where T == TemplateStruct {
                     favoriteColor: dict["favoriteColor"]?.text ?? "",
                     dogName: dict["dogName"]?.text ?? ""
                 )
+            },
+            insertAction: { item in
+                store.insert(item)
             }
         )
     }

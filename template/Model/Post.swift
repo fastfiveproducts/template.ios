@@ -36,7 +36,7 @@ struct PostCandidate: DebugPrintable {
     var references: Set<UUID> = []
     
     var isValid: Bool {
-        guard !content.isEmpty,
+        guard !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
               from.isValid
         else {
             debugprint("validation failed.")
@@ -93,7 +93,7 @@ struct PublicComment: Post, Listable {
     var objectDescription: String { "Comment from " + from.displayName + ": " + content }
     
     var isValid: Bool {
-        guard !content.isEmpty,
+        guard !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
               from.isValid
         else {
             debugprint("validation failed.")
@@ -122,8 +122,8 @@ struct PrivateMessage: Post, Listable  {
     var objectDescription: String { "Message from " + from.displayName + ": " + content }
     
     var isValid: Bool {
-        guard !title.isEmpty,
-              !content.isEmpty,
+        guard !title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              !content.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
               from.isValid,
               to.isValid
         else {

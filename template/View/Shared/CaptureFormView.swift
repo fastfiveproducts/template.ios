@@ -18,7 +18,6 @@ import SwiftUI
 struct CaptureFormView<T: Listable>: View {
     @ObservedObject var viewModel: CaptureFormViewModel<T>
     var showHeader: Bool = true
-    var onSubmit: ((T) -> Void)?
 
     @FocusState private var focusedFieldIndex: Int?
 
@@ -33,9 +32,7 @@ struct CaptureFormView<T: Listable>: View {
             }
 
             Button("Submit") {
-                if let onSubmit {
-                    onSubmit(viewModel.insert())
-                }
+                viewModel.insert()
             }
             .disabled(!viewModel.isValid)
         }
@@ -67,10 +64,7 @@ struct CaptureFormView<T: Listable>: View {
 #Preview {
     Form {
         CaptureFormView(
-            viewModel: CaptureFormViewModel<TemplateStruct>.configured(),
-            onSubmit: { result in
-                print("Captured TemplateStruct: \(result)")
-            }
+            viewModel: TemplateStruct.makeCaptureFormViewModel(store: ListableFileStore<TemplateStruct>())
         )
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
