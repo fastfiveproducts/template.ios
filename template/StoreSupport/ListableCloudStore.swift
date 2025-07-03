@@ -15,7 +15,7 @@
 import Foundation
 
 @MainActor
-class ListableCloudStore<T: Listable>: SignInOutObserver  {
+class ListableCloudStore<T: Listable>: SignInOutObserver, ListableStore {
         
     // primary data available from the store
     @Published var list: Loadable<[T]> = .none

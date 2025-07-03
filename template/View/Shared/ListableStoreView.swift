@@ -14,40 +14,37 @@
 
 import SwiftUI
 
-struct ListableStoreView<T: Listable>: View {
-    @ObservedObject var store: ListableCloudStore<T>
-    
+struct ListableStoreView<Store: ListableStore>: View {
+    @ObservedObject var store: Store
+
     var showSectionHeader: Bool = false
     var showDividers: Bool = true
     var hideWhenEmpty: Bool = false
-    
+
     var body: some View {
         switch store.list {
         case .loading:
             HStack {
-                Text("\(T.typeDescription)s: ")
+                Text("\(Store.T.typeDescription)s: ")
                 ProgressView()
             }
-            
         case let .loaded(objects):
             if hideWhenEmpty && objects.isEmpty {
                 EmptyView()
             } else {
                 content(for: objects)
             }
-            
         case .error(let error):
-            Text("Cloud Error loading \(T.typeDescription)s: \(error.localizedDescription)")
+            Text("Error loading \(Store.T.typeDescription)s: \(error.localizedDescription)")
             
         case .none:
-            Text("\(T.typeDescription)s: nothing here")
+            Text("\(Store.T.typeDescription)s: nothing here")
         }
     }
     
     @ViewBuilder
-    private func content(for objects: [T]) -> some View {
-        let sectionHeader = Text("\(T.typeDescription)s")
-        
+    private func content(for objects: [Store.T]) -> some View {
+        let sectionHeader = Text("\(Store.T.typeDescription)s")
         if showSectionHeader && !objects.isEmpty {
             Section(header: sectionHeader) {
                 contentList(objects)
@@ -57,7 +54,7 @@ struct ListableStoreView<T: Listable>: View {
         }
     }
 
-    private func contentList(_ objects: [T]) -> some View {
+    private func contentList(_ objects: [Store.T]) -> some View {
         ForEach(objects.indices, id: \.self) { index in
             VStack(alignment: .leading, spacing: 4) {
                 let object = objects[index]

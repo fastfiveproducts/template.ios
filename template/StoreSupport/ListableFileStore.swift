@@ -15,7 +15,7 @@
 import Foundation
 
 @MainActor
-class ListableFileStore<T: Listable>: ObservableObject {
+class ListableFileStore<T: Listable>: ListableStore {
     
     @Published var list: Loadable<[T]> = .none
     
