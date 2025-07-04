@@ -1,0 +1,76 @@
+//
+//  VStackBox.swift
+//
+//  Created by Pete Maiser, January 2025 through May 2025
+//      made availble here:
+//      https://github.com/fastfiveproducts/template.ios
+//      per terms of the MIT License
+//      changes should be rare; it is recommended changes are applied to the template
+//      and the entire file compared-and-then-replaced here if/as appropriate
+//
+
+
+import SwiftUI
+
+struct VStackBox<Content: View>: View {
+    let titleView: AnyView
+    let content: Content
+    
+    // accept "title" as just text...
+    init(title: String, @ViewBuilder content: () -> Content) {
+        self.titleView = AnyView(
+            Text(title)
+                .font(.title2)
+                .fontWeight(.semibold)
+        )
+        self.content = content()
+    }
+
+    // or accept an entire view as the title
+    init<Title: View>(@ViewBuilder titleView: () -> Title, @ViewBuilder content: () -> Content) {
+        self.titleView = AnyView(titleView())
+        self.content = content()
+    }
+    
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            titleView
+            content
+        }
+        .padding()
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(Color(.systemGroupedBackground))
+        .cornerRadius(12)
+        .padding(.horizontal)
+    }
+}
+
+#if DEBUG
+#Preview {
+    NavigationStack {
+        VStackBox {
+            HStack {
+                Text("View for Title")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                
+                Spacer()
+                
+                NavigationLink {
+                    VStackBox(title: "Text-only Title") {
+                        Text("Hello World")
+                    }
+                } label: {
+                    Text("Text Title")
+                        .font(.caption)
+                        .foregroundColor(.accentColor)
+                }
+            }
+        } content: {
+            Text("Hello World")
+        }
+        .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
+        .environment(\.font, Font.body)
+    }
+}
+#endif

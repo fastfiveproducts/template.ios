@@ -19,7 +19,18 @@ struct Announcement: Listable {
     let displayStartDate: Date
     let displayEndDate: Date
     private(set) var imageUrl: String?
-    
-    static let typeDescription = "Announcement"
+
+    // to conform to Listable, use known data to describe the object
     var objectDescription: String { content }
+}
+
+extension Announcement {
+    static let usePlaceholder = false
+    static let placeholder = Announcement(
+        id: 0,
+        title: "",
+        content: "Announcements not available!",
+        displayStartDate: Date(),
+        displayEndDate: Date()
+    )
 }

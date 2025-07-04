@@ -16,30 +16,40 @@
 import Foundation
 import Combine
 import FirebaseAuth
+import FirebaseDataConnect
+import DefaultConnector
 
 @MainActor
-class CurrentUserService: ObservableObject {
+class CurrentUserService: ObservableObject, DebugPrintable {
     
     static let shared = CurrentUserService()     // this store passed to view models as singleton
     
     // ***** Status and Modes *****
-    @Published var isSignedIn = false
-    @Published var isCreatingUser = false
-    @Published var isWaitingOnEmailVerification = false
+
+    // sign-in process
     @Published var isSigningIn = false
-    @Published var isCreatingUserProfile = false
+    @Published var isSignedIn = false
     
-    // ***** User and User Messages *****
+    // because Auth masters users, creating a User in the Authententication system is "creating a user"
+    // even if the user is not compplete until the Account is created and complete
+    @Published var isCreatingUser = false
+    
+    // no user is complete without the 'account' in the Application system
+    @Published var isCreatingUserAccount = false
+    @Published var isUpdatingUserAccount = false
+    
+    // for passwordless Authentication setup
+    // WARNING - placeholder only - not fully implemented - not tested
+    @Published var isWaitingOnEmailVerification = false
+    
+    
+    // ***** User *****
     @Published var user: User = User.blankUser
-    @Published var messagesToUser: Loadable<[PrivateMessage]> = .empty
-    @Published var messagesFromUser: Loadable<[PrivateMessage]> = .empty
-    var userKey: UserKey { UserKey(uid: user.profile.uid, displayName: user.profile.displayName) }
+    var userKey: UserKey { UserKey(uid: user.auth.uid, displayName: user.account.displayName) }
     
-    // ***** Cloud Data *****
-    private let messageService: MessageService = MessageService()
     
     // ***** Cloud Auth *****
-    @Published var authError: Error?
+    @Published var error: Error?
     private let auth = Auth.auth()
     private var userAuth = UserAuth.blankUser
     private var listener: AuthStateDidChangeListenerHandle?
@@ -51,8 +61,7 @@ class CurrentUserService: ObservableObject {
     }
     
     
-    // ***** Auth Functions *****
-    
+    // ***** Listener and Publisher Functions *****
     func setupListener() {
         listener = auth.addStateDidChangeListener { [weak self] _, user in
             self?.userAuth = user.map(UserAuth.init(from:)) ?? UserAuth.blankUser
@@ -65,238 +74,275 @@ class CurrentUserService: ObservableObject {
         }
     }
     
-    
-//    func requestNewAccountWithCandidate(_ candidate: UserCandidate) async throws {
-//        guard candidate.isValid else {
-//            throw AccountCreationError.invalidInput
-//        }
-//        
-//        // start the process
-//        isCreatingUser = true
-//        UserDefaults.standard.set(candidate.displayName, forKey: "displayName")
-//        
-//        // request that service email a link to start account creation
-//        do {
-//            try await requestSignInLinkEmail(toEmail: candidate.email)
-//        } catch {
-//            isCreatingUser = false
-//            throw error
-//        }
-//    }
-        
-//    func requestSignInLinkEmail(toEmail email: String) async throws {
-//        
-//        isWaitingOnEmailVerification = true
-//        UserDefaults.standard.set(email, forKey: "emailForSignIn")
-//
-//        let actionCodeSettings = ActionCodeSettings()
-//        actionCodeSettings.url = URL(string: "https://bracketdash.page.link/ios")
-//        actionCodeSettings.handleCodeInApp = true
-//        try await auth.sendSignInLink(toEmail: email, actionCodeSettings: actionCodeSettings)
-//        
-//    }
-    
-//    func completeSignInWithUrlLink(_ url: URL) async {
-//        
-//        isWaitingOnEmailVerification = false
-//        guard let email = UserDefaults.standard.string(forKey: "emailForSignIn")
-//        else {
-//            authError = SignInError.signInInputsNotFound
-//            isCreatingUser = false
-//            return
-//        }
-//        
-//        if auth.isSignIn(withEmailLink: url.absoluteString) {
-//            
-//            isSigningIn = true
-//            do {
-//                let authDataResult = try await auth.signIn(withEmail: email, link: url.absoluteString)
-//                debugPrint("[completeCreateAccount]: " + authDataResult.user.uid)
-//                postSignInSetup()
-//                isSigningIn = false
-//            } catch {
-//                authError = error
-//                isSigningIn = false
-//                isCreatingUser = false
-//                return
-//            }
-//        } else {
-//            authError = SignInError.emailLinkInvalid
-//            isCreatingUser = false
-//            return
-//        }
-//        
-//        if isCreatingUser {
-//            await createUserProfile()
-//        }
-//        UserDefaults.standard.removeObject(forKey: "emailForSignIn")
-//    }
-    
-    func createUserProfile() async {
-
-        // create our custom user profile
-        isCreatingUserProfile = true
-        
-        guard let email = UserDefaults.standard.string(forKey: "emailForSignIn"),
-              let diplayName = UserDefaults.standard.string(forKey: "displayName")
-        else {
-            authError = AccountCreationError.userProfileInputsNotFound
-            isCreatingUserProfile = false
+    private func postSignInSetup() {
+        if isCreatingUser {
+            user = User(auth: userAuth, account: UserAccount.blankUser)
+            isSigningIn = false
             isCreatingUser = false
-            return
+            isSignedIn = true
+            debugprint ("setup after user sign-in as part of creating new user; publishing sign-in")
+            signInPublisher.send()
+        } else {
+            Task {
+                do {
+                    let userProfile = try await fetchMyUserAccount()
+                    user = User(auth: userAuth, account: userProfile)
+                    isSigningIn = false
+                    isSignedIn = true
+                    debugprint ("setup after user sign-in; publishing sign-in")
+                    signInPublisher.send()
+                }
+                catch {
+                    user = User(auth: userAuth, account: UserAccount.blankUser)
+                    isSigningIn = false
+                    isSignedIn = true
+                    debugprint ("WARNING: unable to fetch user profile after user sign-in; execution will continue")
+                    debugprint ("setup after user sign-in; publishing sign-in")
+                    signInPublisher.send()
+                    self.error = UserProfileError.userProfileFetch(error)
+                    throw UserProfileError.userProfileFetch(error)
+                }
+            }
         }
-
-        do {
-            let profile = UserProfileCandidate(
-                uid: self.userAuth.uid,
-                updateDeviceStamp: deviceIdentifierstamp(),
-                updateDeviceTimestamp: deviceTimestamp(),
-                createUserEmail: email,
-                displayName: diplayName)
-            
-            let profileId = try await createUserProfile(profile)
-            user.profile = UserProfile(id: profileId,
-                                       uid: profile.uid,
-                                       updateDeviceStamp: profile.updateDeviceStamp,
-                                       updateDeviceTimestamp: profile.updateDeviceTimestamp,
-                                       createUserEmail: profile.createUserEmail,
-                                       displayName: profile.displayName)
-        }
-        catch {
-            authError = AccountCreationError.userProfileCreationIncomplete(error)
-        }
+    }
     
-        // finish the create process
-        UserDefaults.standard.removeObject(forKey: "displayName")
-        isCreatingUserProfile = false
-        isCreatingUser = false
+    private func postSignOutCleanup() {
+        userAuth = UserAuth.blankUser
+        user = User(auth: userAuth, account: UserAccount.blankUser)
+        isSignedIn = false
+        debugprint ("cleaned-up after user sign-out; publishing sign-out")
+        signOutPublisher.send()
+    }
+    
+    
+    // ***** Auth Functions *****
+    func signInExistingUser(email: String, password: String) async throws -> String {
+        isSigningIn = true
+        defer { isSigningIn = false }
+        do {
+            let result = try await auth.signIn(withEmail: email, password: password)
+            if result.user.uid.isEmpty {
+                debugprint("signIn returned successful but user.uid is empty.")
+                self.error = SignInError.userIdNotFound
+            }
+            return result.user.uid          // user existed + sign-in successful = we are done
+        } catch {
+            let nsError = error as NSError
+            if nsError.code == AuthErrorCode.userNotFound.rawValue {
+                debugprint("User not found for Sign-In, error: \(error)")
+                throw SignInError.userNotFound
+            } else {
+                debugprint("User Sign-In error: \(error)")
+                self.error = error
+                throw error
+            }
+        }
+    }
+    
+    func signInOrCreateUser(email: String, password: String) async throws -> String {
+        isSigningIn = true
+        defer { isSigningIn = false }
+        do {
+            let result = try await auth.signIn(withEmail: email, password: password)
+            if !result.user.uid.isEmpty {
+                debugprint("signIn - via signInOrCreateUser func - returned successful but user.uid is empty.")
+                self.error = SignInError.userIdNotFound
+            }
+            return result.user.uid          // user existed + sign-in successful = we are done
+        } catch {
+            let nsError = error as NSError
+            if nsError.code == AuthErrorCode.userNotFound.rawValue {
+                isCreatingUser = true
+                defer { isCreatingUser = false }
+                do {
+                    let result = try await auth.createUser(withEmail: email, password: password)
+                    guard !result.user.uid.isEmpty else {
+                        debugprint("createUser returned successful but user.uid is empty.")
+                        self.error = AccountCreationError.userIdNotFound
+                        throw AccountCreationError.userIdNotFound
+                    }
+                    return result.user.uid  // user did not exist + create successful = we are done
+                } catch {
+                    debugprint("User Create error: \(error)")
+                    self.error = error
+                    throw error
+                }
+            } else {
+                debugprint("User Sign-In error: \(error)")
+                self.error = error
+                throw error
+            }
+        }
     }
     
     func signOut() throws {
         try auth.signOut()
     }
- 
-        
-    // ***** App Functions *****
-    
-    func postSignInSetup() {
-        Task {
-            if !isCreatingUser {
-                do {
-                    user.profile = try await fetchUserProfile(forUserId: userAuth.uid)
-                }
-                catch {
-                    throw UserProfileError.userProfileFetch(error)
-                }
-            }
-            
-            messagesToUser = .loading
-            do {
-                messagesToUser = .loaded(try await messageService.fetchPrivateMessagesToUser(uid: userAuth.uid))
-            }
-            catch {
-                messagesToUser = .error(error)
-            }
-            
-            messagesFromUser = .loading
-            do {
-                messagesFromUser = .loaded(try await messageService.fetchPrivateMessagesFromUser(uid: userAuth.uid))
-            }
-            catch {
-                messagesFromUser = .error(error)
-            }
-            
-            isSignedIn = true
-            signInPublisher.send()
-        }
-    }
-    
-    func postSignOutCleanup() {
-        user = User.blankUser
-        messagesToUser = .empty
-        messagesFromUser = .empty
-        self.isSignedIn = false
-        signOutPublisher.send()
-    }
-    
 }
 
+
+// ***** Auth Functions via Passwordless Email Link *****
+// ***** WARNING - placeholder only - not fully implemented - not tested *****
 extension CurrentUserService {
     
-    private func makeUser(
-        from userAuth: UserAuth,
-        userProfile: UserProfile
-    ) -> User {
-        return User(
-            email: userAuth.email,
-            phoneNumber: userAuth.phoneNumber,
-            profile: userProfile
-        )
+    func requestNewUser(email: String) async throws {
+        guard !email.isEmpty else {
+            throw AccountCreationError.invalidInput
+        }
+        
+        isCreatingUser = true
+        do {
+            isWaitingOnEmailVerification = true
+            UserDefaults.standard.set(email, forKey: "emailForSignIn")
+            let actionCodeSettings = ActionCodeSettings()
+            actionCodeSettings.url = URL(string: "https://placeholder.page.link/ios")
+            actionCodeSettings.handleCodeInApp = true
+            try await auth.sendSignInLink(toEmail: email, actionCodeSettings: actionCodeSettings)
+        } catch {
+            isCreatingUser = false
+            throw error
+        }
     }
-    
-    private func makeUserProfile(
-        from firebaseProfile: GetUserProfileQuery.Data.UserProfile
-    ) throws -> UserProfile {
-        return UserProfile(
-            id: firebaseProfile.id,
-            uid: firebaseProfile.uid,
-            createTimestamp: firebaseProfile.createTimestamp.dateValue(),
-            updateDeviceStamp: firebaseProfile.updateDeviceStamp,
-            updateDeviceTimestamp: firebaseProfile.updateDeviceTimestamp,
-            createUserEmail: firebaseProfile.createUserEmail,
-            displayName: firebaseProfile.displayName,
-            photoUrl: firebaseProfile.photoUrl == nil ? nil : firebaseProfile.displayName,
-            settingsString: firebaseProfile.settingsString == nil ? nil : firebaseProfile.settingsString
-        )
+      
+    func completeSignInWithUrlLink(_ url: URL) async {
+        
+        isWaitingOnEmailVerification = false
+        guard let email = UserDefaults.standard.string(forKey: "emailForSignIn")
+        else {
+            self.error = SignInError.signInInputsNotFound
+            isCreatingUser = false
+            return
+        }
+        
+        var userId: String = ""
+        
+        if auth.isSignIn(withEmailLink: url.absoluteString) {
+            
+            isSigningIn = true
+            defer { isSigningIn = false }
+            do {
+                let result = try await auth.signIn(withEmail: email, link: url.absoluteString)
+                userId = result.user.uid
+                debugPrint("[completeCreateAccount]: " + result.user.uid)
+                postSignInSetup()
+            } catch {
+                self.error = error
+                isCreatingUser = false
+                return
+            }
+        } else {
+            self.error = SignInError.emailLinkInvalid
+            isCreatingUser = false
+            return
+        }
+        
+        if isCreatingUser {
+            do {
+                // use the email address as the display name text to start,
+                // making the app functional even if the user's chosen display name is taken
+                try await createUserAccount(UserAccountCandidate(uid: userId, displayName: email, photoUrl: ""))
+                UserDefaults.standard.removeObject(forKey: "emailForSignIn")
+            } catch {
+                debugprint("(View) User \(userId) created but Clould error creating User Profile. Error: \(error)")
+                self.error = error
+            }
+        }
     }
-    
 }
 
 
-private extension CurrentUserService {
-    
-    func fetchUserProfile(forUserId uid: String) async throws -> UserProfile {
-        guard !uid.isEmpty else { throw FetchDataError.invalidFunctionInput}
-        let queryRef = DataConnect.defaultConnector.getUserProfileQuery.ref(uid: uid)
-        let operationResult = try await queryRef.execute()
-        let profiles = try operationResult.data.userProfiles.compactMap { firebaseProfile -> UserProfile? in
-            let profile = try makeUserProfile(from: firebaseProfile)
-            guard profile.isValid else { throw FetchDataError.invalidCloudData }
-            return profile
+// ***** User Account Functions *****
+extension CurrentUserService {
+    func createUserAccount(_ profile: UserAccountCandidate, displayNameTextOverride: String? = nil) async throws {
+        guard profile.isValid
+        else { throw UpsertDataError.invalidFunctionInput }
+
+        let displayNameText = displayNameTextOverride ?? profile.displayName
+        
+        isCreatingUserAccount = true
+        defer { isCreatingUserAccount = false }
+        do {
+            let _ = try await DataConnect.defaultConnector.createUserAccountMutation.execute(
+                createDeviceIdentifierstamp: deviceIdentifierstamp(),
+                createDeviceTimestamp: deviceTimestamp(),
+                displayNameText: displayNameText,
+                photoUrl: profile.photoUrl
+            )
+            let userProfile = UserAccount(uid: profile.uid, displayName: profile.displayName, photoUrl: profile.displayName)
+            user.account = userProfile
         }
-        if profiles.count == 1 { return profiles.first! }
-        else if profiles.count >= 1 { throw FetchDataError.userDataDuplicatesFound }
+        catch {
+            self.error = AccountCreationError.userAccountCreationIncomplete(error)
+            throw AccountCreationError.userAccountCreationIncomplete(error)
+        }
+    }
+    
+    func createUserDisplayName(_ displayName: String) async throws {
+        guard !displayName.isEmpty
+        else { throw UpsertDataError.invalidFunctionInput }
+        
+        isUpdatingUserAccount = true
+        defer { isUpdatingUserAccount = false }
+        let _ = try await DataConnect.defaultConnector.createUserDisplayNameMutation.execute(
+            displayNameText: displayName)
+    }
+    
+    func setUserDisplayName(_ displayName: String) async throws {
+        guard !displayName.isEmpty
+        else { throw UpsertDataError.invalidFunctionInput }
+        
+        isUpdatingUserAccount = true
+        defer { isUpdatingUserAccount = false }
+        let _ = try await DataConnect.defaultConnector.updateUserAccountDisplayNameMutation.execute(
+            updateDeviceIdentifierstamp: deviceIdentifierstamp(),
+            updateDeviceTimestamp: deviceTimestamp(),
+            displayNameText: displayName
+        )
+    }
+        
+    func updateUserAccountProfile(_ profile: UserAccount) async throws {
+        guard profile.isValid
+        else { throw UpsertDataError.invalidFunctionInput }
+        
+        isUpdatingUserAccount = true
+        defer { isUpdatingUserAccount = false }
+        let _ = try await DataConnect.defaultConnector.updateUserAccountProfileMutation.execute(
+            updateDeviceIdentifierstamp: deviceIdentifierstamp(),
+            updateDeviceTimestamp: deviceTimestamp(),
+            photoUrl: profile.photoUrl
+        )
+    }
+    
+    func fetchMyUserAccount() async throws -> UserAccount {
+        let queryRef = DataConnect.defaultConnector.getMyUserAccountQuery.ref()
+        let operationResult = try await queryRef.execute()
+        let accounts = try operationResult.data.userAccounts.compactMap { firebaseAccount -> UserAccount? in
+            let account = try makeUserAccount(from: firebaseAccount)
+            guard account.isValid else { throw FetchDataError.invalidCloudData }
+            return account
+        }
+        if accounts.count == 1 { return accounts.first! }
+        else if accounts.count >= 1 { throw FetchDataError.userDataDuplicatesFound }
         else { throw FetchDataError.userDataNotFound }
     }
     
-    func createUserProfile(_ profile: UserProfileCandidate) async throws -> UUID {
-        guard profile.isValid else { throw UpsertDataError.invalidFunctionInput }
-        let operationResult = try await DataConnect.defaultConnector.insertUserProfileMutation.execute(
-            uid: profile.uid,
-            updateDeviceStamp: profile.updateDeviceStamp,
-            updateDeviceTimestamp: profile.updateDeviceTimestamp,
-            createUserEmail: profile.createUserEmail,
-            displayName: profile.displayName
-        )
-        return operationResult.data.userProfile_insert.id
+    func fetchUserAccount(forUserId uid: String) async throws -> UserAccount {
+        guard !uid.isEmpty else { throw FetchDataError.invalidFunctionInput}
+        let queryRef = DataConnect.defaultConnector.getUserAccountQuery.ref(userId: uid)
+        let operationResult = try await queryRef.execute()
+        let accounts = try operationResult.data.userAccounts.compactMap { firebaseAccount -> UserAccount? in
+            let account = try makeUserAccount(from: firebaseAccount)
+            guard account.isValid else { throw FetchDataError.invalidCloudData }
+            return account
+        }
+        if accounts.count == 1 { return accounts.first! }
+        else if accounts.count >= 1 { throw FetchDataError.userDataDuplicatesFound }
+        else { throw FetchDataError.userDataNotFound }
     }
-
-    func updateUserProfile(_ profile: UserProfile) async throws {
-        guard profile.isValid,
-              let profileId = profile.id
-        else { throw UpsertDataError.invalidFunctionInput }
-        _ = try await DataConnect.defaultConnector.updateUserProfileMutation.execute(
-            id: profileId,
-            updateDeviceStamp: profile.updateDeviceStamp,
-            updateDeviceTimestamp: profile.updateDeviceTimestamp,
-            displayName: profile.displayName,
-            photoUrl: profile.photoUrl ?? "",
-            settingsString: profile.settingsString ?? ""
-        )
-    }
-    
 }
 
+
+// ***** helpers to make local structs *****
 
 private extension UserAuth {
     init(from firebaseUser: FirebaseAuth.User) {
@@ -306,8 +352,31 @@ private extension UserAuth {
     }
 }
 
+extension CurrentUserService {
+    private func makeUserAccount(
+        from firebaseAccount: GetUserAccountQuery.Data.UserAccount
+    ) throws -> UserAccount {
+        return UserAccount(
+            uid: firebaseAccount.id,
+            displayName: firebaseAccount.displayNameText,
+            photoUrl: firebaseAccount.photoUrl
+        )
+    }
+    private func makeUserAccount(
+        from firebaseAccount: GetMyUserAccountQuery.Data.UserAccount
+    ) throws -> UserAccount {
+        return UserAccount(
+            uid: firebaseAccount.id,
+            displayName: firebaseAccount.displayNameText,
+            photoUrl: firebaseAccount.photoUrl
+        )
+    }
+}
+
+
+// ***** Custom Auth User Profile Data *****
 /* This code below allows you to put custom keyed-value data on to the auth user profile
- * we don't intend to do this, will use a custom data connect user profile instead
+ * This app doesn't intend this and will use a custom data connect user profile instead
 private extension FirebaseAuth.User {
     func updateProfile<T>(_ keyPath: WritableKeyPath<UserProfileChangeRequest, T>, to newValue: T) async throws {
         var profileChangeRequest = createProfileChangeRequest()
@@ -319,45 +388,112 @@ private extension FirebaseAuth.User {
 
 
 #if DEBUG
-class CurrentUserTestData: CurrentUserService {
+class CurrentUserTestService: CurrentUserService {
     let startSignedIn: Bool
+    let startCreatingUser: Bool
     
-    init(startSignedIn: Bool = true) {
-        isPreviewTestData = true
+    init(startSignedIn: Bool, startCreatingUser: Bool = false) {
         self.startSignedIn = startSignedIn
+        self.startCreatingUser = startCreatingUser
     }
     
-    static let sharedSignedIn = CurrentUserTestData(startSignedIn: true) as CurrentUserService
-    static let sharedSignedOut = CurrentUserTestData(startSignedIn: false) as CurrentUserService
+    static let sharedSignedIn = CurrentUserTestService(startSignedIn: true) // as CurrentUserService
+    static let sharedSignedOut = CurrentUserTestService(startSignedIn: false) // as CurrentUserService
+    static let sharedCreatingUser = CurrentUserTestService(startSignedIn: false, startCreatingUser: true) // as CurrentUserService
+    
+    func nextSignInState() {
+        if isSigningIn {
+            debugprint("was isSigningIn")
+            isCreatingUser = false
+            isSigningIn = false
+            isSignedIn = true
+            isCreatingUserAccount = false
+        } else if isSignedIn {
+            debugprint("was CreatingUserProfile")
+            isCreatingUser = false
+            isSigningIn = false
+            isSignedIn = false
+            isCreatingUserAccount = false
+        } else {
+            debugprint("was Signed Out")
+            isCreatingUser = false
+            isSigningIn = true
+            isSignedIn = false
+            isCreatingUserAccount = false
+        }
+    }
+    
+    func nextCreateState() {
+        if isCreatingUser {
+            debugprint("was isCreatingUser")
+            isCreatingUser = false
+            isSigningIn = false
+            isSignedIn = true
+            isCreatingUserAccount = true
+            isUpdatingUserAccount = false
+        } else if isCreatingUserAccount {
+            debugprint("was CreatingUserAccount")
+            isCreatingUser = false
+            isSigningIn = false
+            isSignedIn = true
+            isCreatingUserAccount = false
+            isUpdatingUserAccount = true
+        } else if isUpdatingUserAccount {
+            debugprint("was UpdatingUserAccount")
+            isCreatingUser = false
+            isSigningIn = false
+            isSignedIn = true
+            isCreatingUserAccount = false
+            isUpdatingUserAccount = false
+        } else {
+            debugprint("reset")
+            isCreatingUser = true
+            isSigningIn = false
+            isSignedIn = false
+            isCreatingUserAccount = false
+            isUpdatingUserAccount = false
+        }
+    }
     
     override func setupListener() {
         if startSignedIn {
-            testSignIn()
+            loadTestUser()
         } else {
-            testSignOut()
+            loadBlankUser()
         }
+        isCreatingUser = startCreatingUser
     }
- 
-//    override func requestSignInLinkEmail(toEmail: String) async throws {
-//        testSignIn()
-//    }
     
-    func testSignIn() {
-        self.user = User.testUser
-        self.messagesToUser = .loaded([PrivateMessage.testMessage])
-        self.messagesFromUser = .loaded([PrivateMessage.testMessageAnother])
-        self.isSignedIn = true
+    override func signInExistingUser(email: String, password: String) async throws -> String {
+        loadTestUser()
+        return self.userKey.uid
     }
-
+    
+    override func signInOrCreateUser(email: String, password: String) async throws -> String {
+        loadTestUser()
+        return self.userKey.uid
+    }
+        
     override func signOut() throws {
-        testSignOut()
+        loadBlankUser()
     }
     
-    func testSignOut() {
-        self.user = User.blankUser
-        self.messagesToUser = .empty
-        self.messagesFromUser = .empty
-        self.isSignedIn = false
+    private func loadTestUser() {
+        user = User.testObject
+        isCreatingUser = false
+        isSigningIn = false
+        isSignedIn = true
+        isCreatingUserAccount = false
     }
+    
+    private func loadBlankUser() {
+        self.user = User.blankUser
+        user = User.testObject
+        isCreatingUser = false
+        isSigningIn = false
+        isSignedIn = false
+        isCreatingUserAccount = false
+    }
+    
 }
 #endif

@@ -14,36 +14,25 @@ import Foundation
 
 final class AnnouncementStore: ListableStore<Announcement> {
     
-    // initiate/get this store as a Swift Singleton
+    // initiate this store as a Swift Singleton
+    // this is also how to 'get' the singleton store
     static let shared = AnnouncementStore()
     
-    // repository to from which to fetch data into the store
-    private let cloudRepository: FirestoreDatabase = FirestoreDatabase()
+    // override ListableStore func below to set how to fetch data into the store
+    override var fetchFromService: () async throws -> [Announcement] {
+        {
+            try await FirestoreConnector().fetchAnnouncements()
+        }
+    }
     
-    // fetching
-    func fetchAnnouncements() async throws -> Loadable<[Announcement]> {
-        #if DEBUG
-        if isPreviewTestData {
-            list = .loaded(Announcement.testAnnouncements)
-            debugprint("loaded \(list.count) test Announcements")
-            return list
-        }
-        #endif
-        
-        Task {
-            list = .loading
-            do {
-                list = .loaded(try await cloudRepository.fetchAnnouncements())
-                debugprint("fetched \(list.count) Announcements")
-                if list.count == 0 {
-                    list = .loaded([Announcement.placeholder])
-                }
-            }
-            catch {
-                debugprint("Error fetching Announcements: \(error)")
-                list = .error(error)
-            }
-        }
-        return list
+}
+
+#if DEBUG
+extension AnnouncementStore {
+    static func testLoaded() -> AnnouncementStore {
+        let store = AnnouncementStore()
+        store.list = .loaded(Announcement.testObjects)
+        return store
     }
 }
+#endif

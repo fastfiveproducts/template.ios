@@ -29,7 +29,7 @@ struct TopLabeledContentStyle: LabeledContentStyle {
 
 #if DEBUG
 fileprivate struct TopLabelLabeledContentStylePreview: View {
-    var config: TextConfiguration
+    var config: TextCaptureConfiguration
     @FocusState private var focusedFieldIndex: Int?
     var body: some View {
         LabeledContent {
@@ -47,8 +47,8 @@ fileprivate struct TopLabelLabeledContentStylePreview: View {
 #Preview ("TopLabelLabeledContentStyle") {
     Form {
         Section {
-            TopLabelLabeledContentStylePreview(config: TextConfiguration(name: "Your Name", prompt: "required:  Name or Intitials"))
-            TopLabelLabeledContentStylePreview(config: TextConfiguration(name: "More Stuff", prompt: "stuff we want to know"))
+            TopLabelLabeledContentStylePreview(config: TextCaptureConfiguration(name: "Your Name", prompt: "required:  Name or Intitials"))
+            TopLabelLabeledContentStylePreview(config: TextCaptureConfiguration(name: "More Stuff", prompt: "stuff we want to know"))
         }
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
