@@ -1,18 +1,31 @@
 # template
-the Fast Five Products LLC iOS application template App
+the Fast Five Products (FFP) LLC iOS application template App
 (https://github.com/fastfiveproducts/template.ios)
 
+##  App Dependencies
+- requires an implementation of Firebase Data Connect
+- in particular the the FFP Firebase template (https://github.com/fastfiveproducts/template.firebase)
+- see https://firebase.google.com/docs/ios/setup as a reference
+
 ##  Clone project
-- cd to your root Programs folder or directory
+- open a terminal and cd to your root Programs folder or directory
 - clone project from GitHub via your preferred method
 
-##  Dependencies
-- requires an implementation of Firebase Data Connect
-- in particular the the the FastFive Products LLC Firebase template (https://github.com/fastfiveproducts/template.firebase)
-- after cloning, add your GoogleService-info.plist file to "CloudSupport" folder group
+##  Dependencies to run App via Xcode
+- clone the FFP Firebase template, setup that project, and "Add SDK to app" to add its generated code to the root of this project
+- add your secure FFP Firebase template `GoogleService-info.plist` file to the "CloudSupport" directory/group
+  - find this in the Firebase console (https://console.firebase.google.com/), in the template Firebase project, in "Project Settings" 
+- install Xcode if you have not already
+- in Xcode, “Open a project or file” and open the Xcode project file.  Add the following packages:
+  - the "Default Connector" from the FFP Firebase template
+  - FirebaseAppCheck
+  - FirebaseAuth
+  - FirebaseCore
+  - FirebaseDatabase
+  - FirebaseFirestore
 
 ##  Run on an iOS Siumulator via Xcode on a Mac
-- “Open a project or file” and open the Xcode project file
+- in Xcode, “Open a project or file” and open the Xcode project file
 - choose your simulator device
 - build and run via "Product -> Run"
 
