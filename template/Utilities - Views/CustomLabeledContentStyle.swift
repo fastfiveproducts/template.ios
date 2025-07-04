@@ -1,20 +1,22 @@
 //
 //  CustomLabeledContentStyle.swift
 //
-//  Template created by Pete Maiser, July 2024 through May 2025
-//      © Fast Five Products LLC, 2025
+//  Template by Pete Maiser, July 2024 through May 2025
+//      made availble here:
 //      https://github.com/fastfiveproducts/template.ios
-//      made available, and used here, per terms of the MIT License
-//      changes should be rare; it is recommended changes are applied to the template
-//      and the entire file compared-and-then-replaced here if/as appropriate
+//      per terms of the MIT License
 //
-//      Template v0.1.1
+//  This particular implementation is for:
+//      APP_NAME
+//      DATE
+//      YOUR_NAME
 //
 
 
 import SwiftUI
 
 // custom Text Field LabeledContentStyle, 'Top Labeled':
+
 struct TopLabeledContentStyle: LabeledContentStyle {
     func makeBody(configuration: Configuration) -> some View {
         VStack(alignment: .leading) {

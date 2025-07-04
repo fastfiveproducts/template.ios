@@ -13,7 +13,7 @@
 import SwiftUI
 
 struct PostBubbleView: View {
-    let post: any Post
+    let message: any Post
     let isSent: Bool   // true = sent by current user
     var showFromUser: Bool = false
     var showToUser: Bool = false
@@ -38,7 +38,7 @@ struct PostBubbleView: View {
                     Text("From:")
                         .font(.caption)
                         .foregroundColor(.secondary)
-                    Text(post.from.displayName)
+                    Text(message.from.displayName)
                         .font(.caption)
                         .foregroundColor(.secondary)
                     if !isSent { Spacer() }
@@ -52,7 +52,7 @@ struct PostBubbleView: View {
                     Text("To:")
                         .font(.caption)
                         .foregroundColor(.secondary)
-                    Text(post.to.displayName)
+                    Text(message.to.displayName)
                         .font(.caption)
                         .foregroundColor(.secondary)
                     if !isSent { Spacer() }
@@ -61,13 +61,13 @@ struct PostBubbleView: View {
             }
 
             VStack(alignment: .leading, spacing: 4) {
-                if !post.title.isEmpty {
-                    Text(post.title)
+                if !message.title.isEmpty {
+                    Text(message.title)
                         .font(.headline)
                         .foregroundColor(textColor)
                 }
 
-                Text(post.content)
+                Text(message.content)
                     .font(.body)
                     .foregroundColor(textColor)
             }
@@ -78,7 +78,7 @@ struct PostBubbleView: View {
 
             HStack {
                 if isSent { Spacer() }
-                Text(post.timestamp.formatted(.dateTime))
+                Text(message.timestamp.formatted(.dateTime))
                     .font(.caption2)
                     .foregroundColor(.gray)
                 if !isSent { Spacer() }
@@ -92,29 +92,29 @@ struct PostBubbleView: View {
 
 
 #if DEBUG
-#Preview ("Various Views") {
+#Preview {
     ScrollView {
         VStack(alignment: .leading, spacing: 16) {
             Section(header: Text("All Comments View")) {
-                PostBubbleView(post: PublicComment.testObject, isSent: true, showFromUser: true)
-                PostBubbleView(post: PublicComment.testObjectAnother, isSent: false, showFromUser: true)
+                PostBubbleView(message: PublicComment.testObject, isSent: true, showFromUser: true)
+                PostBubbleView(message: PublicComment.testObjectAnother, isSent: false, showFromUser: true)
             }
 
             Section(header: Text("My Comments View")) {
-                PostBubbleView(post: PublicComment.testObject, isSent: true)
+                PostBubbleView(message: PublicComment.testObject, isSent: true)
             }
 
             Section(header: Text("Inbox Messages View")) {
-                PostBubbleView(post: PrivateMessage.testObjectAnother, isSent: false, showFromUser: true)
+                PostBubbleView(message: PrivateMessage.testObjectAnother, isSent: false, showFromUser: true)
             }
 
             Section(header: Text("Sent View")) {
-                PostBubbleView(post: PrivateMessage.testObject, isSent: true, showToUser: true)
+                PostBubbleView(message: PrivateMessage.testObject, isSent: true, showToUser: true)
             }
 
             Section(header: Text("Private Messages No Filter (Mixed)")) {
-                PostBubbleView(post: PrivateMessage.testObject, isSent: true, showToUser: true)
-                PostBubbleView(post: PrivateMessage.testObjectAnother, isSent: false, showFromUser: true)
+                PostBubbleView(message: PrivateMessage.testObject, isSent: true, showToUser: true)
+                PostBubbleView(message: PrivateMessage.testObjectAnother, isSent: false, showFromUser: true)
             }
         }
         .padding()

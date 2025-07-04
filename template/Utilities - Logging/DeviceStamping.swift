@@ -1,14 +1,12 @@
 //
 //  DeviceStamping.swift
 //
-//  Template created by Pete Maiser, July 2024 through May 2025
-//      © Fast Five Products LLC, 2025
+//  Created by Pete Maiser, January 2025 through May 2025
+//      made availble here:
 //      https://github.com/fastfiveproducts/template.ios
-//      made available, and used here, per terms of the MIT License
+//      per terms of the MIT License
 //      changes should be rare; it is recommended changes are applied to the template
 //      and the entire file compared-and-then-replaced here if/as appropriate
-//
-//      Template v0.1.1
 //
 
 

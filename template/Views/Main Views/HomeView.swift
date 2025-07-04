@@ -147,7 +147,7 @@ struct HomeView: View {
         currentUserService: currentUserService,
         announcementStore: AnnouncementStore.testLoaded(),
         publicCommentStore: PublicCommentStore.testLoaded(),
-        privateMessageStore: PrivateMessageStore()              // loading empty because private messages not used yet
+        privateMessageStore: PrivateMessageStore.testLoaded()
     )
 }
 #Preview ("test-data signed-out") {
