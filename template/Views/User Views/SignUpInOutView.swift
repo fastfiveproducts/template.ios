@@ -1,15 +1,14 @@
 //
 //  SignUpSignInSignOutView.swift
 //
-//  Template by Pete Maiser, July 2024 through May 2025
-//      made availble here:
+//  Template created by Pete Maiser, July 2024 through May 2025
+//      © Fast Five Products LLC, 2025
 //      https://github.com/fastfiveproducts/template.ios
-//      provided via, and used per, terms of the MIT License
+//      made available, and used here, per terms of the MIT License
+//      changes should be rare; it is recommended changes are applied to the template
+//      and the entire file compared-and-then-replaced here if/as appropriate
 //
-//  This particular implementation is for:
-//      APP_NAME
-//      DATE
-//      YOUR_NAME
+//      Template v0.1.1
 //
 
 
