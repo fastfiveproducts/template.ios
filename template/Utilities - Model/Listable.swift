@@ -16,6 +16,11 @@ import Foundation
 
 protocol Listable: Identifiable, Equatable, Codable, DebugPrintable {
     var objectDescription: String { get }
+<<<<<<< HEAD
+    static var testObject: Self { get }
+    static var testObjects: [Self] { get }
+=======
+>>>>>>> develop
     static var usePlaceholder: Bool { get }
     static var placeholder: Self { get }
 }
