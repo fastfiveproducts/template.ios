@@ -13,10 +13,13 @@
 
 
 import SwiftUI
+import SwiftData
 
 struct SignUpInOutView: View, DebugPrintable {
     @ObservedObject var viewModel : UserAccountViewModel
     @ObservedObject var currentUserService: CurrentUserService
+    
+    @Environment(\.modelContext) private var modelContext
     
     @FocusState private var focusedField: Field?
     private func nextField() {
@@ -162,6 +165,11 @@ private extension SignUpInOutView {
             }
         }
     }
+    
+    private func addLoginEventToLog() {
+        let newLogEntry = ActivityLogEntry(timestamp: Date(), event: currentUserService.isSignedIn ? "User signed in": "User signed out")
+        modelContext.insert(newLogEntry)
+    }
 }
 
 
@@ -173,6 +181,7 @@ private extension SignUpInOutView {
             viewModel: UserAccountViewModel(),
             currentUserService: currentUserService
         )
+        .modelContainer(for: ActivityLogEntry.self, inMemory: true)
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)
@@ -184,6 +193,7 @@ private extension SignUpInOutView {
             viewModel: UserAccountViewModel(),
             currentUserService: currentUserService
         )
+        .modelContainer(for: ActivityLogEntry.self, inMemory: true)
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)
@@ -196,6 +206,7 @@ private extension SignUpInOutView {
             viewModel: viewModel,
             currentUserService: currentUserService
         )
+        .modelContainer(for: ActivityLogEntry.self, inMemory: true)
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)

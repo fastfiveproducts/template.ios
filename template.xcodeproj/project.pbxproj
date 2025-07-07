@@ -66,6 +66,8 @@
 		B5E4017E2DEF6385002357B6 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E4017D2DEF6385002357B6 /* CreateAccountView.swift */; };
 		BDFEEB202E1880B1004EF1F5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEEB1F2E1880B1004EF1F5 /* SettingsView.swift */; };
 		BDFEEB262E1C65BC004EF1F5 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEEB252E1C65BC004EF1F5 /* SettingsStore.swift */; };
+		BDFEEB222E198BD9004EF1F5 /* ActivityLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEEB212E198BD9004EF1F5 /* ActivityLogView.swift */; };
+		BDFEEB242E19902C004EF1F5 /* ActivityLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEEB232E19902C004EF1F5 /* ActivityLogEntry.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -120,6 +122,8 @@
 		B5E4017D2DEF6385002357B6 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 		BDFEEB1F2E1880B1004EF1F5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BDFEEB252E1C65BC004EF1F5 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsStore.swift; path = template/Store/SettingsStore.swift; sourceTree = SOURCE_ROOT; };
+		BDFEEB212E198BD9004EF1F5 /* ActivityLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogView.swift; sourceTree = "<group>"; };
+		BDFEEB232E19902C004EF1F5 /* ActivityLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogEntry.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -174,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				B511E9C12DE62B08009C0DA4 /* Announcement.swift */,
+				BDFEEB232E19902C004EF1F5 /* ActivityLogEntry.swift */,
 				B511E9CA2DE62E8F009C0DA4 /* Posts.swift */,
 				B511E9C32DE62B49009C0DA4 /* User.swift */,
 				B5DABDD42E00741D00EF6F6E /* TemplateStruct.swift */,
@@ -268,6 +273,7 @@
 			isa = PBXGroup;
 			children = (
 				B511E9AD2DE6253D009C0DA4 /* HomeView.swift */,
+				BDFEEB212E198BD9004EF1F5 /* ActivityLogView.swift */,
 				B5837CC52DE6836A00339039 /* UserAccountView.swift */,
 				B54B79C12DF1F2B900E5A21F /* UserCommentPostsStackView.swift */,
 				B54B79C32DF1F4A800E5A21F /* UserMessagePostsStackView.swift */,
@@ -441,8 +447,10 @@
 				BDFEEB202E1880B1004EF1F5 /* SettingsView.swift in Sources */,
 				B511E9CB2DE62E8F009C0DA4 /* Posts.swift in Sources */,
 				B511E9BB2DE6253D009C0DA4 /* HomeView.swift in Sources */,
+				BDFEEB242E19902C004EF1F5 /* ActivityLogEntry.swift in Sources */,
 				B511E9D42DE65166009C0DA4 /* CustomLabeledContentStyle.swift in Sources */,
 				B52D95B22E14A9DE00D3B027 /* ListableFileStore.swift in Sources */,
+				BDFEEB222E198BD9004EF1F5 /* ActivityLogView.swift in Sources */,
 				B5DF31752DE8E72A00E1EF24 /* RestrictedWordStore.swift in Sources */,
 				B5E4017E2DEF6385002357B6 /* CreateAccountView.swift in Sources */,
 				B5837CE22DE6A0AF00339039 /* UserPostViewModel.swift in Sources */,
