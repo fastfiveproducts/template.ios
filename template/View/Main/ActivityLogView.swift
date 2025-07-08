@@ -32,12 +32,34 @@ struct ActivityLogView: View {
                             Text(entry.timestamp, style: .time)
                         }
                     }
+                    .onDelete(perform: deleteLogEntry)
                 }
             }
             Spacer()
+            Button("Clear All Logs") {
+                                clearAllLogs()
+                            }
         }
         .padding()
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                EditButton()
+            }
+        }
     }
+    private func deleteLogEntry(at offsets: IndexSet) {
+        for index in offsets {
+            let entryToDelete = logEntries[index]
+            modelContext.delete(entryToDelete)
+        }
+    }
+    
+    private func clearAllLogs() {
+            do {
+                try modelContext.delete(model: ActivityLogEntry.self)
+            } catch {
+            }
+        }
 }
 
 #Preview {
