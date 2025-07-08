@@ -132,6 +132,7 @@ private extension SignUpInOutView {
         if currentUserService.isSignedIn {
             do {
                 try CurrentUserService.shared.signOut()
+                addLoginEventToLog()
             } catch {
                 debugprint("(View) Error signing out of User Account: \(error)")
                 viewModel.error = error
@@ -144,6 +145,7 @@ private extension SignUpInOutView {
                                                 password: viewModel.capturedPasswordText)
                     viewModel.capturedPasswordText = ""
                     debugprint("(View) User \(uid) signed in")
+                    addLoginEventToLog()
                 } catch {
                     if let signInError = error as? SignInError, signInError == .userNotFound {
                         viewModel.createAccountMode = true
@@ -167,7 +169,7 @@ private extension SignUpInOutView {
     }
     
     private func addLoginEventToLog() {
-        let newLogEntry = ActivityLogEntry(timestamp: Date(), event: currentUserService.isSignedIn ? "User signed in": "User signed out")
+        let newLogEntry = ActivityLogEntry(timestamp: Date(), event: currentUserService.isSignedIn ? "User signed out": "User signed in")
         modelContext.insert(newLogEntry)
     }
 }

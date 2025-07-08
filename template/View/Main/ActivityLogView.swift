@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct ActivityLogView: View {
-    @Query(sort: \ActivityLogEntry.timestamp, order: .reverse) var logEntries: [ActivityLogEntry]
+    @Query(sort: \ActivityLogEntry.timestamp) var logEntries: [ActivityLogEntry]
     @Environment(\.modelContext) private var modelContext
     
     var body: some View {
@@ -29,7 +29,7 @@ struct ActivityLogView: View {
                         HStack {
                             Text(entry.event)
                             Spacer()
-                            Text(entry.timestamp, style: .relative)
+                            Text(entry.timestamp, style: .time)
                         }
                     }
                 }
