@@ -64,6 +64,8 @@
 		B5DF31752DE8E72A00E1EF24 /* RestrictedWordStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */; };
 		B5DF31772DE9054500E1EF24 /* ListableCloudStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */; };
 		B5E4017E2DEF6385002357B6 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E4017D2DEF6385002357B6 /* CreateAccountView.swift */; };
+		BDFEEB202E1880B1004EF1F5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEEB1F2E1880B1004EF1F5 /* SettingsView.swift */; };
+		BDFEEB262E1C65BC004EF1F5 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEEB252E1C65BC004EF1F5 /* SettingsStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -116,6 +118,8 @@
 		B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestrictedWordStore.swift; sourceTree = "<group>"; };
 		B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableCloudStore.swift; sourceTree = "<group>"; };
 		B5E4017D2DEF6385002357B6 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
+		BDFEEB1F2E1880B1004EF1F5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BDFEEB252E1C65BC004EF1F5 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsStore.swift; path = template/Store/SettingsStore.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -203,6 +207,7 @@
 			children = (
 				B511E9DB2DE66672009C0DA4 /* AnnouncementStore.swift */,
 				B5D128462DE914EA004A5286 /* PostStores.swift */,
+				BDFEEB252E1C65BC004EF1F5 /* SettingsStore.swift */,
 				B5DF31742DE8E72A00E1EF24 /* RestrictedWordStore.swift */,
 			);
 			path = Store;
@@ -266,6 +271,7 @@
 				B5837CC52DE6836A00339039 /* UserAccountView.swift */,
 				B54B79C12DF1F2B900E5A21F /* UserCommentPostsStackView.swift */,
 				B54B79C32DF1F4A800E5A21F /* UserMessagePostsStackView.swift */,
+				BDFEEB1F2E1880B1004EF1F5 /* SettingsView.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -421,6 +427,7 @@
 				B54B79BE2DF1E8BD00E5A21F /* PostBubbleView.swift in Sources */,
 				B5837CC82DE6836A00339039 /* UserAccountView.swift in Sources */,
 				B511E9B52DE6253D009C0DA4 /* Listable.swift in Sources */,
+				BDFEEB262E1C65BC004EF1F5 /* SettingsStore.swift in Sources */,
 				B5837CBB2DE66AA800339039 /* UserAccountViewModel.swift in Sources */,
 				B5837CBC2DE66AA800339039 /* HomeViewModel.swift in Sources */,
 				B5DF31772DE9054500E1EF24 /* ListableCloudStore.swift in Sources */,
@@ -431,6 +438,7 @@
 				B511E9B82DE6253D009C0DA4 /* SignInOutObserver.swift in Sources */,
 				B511E9B92DE6253D009C0DA4 /* ViewConfiguration.swift in Sources */,
 				B511E9DC2DE66672009C0DA4 /* AnnouncementStore.swift in Sources */,
+				BDFEEB202E1880B1004EF1F5 /* SettingsView.swift in Sources */,
 				B511E9CB2DE62E8F009C0DA4 /* Posts.swift in Sources */,
 				B511E9BB2DE6253D009C0DA4 /* HomeView.swift in Sources */,
 				B511E9D42DE65166009C0DA4 /* CustomLabeledContentStyle.swift in Sources */,

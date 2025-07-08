@@ -142,9 +142,7 @@ struct HomeView: View {
                 // MARK: -- Settings
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        VStackBox() {
-                            Text("Replace this VStackBox with a Settings View!")
-                        }
+                        SettingsView()
                     } label: {
                         Label("Settings", systemImage: "gearshape.fill")
                     }
