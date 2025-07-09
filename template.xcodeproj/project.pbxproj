@@ -65,9 +65,9 @@
 		B5DF31772DE9054500E1EF24 /* ListableCloudStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */; };
 		B5E4017E2DEF6385002357B6 /* CreateAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5E4017D2DEF6385002357B6 /* CreateAccountView.swift */; };
 		BDFEEB202E1880B1004EF1F5 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEEB1F2E1880B1004EF1F5 /* SettingsView.swift */; };
-		BDFEEB262E1C65BC004EF1F5 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEEB252E1C65BC004EF1F5 /* SettingsStore.swift */; };
 		BDFEEB222E198BD9004EF1F5 /* ActivityLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEEB212E198BD9004EF1F5 /* ActivityLogView.swift */; };
 		BDFEEB242E19902C004EF1F5 /* ActivityLogEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEEB232E19902C004EF1F5 /* ActivityLogEntry.swift */; };
+		BDFEEB262E1C65BC004EF1F5 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDFEEB252E1C65BC004EF1F5 /* SettingsStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -121,9 +121,9 @@
 		B5DF31762DE9054500E1EF24 /* ListableCloudStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListableCloudStore.swift; sourceTree = "<group>"; };
 		B5E4017D2DEF6385002357B6 /* CreateAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountView.swift; sourceTree = "<group>"; };
 		BDFEEB1F2E1880B1004EF1F5 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		BDFEEB252E1C65BC004EF1F5 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsStore.swift; path = template/Store/SettingsStore.swift; sourceTree = SOURCE_ROOT; };
 		BDFEEB212E198BD9004EF1F5 /* ActivityLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogView.swift; sourceTree = "<group>"; };
 		BDFEEB232E19902C004EF1F5 /* ActivityLogEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityLogEntry.swift; sourceTree = "<group>"; };
+		BDFEEB252E1C65BC004EF1F5 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsStore.swift; path = template/Store/SettingsStore.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
