@@ -35,6 +35,7 @@ struct ActivityLogView: View {
                     .onDelete(perform: deleteLogEntry)
                 }
             }
+            .listStyle(.plain)
             Spacer()
             Button("Clear All Logs") {
                                 clearAllLogs()
