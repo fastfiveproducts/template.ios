@@ -169,7 +169,7 @@ private extension SignUpInOutView {
     }
     
     private func addLoginEventToLog() {
-        let newLogEntry = ActivityLogEntry(timestamp: Date(), event: currentUserService.isSignedIn ? "User signed out": "User signed in")
+        let newLogEntry = ActivityLogEntry(currentUserService.isSignedIn ? "User signed out": "User signed in")
         modelContext.insert(newLogEntry)
     }
 }

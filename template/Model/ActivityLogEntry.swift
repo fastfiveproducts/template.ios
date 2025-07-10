@@ -10,11 +10,11 @@ import SwiftData
 
 @Model
 final class ActivityLogEntry {
-    var timestamp: Date
     var event: String
+    var timestamp: Date
     
-    init(timestamp: Date, event: String) {
-        self.timestamp = timestamp
+    init(_ event: String, timestamp: Date = Date()) {
         self.event = event
+        self.timestamp = timestamp
     }
 }
