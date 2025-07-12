@@ -129,9 +129,7 @@ struct HomeView: View {
                 // MARK: -- Activity Log
                 ToolbarItem(placement: .navigationBarTrailing) {
                     NavigationLink {
-                        VStackBox() {
-                            Text("Replace this VStackBox with an Activity Log View!")
-                        }
+                        ActivityLogView()
                     } label: {
                         Label("Activity Log", systemImage: "book.pages")
                     }

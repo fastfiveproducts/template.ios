@@ -13,10 +13,13 @@
 
 
 import SwiftUI
+import SwiftData
 
 struct SignUpInOutView: View, DebugPrintable {
     @ObservedObject var viewModel : UserAccountViewModel
     @ObservedObject var currentUserService: CurrentUserService
+    
+    @Environment(\.modelContext) private var modelContext
     
     @FocusState private var focusedField: Field?
     private func nextField() {
@@ -129,6 +132,7 @@ private extension SignUpInOutView {
         if currentUserService.isSignedIn {
             do {
                 try CurrentUserService.shared.signOut()
+                addLoginEventToLog()
             } catch {
                 debugprint("(View) Error signing out of User Account: \(error)")
                 viewModel.error = error
@@ -141,6 +145,7 @@ private extension SignUpInOutView {
                                                 password: viewModel.capturedPasswordText)
                     viewModel.capturedPasswordText = ""
                     debugprint("(View) User \(uid) signed in")
+                    addLoginEventToLog()
                 } catch {
                     if let signInError = error as? SignInError, signInError == .userNotFound {
                         viewModel.createAccountMode = true
@@ -162,6 +167,11 @@ private extension SignUpInOutView {
             }
         }
     }
+    
+    private func addLoginEventToLog() {
+        let newLogEntry = ActivityLogEntry(currentUserService.isSignedIn ? "User signed out": "User signed in")
+        modelContext.insert(newLogEntry)
+    }
 }
 
 
@@ -173,6 +183,7 @@ private extension SignUpInOutView {
             viewModel: UserAccountViewModel(),
             currentUserService: currentUserService
         )
+        .modelContainer(for: ActivityLogEntry.self, inMemory: true)
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)
@@ -184,6 +195,7 @@ private extension SignUpInOutView {
             viewModel: UserAccountViewModel(),
             currentUserService: currentUserService
         )
+        .modelContainer(for: ActivityLogEntry.self, inMemory: true)
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)
@@ -196,6 +208,7 @@ private extension SignUpInOutView {
             viewModel: viewModel,
             currentUserService: currentUserService
         )
+        .modelContainer(for: ActivityLogEntry.self, inMemory: true)
     }
     .dynamicTypeSize(...ViewConfiguration.dynamicSizeMax)
     .environment(\.font, Font.body)
